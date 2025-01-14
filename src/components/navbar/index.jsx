@@ -1,12 +1,13 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { navList } from '@/assets/data/list-nav';
 import { cn } from '@/lib/utils.js';
 
 export default function NavBar() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
-    <header className="flex items-center border px-10 py-5 sticky top-0 z-50 bg-background-pssi">
+    <header className="flex items-center border px-24 py-5 sticky top-0 z-50 bg-background-pssi">
       <div className="justify-self-start">
         <img src="/pssi-logo.svg" alt="logo" />
       </div>
@@ -28,6 +29,10 @@ export default function NavBar() {
           ))}
         </ul>
       </nav>
+
+      <button onClick={() => navigate('/login')} className="px-4 py-2 bg-primary-pssi text-white rounded-lg text-sm">
+        Login
+      </button>
     </header>
   );
 }
