@@ -16,9 +16,16 @@ import {
   ChartTooltipContent
 } from "@/components/ui/chart";
 import { Bar, BarChart, Pie, PieChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import PlayerCard from "../../components/card/player_card";
 import PlayerImg from "../../../public/player.png";
-import { DataTableExample } from "../../components/table/example-table";
 
 const playersCardsDataDummy = [
   {
@@ -60,8 +67,8 @@ const playersChartDataByProvince = [
 ]
 
 const playerPieChartDataByGender = [
-  { gender: "male", visitors: 649, fill: "#FF99CF" },
-  { gender: "female", visitors: 583, fill: "#3067D3" }
+  { gender: "male", quota: 649, fill: "var(--color-male)" },
+  { gender: "female", quota: 583, fill: "var(--color-female)" }
 ]
 
 export default function Player() {
@@ -77,6 +84,27 @@ export default function Player() {
       color: "#3067D3",
     },
   }
+
+  const tableData = [
+    {
+      id: "P001",
+      name: "Evan Dimas",
+      position: "Midfielder",
+      team: "Senior Men",
+      currentClub: "Persija Jakarta",
+      caps: 45,
+      goals: 12
+    },
+    {
+      id: "P002",
+      name: "Asnawi Mangkualam",
+      position: "Defender",
+      team: "Senior Men",
+      currentClub: "Jeonnam Dragons",
+      caps: 28,
+      goals: 3
+    }
+  ]
 
   useEffect(() => {
     getPlayersCardsData();
@@ -129,7 +157,34 @@ export default function Player() {
         <CarouselNext />
       </Carousel>
 
-      <DataTableExample/>
+      <div className="p-4 gap-4 bg-white border rounded-lg">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">ID</TableHead>
+              <TableHead>NAME</TableHead>
+              <TableHead>POSITION</TableHead>
+              <TableHead>TEAM</TableHead>
+              <TableHead>CURRENT CLUB</TableHead>
+              <TableHead>CAPS</TableHead>
+              <TableHead>GOALS</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {tableData.map((data, idx) => (
+              <TableRow key={idx}>
+                <TableCell>{data.id}</TableCell>
+                <TableCell>{data.name}</TableCell>
+                <TableCell>{data.position}</TableCell>
+                <TableCell>{data.team}</TableCell>
+                <TableCell>{data.currentClub}</TableCell>
+                <TableCell>{data.caps}</TableCell>
+                <TableCell>{data.goals}</TableCell>
+            </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
       <div className="grid grid-cols-12 gap-4">
         <div className="flex flex-col col-span-5 p-4 gap-4 bg-white rounded-lg shadow-lg">
@@ -207,17 +262,17 @@ export default function Player() {
         </div>
       </div>
 
-      <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg">
+      <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg hidden">
         <p className="font-bold">Overall Player Distribution by Gender</p>
 
         <div className="flex w-full justify-center">
           <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+            className="mx-auto aspect-square h-full pb-0 [&_.recharts-pie-label-text]:fill-foreground"
           >
             <PieChart>
               <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-              <Pie data={playerPieChartDataByGender} dataKey="visitors" label nameKey="browser" />
+              <Pie data={playerPieChartDataByGender} dataKey="quota" label nameKey="gender" />
             </PieChart>
           </ChartContainer>
         </div>
