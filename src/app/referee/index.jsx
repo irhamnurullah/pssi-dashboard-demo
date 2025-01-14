@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { MultipleBarChart } from '../../components/charts/barchart/multiple';
+import { DataTableExample } from '@/components/table/example-table';
 
 export default function Referee() {
   return (
@@ -18,9 +19,9 @@ export default function Referee() {
         <LicenseDistribution />
       </div>
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <RefereeList />
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -69,13 +70,18 @@ function LicenseDistribution() {
         <h3 className="font-semibold">License Distribution</h3>
         <MultipleBarChart />
       </div>
-      <div className="flex-1">
+      {/* <div className="flex-1">
         <h3 className="font-semibold">License Distribution - Female Referees by Province</h3>
-      </div>
+      </div> */}
     </Card>
   );
 }
 
 function RefereeList() {
-  return <h3 className="font-semibold">Referee List</h3>;
+  return (
+    <Card className="p-4">
+      <h3 className="font-semibold">Referee List</h3>
+      <DataTableExample />
+    </Card>
+  );
 }
