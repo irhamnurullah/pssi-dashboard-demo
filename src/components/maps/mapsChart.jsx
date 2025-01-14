@@ -110,6 +110,33 @@ const MapsChart = ({ dataMaps }) => {
               dataLabels: {
                 enabled: true,
                 useHTML: true,
+                // format: '{point.name} {point.value}'
+                formatter: function () {
+                  var formattedValue = Highcharts.numberFormat(
+                    this.point.value,
+                    0,
+                    ".",
+                    ","
+                  );
+
+                  if (this.point.value > 10000) {
+                    return (
+                      "<span style='color: #475569'>" +
+                      (this.point.name || "") +
+                      "<br>" +
+                      formattedValue +
+                      "</span>"
+                    );
+                  } else {
+                    return (
+                      "<span>" +
+                      (this.point.name || "") +
+                      "<br>" +
+                      formattedValue +
+                      "</span>"
+                    );
+                  }
+                },
                 color: "#353b48",
               },
             },
