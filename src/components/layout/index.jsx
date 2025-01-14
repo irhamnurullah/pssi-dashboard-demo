@@ -1,12 +1,15 @@
+import { useLocation } from 'react-router-dom';
 import Footer from '../footer';
 import NavBar from '../navbar';
 
 export default function Layout({ children }) {
+  const location = useLocation();
+
   return (
     <main className="bg-background-pssi">
-      <NavBar />
+      {location.pathname !== '/login' && <NavBar />}
       <div>{children}</div>
-      <Footer />
+      {location.pathname !== '/login' && <Footer />}
     </main>
   );
 }
