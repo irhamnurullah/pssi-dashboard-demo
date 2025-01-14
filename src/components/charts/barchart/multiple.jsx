@@ -1,59 +1,54 @@
 'use client';
 
-import { TrendingUp } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  //   ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 const chartData = [
-  { month: 'January', desktop: 186, mobile: 80 },
-  { month: 'February', desktop: 305, mobile: 200 },
-  { month: 'March', desktop: 237, mobile: 120 },
-  { month: 'April', desktop: 73, mobile: 190 },
-  { month: 'May', desktop: 209, mobile: 130 },
-  { month: 'June', desktop: 214, mobile: 140 },
+  { category: 'C1', female_coaches: 5, total_coaches: 10 },
+  { category: 'C2', female_coaches: 305, total_coaches: 300 },
+  { category: 'C3', female_coaches: 237, total_coaches: 320 },
+  { category: 'FIFA', female_coaches: 73, total_coaches: 190 },
 ];
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color: 'hsl(var(--chart-1))',
+  female_coaches: {
+    label: 'Female Coaches',
+    color: '#FF99CF',
   },
-  mobile: {
-    label: 'Mobile',
-    color: 'hsl(var(--chart-2))',
+  total_coaches: {
+    label: 'Total Coaches',
+    color: '#3067D3',
   },
 };
 
 export function MultipleBarChart() {
   return (
-    <Card>
+    <Card className="border-none shadow-none">
       <CardHeader>
-        <CardTitle>Bar Chart - Multiple</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="rounded-md size-5" style={{ backgroundColor: chartConfig['female_coaches'].color }}></div>
+            <div className="text-sm">{chartConfig['female_coaches'].label}</div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="rounded-md size-5" style={{ backgroundColor: chartConfig['total_coaches'].color }}></div>
+            <div className="text-sm">{chartConfig['total_coaches'].label}</div>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} />
+            <XAxis dataKey="category" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 4)} />
+            <YAxis tickFormatter={(value) => `${value}`} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+            <Bar dataKey="female_coaches" fill="#FF99CF" radius={4} />
+            <Bar dataKey="total_coaches" fill="#3067D3" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">Showing total visitors for the last 6 months</div>
-      </CardFooter>
     </Card>
   );
 }

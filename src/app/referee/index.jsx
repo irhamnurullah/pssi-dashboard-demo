@@ -4,7 +4,7 @@ import { MultipleBarChart } from '../../components/charts/barchart/multiple';
 
 export default function Referee() {
   return (
-    <div className="container-pssi">
+    <div className="container-pssi mx-4">
       <h2 className="text-primary-pssi text-3xl font-bold">Referees</h2>
       <p className="text-sm text-neutral-400 mt-2">
         An Indonesian referee enforces rules and ensures fairness in sports competitions, certified nationally or internationally.
@@ -16,6 +16,10 @@ export default function Referee() {
 
       <div className="mt-4">
         <LicenseDistribution />
+      </div>
+
+      <div className="mt-4">
+        <RefereeList />
       </div>
     </div>
   );
@@ -70,4 +74,8 @@ function LicenseDistribution() {
       </div>
     </Card>
   );
+}
+
+function RefereeList() {
+  return <h3 className="font-semibold">Referee List</h3>;
 }
