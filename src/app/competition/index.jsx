@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { MultipleBarChart } from "../../components/charts/barchart/multiple";
 
 export default function Competition() {
   const dataHeader = [
@@ -97,78 +98,85 @@ export default function Competition() {
       </div>
 
       <div className="flex flex-row mt-5 bg-white p-5">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">PROVINCE</TableHead>
-              <TableHead>TOTAL CLUB</TableHead>
-              <TableHead>TOTAL PLAYERS</TableHead>
-              <TableHead>TOTAL OFFICIAL</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell>Jakarta</TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>1000</TableCell>
-              <TableCell>200</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Bandung</TableCell>
-              <TableCell>150</TableCell>
-              <TableCell>900</TableCell>
-              <TableCell>250</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Surabaya</TableCell>
-              <TableCell>200</TableCell>
-              <TableCell>1100</TableCell>
-              <TableCell>300</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Medan</TableCell>
-              <TableCell>120</TableCell>
-              <TableCell>800</TableCell>
-              <TableCell>220</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Yogyakarta</TableCell>
-              <TableCell>180</TableCell>
-              <TableCell>950</TableCell>
-              <TableCell>280</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Makassar</TableCell>
-              <TableCell>140</TableCell>
-              <TableCell>870</TableCell>
-              <TableCell>240</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Denpasar</TableCell>
-              <TableCell>170</TableCell>
-              <TableCell>920</TableCell>
-              <TableCell>270</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Semarang</TableCell>
-              <TableCell>130</TableCell>
-              <TableCell>890</TableCell>
-              <TableCell>230</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Palembang</TableCell>
-              <TableCell>160</TableCell>
-              <TableCell>940</TableCell>
-              <TableCell>260</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Pekanbaru</TableCell>
-              <TableCell>190</TableCell>
-              <TableCell>1020</TableCell>
-              <TableCell>290</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <div className="w-1/2">
+          <h3 className="font-semibold">Soeratin U13</h3>
+          <MultipleBarChart />
+        </div>
+        <div className="w-1/2 ml-5">
+          <div className="text-black font-bold">Player List SoeratinU13</div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">PROVINCE</TableHead>
+                <TableHead>TOTAL CLUB</TableHead>
+                <TableHead>TOTAL PLAYERS</TableHead>
+                <TableHead>TOTAL OFFICIAL</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell>Jakarta</TableCell>
+                <TableCell>100</TableCell>
+                <TableCell>1000</TableCell>
+                <TableCell>200</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Bandung</TableCell>
+                <TableCell>150</TableCell>
+                <TableCell>900</TableCell>
+                <TableCell>250</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Surabaya</TableCell>
+                <TableCell>200</TableCell>
+                <TableCell>1100</TableCell>
+                <TableCell>300</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Medan</TableCell>
+                <TableCell>120</TableCell>
+                <TableCell>800</TableCell>
+                <TableCell>220</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Yogyakarta</TableCell>
+                <TableCell>180</TableCell>
+                <TableCell>950</TableCell>
+                <TableCell>280</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Makassar</TableCell>
+                <TableCell>140</TableCell>
+                <TableCell>870</TableCell>
+                <TableCell>240</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Denpasar</TableCell>
+                <TableCell>170</TableCell>
+                <TableCell>920</TableCell>
+                <TableCell>270</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Semarang</TableCell>
+                <TableCell>130</TableCell>
+                <TableCell>890</TableCell>
+                <TableCell>230</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Palembang</TableCell>
+                <TableCell>160</TableCell>
+                <TableCell>940</TableCell>
+                <TableCell>260</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Pekanbaru</TableCell>
+                <TableCell>190</TableCell>
+                <TableCell>1020</TableCell>
+                <TableCell>290</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );
