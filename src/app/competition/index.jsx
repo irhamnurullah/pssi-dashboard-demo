@@ -19,6 +19,40 @@ import {
 } from "@/components/ui/table";
 import { MultipleBarChart } from "../../components/charts/barchart/multiple";
 
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+
+import {
+  //   ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+
+const chartData = [
+  { city: "Jakarta", totalclubs: 186, totalplayers: 80, totalofficial: 20 },
+  { city: "Medan", totalclubs: 100, totalplayers: 200, totalofficial: 50 },
+  { city: "Bandung", totalclubs: 150, totalplayers: 200, totalofficial: 70 },
+  { city: "Banten", totalclubs: 73, totalplayers: 190, totalofficial: 90 },
+  { city: "Jambi", totalclubs: 209, totalplayers: 130, totalofficial: 50 },
+  { city: "Bali", totalclubs: 214, totalplayers: 140, totalofficial: 40 },
+];
+
+const chartConfig = {
+  totalclubs: {
+    label: "TOTAL CLUBS",
+    color: "#4ADE80",
+  },
+  totalplayers: {
+    label: "TOTAL PLAYERS",
+    color: "#1D4ED8",
+  },
+  totalofficial: {
+    label: "TOTAL OFFICIAL",
+    color: "#FDA4AF",
+  },
+};
+
 export default function Competition() {
   const dataHeader = [
     {
@@ -51,12 +85,12 @@ export default function Competition() {
 
   return (
     <div className="container-pssi">
-      <div className="text-[#4C1D95] text-lg font-semibold">Competition</div>
-      <div className="text-[#989899] text-sm">
+      <h2 className="text-primary-pssi text-3xl font-bold">Competition</h2>
+      <p className="text-sm text-neutral-400 mt-2">
         An Indonesian competition is an organized event where participants
         compete in various fields, such as sports, arts, or academics, at
         regional, national, or international levels.
-      </div>
+      </p>
 
       <div className="flex flex-row mt-5 bg-white p-5">
         {dataHeader.map((item) => (
@@ -100,7 +134,47 @@ export default function Competition() {
       <div className="flex flex-row mt-5 bg-white p-5">
         <div className="w-1/2">
           <h3 className="font-semibold">Soeratin U13</h3>
-          <MultipleBarChart />
+          <Card>
+            <CardContent>
+              <ChartContainer config={chartConfig}>
+                <BarChart accessibilityLayer data={chartData}>
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="city"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                    tickFormatter={(value) => value}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent indicator="dashed" />}
+                  />
+                  <Bar
+                    dataKey="totalclubs"
+                    fill="var(--color-totalclubs)"
+                    radius={4}
+                  />
+                  <Bar
+                    dataKey="totalplayers"
+                    fill="var(--color-totalplayers)"
+                    radius={4}
+                  />
+                  <Bar
+                    dataKey="totalofficial"
+                    fill="var(--color-totalofficial)"
+                    radius={4}
+                  />
+                  <ChartLegend
+                    layout="horizontal" // Menampilkan legend secara horizontal
+                    align="center" // Menyelaraskan legend ke tengah
+                    verticalAlign="top" // Memindahkan legend ke bagian atas
+                    content={<ChartLegendContent />}
+                  />
+                </BarChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
         </div>
         <div className="w-1/2 ml-5">
           <div className="text-black font-bold">Player List SoeratinU13</div>
