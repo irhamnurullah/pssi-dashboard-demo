@@ -87,6 +87,27 @@ export default function Player() {
     },
   };
 
+  const tableData = [
+    {
+      id: "P001",
+      name: "Evan Dimas",
+      position: "Midfielder",
+      team: "Senior Men",
+      currentClub: "Persija Jakarta",
+      caps: 45,
+      goals: 12
+    },
+    {
+      id: "P002",
+      name: "Asnawi Mangkualam",
+      position: "Defender",
+      team: "Senior Men",
+      currentClub: "Jeonnam Dragons",
+      caps: 28,
+      goals: 3
+    }
+  ]
+
   useEffect(() => {
     getPlayersCardsData();
   }, []);

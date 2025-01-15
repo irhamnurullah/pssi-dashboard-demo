@@ -5,7 +5,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 const chartData = [
-  { category: 'C1', female_coaches: 5, total_coaches: 10 },
+  { category: 'C1', female_coaches: 100, total_coaches: 150 },
   { category: 'C2', female_coaches: 305, total_coaches: 300 },
   { category: 'C3', female_coaches: 237, total_coaches: 320 },
   { category: 'FIFA', female_coaches: 73, total_coaches: 190 },
