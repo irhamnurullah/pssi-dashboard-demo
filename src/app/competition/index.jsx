@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/table";
 import { MultipleBarChart } from "../../components/charts/barchart/multiple";
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 
 import {
@@ -28,6 +28,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import MapsChart from "../../components/maps/mapsChart";
 
 const chartData = [
   { city: "Jakarta", totalclubs: 186, totalplayers: 80, totalofficial: 20 },
@@ -79,6 +80,41 @@ export default function Competition() {
       totalClubs: 166,
       totalPlayers: 2502,
     },
+  ];
+
+  const dataMaps = [
+    ["id-ac", 19050],
+    ["id-su", 48466],
+    ["id-sb", 25862],
+    ["id-sl", 67061],
+    ["id-ri", 55266],
+    ["id-kr", 9906],
+    ["id-ja", 11174],
+    ["id-be", 3638],
+    ["id-bb", 2621],
+    ["id-1024", 14481],
+    ["id-jk", 127904],
+    ["id-bt", 65361],
+    ["id-jr", 210775],
+    ["id-jt", 94373],
+    ["id-yo", 23168],
+    ["id-ji", 108284],
+    ["id-nb", 4192],
+    ["id-nt", 3393],
+    ["id-kb", 5462],
+    ["id-kt", 1976],
+    ["id-ks", 6903],
+    ["id-ki", 52417],
+    ["id-sw", 5725],
+    ["id-se", 29912],
+    ["id-sr", 711],
+    ["id-st", 4327],
+    ["id-go", 1149],
+    ["id-sg", 3430],
+    ["id-ma", 3607],
+    ["id-la", 1168],
+    ["id-pa", 3911],
+    ["id-ba", 5377],
   ];
 
   const [activeCard, setActiveCard] = useState(1);
@@ -134,7 +170,7 @@ export default function Competition() {
       <div className="flex flex-row mt-5 bg-white p-5">
         <div className="w-1/2">
           <h3 className="font-semibold">Soeratin U13</h3>
-          <Card>
+          {/* <Card>
             <CardContent>
               <ChartContainer config={chartConfig}>
                 <BarChart accessibilityLayer data={chartData}>
@@ -146,6 +182,7 @@ export default function Competition() {
                     axisLine={false}
                     tickFormatter={(value) => value}
                   />
+                  <YAxis tickFormatter={(value) => `${value}`} />
                   <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent indicator="dashed" />}
@@ -174,7 +211,8 @@ export default function Competition() {
                 </BarChart>
               </ChartContainer>
             </CardContent>
-          </Card>
+          </Card> */}
+          <MapsChart dataMaps={dataMaps} />
         </div>
         <div className="w-1/2 ml-5">
           <div className="text-black font-bold">Player List SoeratinU13</div>
