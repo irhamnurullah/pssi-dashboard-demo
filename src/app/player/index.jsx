@@ -13,37 +13,39 @@ import {
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
-  ChartTooltipContent
+  ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Bar, BarChart, Pie, PieChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Bar,
+  BarChart,
+  Pie,
+  PieChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+} from "recharts";
 import PlayerCard from "../../components/card/player_card";
-import PlayerImg from "../../../public/player.png";
+import PlayerImg from "../../assets/marselino.jpeg";
+import { DataTableExample } from "../../components/table/example-table";
+import { PieChartLabel } from "../../components/charts/piechart/piechart-label";
 
 const playersCardsDataDummy = [
   {
     label: "Total Players",
     value: 1152,
-    color: "green"
+    color: "green",
   },
   {
     label: "Male Players",
     value: 710,
-    color: "blue"
+    color: "blue",
   },
   {
     label: "Female Players",
     value: 442,
-    color: "pink"
-  }
-]
+    color: "pink",
+  },
+];
 
 const playersChartDataByAge = [
   { age: "U15", male: 216, female: 114 },
@@ -51,7 +53,7 @@ const playersChartDataByAge = [
   { age: "U20", male: 806, female: 426 },
   { age: "U23", male: 707, female: 326 },
   { age: "Senior", male: 649, female: 583 },
-]
+];
 
 const playersChartDataByProvince = [
   { province: "Jakarta", male: 877, female: 666 },
@@ -64,16 +66,16 @@ const playersChartDataByProvince = [
   { province: "South Sulawesi", male: 506, female: 576 },
   { province: "West Sumatra", male: 1456, female: 302 },
   { province: "Riau", male: 855, female: 278 },
-]
+];
 
 const playerPieChartDataByGender = [
-  { gender: "male", quota: 649, fill: "var(--color-male)" },
-  { gender: "female", quota: 583, fill: "var(--color-female)" }
-]
+  { gender: "male", visitors: 649, fill: "#FF99CF" },
+  { gender: "female", visitors: 583, fill: "#3067D3" },
+];
 
 export default function Player() {
   const [playersCardsData, setPlayersCardsData] = useState([]);
-  
+
   const chartConfig = {
     female: {
       label: "Female Player",
@@ -83,7 +85,7 @@ export default function Player() {
       label: "Male Player",
       color: "#3067D3",
     },
-  }
+  };
 
   const tableData = [
     {
@@ -108,18 +110,20 @@ export default function Player() {
 
   useEffect(() => {
     getPlayersCardsData();
-  }, [])
-  
+  }, []);
+
   const getPlayersCardsData = () => {
     setPlayersCardsData(playersCardsDataDummy);
-  }
-  
+  };
+
   return (
     <div className="container-pssi flex flex-col gap-8 px-5 md:px-[150px] py-10 bg-background-pssi">
       <div className="flex flex-col">
         <h1 className="text-3xl font-bold text-primary-pssi">Players</h1>
         <p className="text-gray-400">
-          An Indonesian football player represents clubs or the national team, showcasing skills and passion in domestic and international competitions.
+          An Indonesian football player represents clubs or the national team,
+          showcasing skills and passion in domestic and international
+          competitions.
         </p>
       </div>
 
@@ -142,12 +146,15 @@ export default function Player() {
       >
         <CarouselContent className="!overflow-visible">
           {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4 !overflow-visible">
+            <CarouselItem
+              key={index}
+              className="md:basis-1/2 lg:basis-1/4 !overflow-visible"
+            >
               <PlayerCard
                 img={PlayerImg}
                 alt="player"
                 country="Indonesia"
-                playerName="Arhan Pratama"
+                playerName="Marselino Ferdinand"
                 playerPosition="Midfielder - Senior Men"
               />
             </CarouselItem>
@@ -157,38 +164,13 @@ export default function Player() {
         <CarouselNext />
       </Carousel>
 
-      <div className="p-4 gap-4 bg-white border rounded-lg">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">ID</TableHead>
-              <TableHead>NAME</TableHead>
-              <TableHead>POSITION</TableHead>
-              <TableHead>TEAM</TableHead>
-              <TableHead>CURRENT CLUB</TableHead>
-              <TableHead>CAPS</TableHead>
-              <TableHead>GOALS</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {tableData.map((data, idx) => (
-              <TableRow key={idx}>
-                <TableCell>{data.id}</TableCell>
-                <TableCell>{data.name}</TableCell>
-                <TableCell>{data.position}</TableCell>
-                <TableCell>{data.team}</TableCell>
-                <TableCell>{data.currentClub}</TableCell>
-                <TableCell>{data.caps}</TableCell>
-                <TableCell>{data.goals}</TableCell>
-            </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      <DataTableExample />
 
       <div className="grid grid-cols-12 gap-4">
         <div className="flex flex-col col-span-5 p-4 gap-4 bg-white rounded-lg shadow-lg">
-          <p className="font-bold">Player Distribution by Age Category and Gender</p>
+          <p className="font-bold">
+            Player Distribution by Age Category and Gender
+          </p>
 
           <ChartContainer config={chartConfig} className="h-full">
             <BarChart accessibilityLayer data={playersChartDataByAge}>
@@ -262,19 +244,9 @@ export default function Player() {
         </div>
       </div>
 
-      <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg hidden">
-        <p className="font-bold">Overall Player Distribution by Gender</p>
-
-        <div className="flex w-full justify-center">
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square h-full pb-0 [&_.recharts-pie-label-text]:fill-foreground"
-          >
-            <PieChart>
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-              <Pie data={playerPieChartDataByGender} dataKey="quota" label nameKey="gender" />
-            </PieChart>
-          </ChartContainer>
+      <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg">
+        <div className="w-full justify-center">
+          <PieChartLabel title={"Overall Player Distribution by Gender"} />
         </div>
       </div>
     </div>
