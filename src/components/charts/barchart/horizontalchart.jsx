@@ -59,6 +59,7 @@ export function HorizontalChart({title}) {
               type="category"
               tickLine={false}
               tickMargin={10}
+              width={150} 
               axisLine={false}
               tickFormatter={(value) => value}
             />
