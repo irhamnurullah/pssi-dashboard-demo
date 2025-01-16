@@ -164,7 +164,7 @@ export default function Coach() {
                                   {"30"}
                                 </div>
                               </div>
-                              <div className="text-neutral-400 text-[10px] text-lg font-normal">
+                              <div className="text-neutral-400 text-[10px] font-normal">
                                 {"Total Match"}
                               </div>
                             </div>
@@ -177,7 +177,7 @@ export default function Coach() {
                                   {"74%"}
                                 </div>
                               </div>
-                              <div className="text-neutral-400 text-[10px] text-lg font-normal">
+                              <div className="text-neutral-400 text-[10px] font-normal">
                                 {"Win Rate"}
                               </div>
                             </div>
@@ -190,7 +190,7 @@ export default function Coach() {
                                   {"21%"}
                                 </div>
                               </div>
-                              <div className="text-neutral-400 text-[10px] text-lg font-normal">
+                              <div className="text-neutral-400 text-[10px] font-normal">
                                 {"Draw Rate"}
                               </div>
                             </div>
@@ -203,7 +203,7 @@ export default function Coach() {
                                   {"11%"}
                                 </div>
                               </div>
-                              <div className="text-neutral-400 text-[10px] text-lg font-normal">
+                              <div className="text-neutral-400 text-[10px] font-normal">
                                 {"Lose Rate"}
                               </div>
                             </div>

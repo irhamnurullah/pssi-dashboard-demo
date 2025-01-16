@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PieChartDonutActive } from "../../components/charts/piechart/piechart-donut-active";
+import { PieChartLabel } from "../../components/charts/piechart/piechart-label";
 import { HorizontalChart } from "../../components/charts/barchart/horizontalchart";
 import {
   Table,
@@ -204,7 +204,7 @@ export default function NatioanalTeams() {
       </div>
       <div className="flex flex-wrap mt-5 bg-white p-5">
         <div className="w-1/2">
-          <PieChartDonutActive title={"Position Distribution"} />
+          <PieChartLabel title={"Position Distribution"} />
         </div>
         <div className="w-1/2">
           <HorizontalChart title={"Player Caps"} />

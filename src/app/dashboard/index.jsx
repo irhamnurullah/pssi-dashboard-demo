@@ -4,15 +4,6 @@ import quick from "../../assets/quick.png";
 import recent from "../../assets/recent.png";
 import topProvince from "../../assets/top_province.png";
 import { useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export default function DashboardPage() {
   const dataMaps = [
@@ -127,23 +118,6 @@ export default function DashboardPage() {
               </div>
               <div className="text-black text-2xl font-bold">234</div>
               <div className="text-gray-500">+4 last month</div>
-            </div>
-          </div>
-          <div className="flex flex-col mt-3">
-            <div className="flex justify-end">
-              <Select>
-                <SelectTrigger className="w-[280px]">
-                  <SelectValue placeholder="Filter" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Total</SelectLabel>
-                    <SelectItem value="clubs">Total Clubs</SelectItem>
-                    <SelectItem value="players">Total Players</SelectItem>
-                    <SelectItem value="official">Total Official</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
             </div>
           </div>
           <MapsChart dataMaps={dataMaps} />

@@ -18,16 +18,16 @@ import {
 } from "@/components/ui/chart"
 
 const chartData = [
-  { title: "Goal Keeper Senior Men 1", caps: 186 },
-  { title: "Goal Keeper Senior Men 2", caps: 305 },
-  { title: "Goal Keeper Senior Men 3", caps: 237 },
-  { title: "Goal Keeper Senior Men 4", caps: 73 },
-  { title: "Goal Keeper Senior Men 5", caps: 209 },
-  { title: "Goal Keeper Senior Men 6", caps: 202 },
-  { title: "Goal Keeper Senior Men 7", caps: 100 },
-  { title: "Goal Keeper Senior Men 8", caps: 20 },
-  { title: "Goal Keeper Senior Men 9", caps: 30 },
-  { title: "Goal Keeper Senior Men 10", caps: 150 },
+  { title: "GK Senior Men 1", caps: 186 },
+  { title: "GK Senior Men 2", caps: 305 },
+  { title: "GK Senior Men 3", caps: 237 },
+  { title: "GK Senior Men 4", caps: 73 },
+  { title: "GK Senior Men 5", caps: 209 },
+  { title: "GK Senior Men 6", caps: 202 },
+  { title: "GK Senior Men 7", caps: 100 },
+  { title: "GK Senior Men 8", caps: 20 },
+  { title: "GK Senior Men 9", caps: 30 },
+  { title: "GK Senior Men 10", caps: 150 },
 ]
 
 const chartConfig = {
@@ -60,7 +60,7 @@ export function HorizontalChart({title}) {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.length > 10 ? `${value.slice(0, 10)}...` : value}
+              tickFormatter={(value) => value}
             />
             <ChartTooltip
               cursor={false}
