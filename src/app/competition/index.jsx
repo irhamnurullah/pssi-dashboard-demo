@@ -23,6 +23,16 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import {
   //   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -168,7 +178,7 @@ export default function Competition() {
       </div>
 
       <div className="flex flex-row mt-5 bg-white p-5">
-        <div className="w-1/2">
+        <div className="w-full">
           <h3 className="font-semibold">Soeratin U13</h3>
           {/* <Card>
             <CardContent>
@@ -212,9 +222,29 @@ export default function Competition() {
               </ChartContainer>
             </CardContent>
           </Card> */}
+
+          <div className="flex flex-col mt-3">
+            <div className="flex justify-end">
+              <Select>
+                <SelectTrigger className="w-[280px]">
+                  <SelectValue placeholder="Filter" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Total</SelectLabel>
+                    <SelectItem value="clubs">Total Clubs</SelectItem>
+                    <SelectItem value="players">Total Players</SelectItem>
+                    <SelectItem value="official">Total Official</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
           <MapsChart dataMaps={dataMaps} />
         </div>
-        <div className="w-1/2 ml-5">
+      </div>
+      <div className="flex flex-row mt-5 bg-white p-5">
+        <div className="w-full ml-5">
           <div className="text-black font-bold">Player List SoeratinU13</div>
           <Table>
             <TableHeader>
