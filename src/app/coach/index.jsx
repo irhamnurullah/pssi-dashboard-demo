@@ -28,6 +28,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useEffect, useState } from "react";
+import sessions from "../../../utils/sessions";
+import apiService from "../../../utils/services";
 
 export default function Coach() {
   const tableData = [
@@ -86,6 +89,91 @@ export default function Coach() {
     ["id-ba", 5377],
   ];
 
+  const [refereesData, setRefereesData] = useState([]);
+  const [licenseChart, setChartLicenseDistribution] = useState([]);
+  const [chartConfigs, setChartConfig] = useState([]);
+  const [detailReferee, setDetailReferee] = useState([]);
+  const token = sessions.getSessionToken();
+  const [rowFrom, setRowFrom] = useState(0);
+  const [rowLength, setRowLength] = useState(10);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  useEffect(() => {
+    getListReferee();
+    getChartData();
+  }, [rowFrom, rowLength]);
+
+  const getListReferee = async () => {
+    try {
+      const referee = await apiService.get(
+        `/api/referee/GetListData?row_from=${rowFrom}&length=${rowLength}`,
+        headers
+      );
+
+      if (referee.status === 200) {
+        setRefereesData(referee.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getChartData = async () => {
+    try {
+      const referee = await apiService.get(
+        `/api/referee/GetGrafikAll`,
+        headers
+      );
+      
+
+      if (referee.status === 200 || referee.length > 0) {
+
+        const licenceFormatChart = referee.data.map(item => ({
+          category: item.NAME,
+          female_coaches: item.TOTAL_WANITA,
+          male_coaches: item.TOTAL_PRIA
+        }));
+        
+        const chartConfig = {
+          female_coaches: {
+            label: 'Female Coaches',
+            color: '#FF99CF',
+          },
+          male_coaches: {
+            label: 'Total Coaches',
+            color: '#3067D3',
+          },
+        };
+        
+        setChartLicenseDistribution(licenceFormatChart);
+        setChartConfig(chartConfig);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleViewDetail = async (id_petugas) => {
+    setIsDialogOpen(true);
+
+    try {
+      const detail = await apiService.get(
+        `/api/referee/GetRecordByID?id_petugas=${id_petugas}`,
+        headers
+      );
+
+      if (detail.status === 200) {
+        setDetailReferee(detail.data.biodata);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="container-pssi mx-4">
       <h2 className="text-primary-pssi text-3xl font-bold">Coach</h2>
@@ -100,7 +188,7 @@ export default function Coach() {
 
       <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
         <div className="col-span-2">
-          <LicenseDistribution />
+          <LicenseDistribution  data={licenseChart} config={chartConfigs}/>
         </div>
         <div className="col-span-4">
           <MapsChart dataMaps={dataMaps} />
@@ -445,12 +533,12 @@ function CarouselSize() {
   );
 }
 
-function LicenseDistribution() {
+function LicenseDistribution({data, config}) {
   return (
     <div className="px-4 py-3 ">
       <div className="">
         <h3 className="font-semibold">License Distribution</h3>
-        <MultipleBarChart />
+        <MultipleBarChart dataChart={data} config={config} />
       </div>
       {/* <div className="flex-1">
         <h3 className="font-semibold">License Distribution - Female Referees by Province</h3>
