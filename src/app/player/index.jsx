@@ -28,6 +28,7 @@ import PlayerCard from "../../components/card/player_card";
 import PlayerImg from "../../assets/marselino.jpeg";
 import { DataTableExample } from "../../components/table/example-table";
 import { PieChartLabel } from "../../components/charts/piechart/piechart-label";
+import NavBar from "../../components/navbar";
 
 const playersCardsDataDummy = [
   {
@@ -117,136 +118,141 @@ export default function Player() {
   };
 
   return (
-    <div className="container-pssi flex flex-col gap-8 px-5 md:px-[150px] py-10 bg-background-pssi">
-      <div className="flex flex-col">
-        <h1 className="text-3xl font-bold text-primary-pssi">Players</h1>
-        <p className="text-gray-400">
-          An Indonesian football player represents clubs or the national team,
-          showcasing skills and passion in domestic and international
-          competitions.
-        </p>
-      </div>
+    <div>
+      <div className="bg-[#212B5A] absolute h-[60vh] w-full z-10"></div>
+      <NavBar  bgColor="#FFFFFF" selectedTextColor="#212B5A" secondaryTextColor="#C6C6C6" />
 
-      <div className="grid grid-cols-3 p-4 gap-4 bg-white border rounded-lg">
-        {playersCardsData.map((card, idx) => (
-          <CardGradient
-            key={idx}
-            title={card.label}
-            subtitle={card.value}
-            color={card.color}
-          />
-        ))}
-      </div>
-
-      <Carousel
-        opts={{
-          align: "start",
-        }}
-        className="w-full !overflow-visible"
-      >
-        <CarouselContent className="!overflow-visible">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem
-              key={index}
-              className="md:basis-1/2 lg:basis-1/4 !overflow-visible"
-            >
-              <PlayerCard
-                img={PlayerImg}
-                alt="player"
-                country="Indonesia"
-                playerName="Marselino Ferdinand"
-                playerPosition="Midfielder - Senior Men"
-              />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-
-      <DataTableExample />
-
-      <div className="grid grid-cols-12 gap-4">
-        <div className="flex flex-col col-span-5 p-4 gap-4 bg-white rounded-lg shadow-lg">
-          <p className="font-bold">
-            Player Distribution by Age Category and Gender
+      <div className="z-20 relative container-pssi flex flex-col gap-8 px-5 md:px-[150px] py-10 ">
+        <div className="flex flex-col">
+          <h1 className="text-3xl font-bold text-primary-pssi">Players</h1>
+          <p className="text-gray-400">
+            An Indonesian football player represents clubs or the national team,
+            showcasing skills and passion in domestic and international
+            competitions.
           </p>
-
-          <ChartContainer config={chartConfig} className="h-full">
-            <BarChart accessibilityLayer data={playersChartDataByAge}>
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="age"
-                tickLine={true}
-                tickMargin={10}
-                axisLine={true}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <YAxis
-                tickLine={true}
-                tickMargin={10}
-                axisLine={true}
-                tickFormatter={(value) => value.toLocaleString()}
-              />
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-              <ChartLegend content={<ChartLegendContent />} />
-              <Bar
-                dataKey="male"
-                stackId="a"
-                fill="var(--color-male)"
-                radius={[0, 0, 4, 4]}
-              />
-              <Bar
-                dataKey="female"
-                stackId="a"
-                fill="var(--color-female)"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ChartContainer>
         </div>
 
-        <div className="flex flex-col col-span-7 p-4 gap-4 bg-white rounded-lg shadow-lg">
-          <p className="font-bold">Player Distribution by Province</p>
-
-          <ChartContainer config={chartConfig} className="h-full">
-            <BarChart accessibilityLayer data={playersChartDataByProvince}>
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="province"
-                tickLine={true}
-                tickMargin={10}
-                axisLine={true}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <YAxis
-                tickLine={true}
-                tickMargin={10}
-                axisLine={true}
-                tickFormatter={(value) => value.toLocaleString()}
-              />
-              <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-              <ChartLegend content={<ChartLegendContent />} />
-              <Bar
-                dataKey="male"
-                stackId="a"
-                fill="var(--color-male)"
-                radius={[0, 0, 4, 4]}
-              />
-              <Bar
-                dataKey="female"
-                stackId="a"
-                fill="var(--color-female)"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ChartContainer>
+        <div className="grid grid-cols-3 p-4 gap-4 bg-white border rounded-lg">
+          {playersCardsData.map((card, idx) => (
+            <CardGradient
+              key={idx}
+              title={card.label}
+              subtitle={card.value}
+              color={card.color}
+            />
+          ))}
         </div>
-      </div>
 
-      <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg">
-        <div className="w-full justify-center">
-          <PieChartLabel title={"Overall Player Distribution by Gender"} />
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full !overflow-visible"
+        >
+          <CarouselContent className="!overflow-visible">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CarouselItem
+                key={index}
+                className="md:basis-1/2 lg:basis-1/4 !overflow-visible"
+              >
+                <PlayerCard
+                  img={PlayerImg}
+                  alt="player"
+                  country="Indonesia"
+                  playerName="Marselino Ferdinand"
+                  playerPosition="Midfielder - Senior Men"
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+
+        <DataTableExample />
+
+        <div className="grid grid-cols-12 gap-4">
+          <div className="flex flex-col col-span-5 p-4 gap-4 bg-white rounded-lg shadow-lg">
+            <p className="font-bold">
+              Player Distribution by Age Category and Gender
+            </p>
+
+            <ChartContainer config={chartConfig} className="h-full">
+              <BarChart accessibilityLayer data={playersChartDataByAge}>
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="age"
+                  tickLine={true}
+                  tickMargin={10}
+                  axisLine={true}
+                  tickFormatter={(value) => value.slice(0, 3)}
+                />
+                <YAxis
+                  tickLine={true}
+                  tickMargin={10}
+                  axisLine={true}
+                  tickFormatter={(value) => value.toLocaleString()}
+                />
+                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar
+                  dataKey="male"
+                  stackId="a"
+                  fill="var(--color-male)"
+                  radius={[0, 0, 4, 4]}
+                />
+                <Bar
+                  dataKey="female"
+                  stackId="a"
+                  fill="var(--color-female)"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ChartContainer>
+          </div>
+
+          <div className="flex flex-col col-span-7 p-4 gap-4 bg-white rounded-lg shadow-lg">
+            <p className="font-bold">Player Distribution by Province</p>
+
+            <ChartContainer config={chartConfig} className="h-full">
+              <BarChart accessibilityLayer data={playersChartDataByProvince}>
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="province"
+                  tickLine={true}
+                  tickMargin={10}
+                  axisLine={true}
+                  tickFormatter={(value) => value.slice(0, 3)}
+                />
+                <YAxis
+                  tickLine={true}
+                  tickMargin={10}
+                  axisLine={true}
+                  tickFormatter={(value) => value.toLocaleString()}
+                />
+                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar
+                  dataKey="male"
+                  stackId="a"
+                  fill="var(--color-male)"
+                  radius={[0, 0, 4, 4]}
+                />
+                <Bar
+                  dataKey="female"
+                  stackId="a"
+                  fill="var(--color-female)"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ChartContainer>
+          </div>
+        </div>
+
+        <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg">
+          <div className="w-full justify-center">
+            <PieChartLabel title={"Overall Player Distribution by Gender"} />
+          </div>
         </div>
       </div>
     </div>

@@ -7,9 +7,9 @@ export default function Layout({ children }) {
 
   return (
     <main className="bg-background-pssi">
-      {location.pathname !== '/login' && <NavBar />}
+      {location.pathname !== '/login' }
       <div>{children}</div>
-      {location.pathname !== '/login' && <Footer />}
+      {location.pathname !== '/login' }
     </main>
   );
 }

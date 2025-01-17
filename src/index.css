@@ -82,5 +82,5 @@
 }
 
 .container-pssi {
-  @apply text-neutral-900 px-20 py-5 min-h-screen;
+  @apply text-neutral-900 px-20 py-5;
 }

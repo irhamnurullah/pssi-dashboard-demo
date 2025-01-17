@@ -14,7 +14,7 @@ import refree from "../../assets/refree1.jpeg";
 import redcard from "../../assets/redcard.png";
 import yellowcard from "../../assets/yellowcard.png";
 import { X } from "lucide-react"
-
+import NavBar from "../../components/navbar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
@@ -429,66 +429,70 @@ export default function Referee() {
   ];
 
   return (
-    <div className="container-pssi mx-4">
-      <h2 className="text-primary-pssi text-3xl font-bold">Referees</h2>
-      <p className="text-sm text-neutral-400 mt-2">
-        An Indonesian referee enforces rules and ensures fairness in sports
-        competitions, certified nationally or internationally.
-      </p>
+    <div className="relative">
+      <div className="bg-[#7E0000] absolute h-[60vh] w-full z-10"></div>
+      <div className="z-20 relative w-full container-pssi mx-4">
+        <NavBar  bgColor="#FFFFFF" selectedTextColor="#7E0000" secondaryTextColor="#C6C6C6" />
+        <h2 className="text-[#A54D4D] text-4xl font-bold">Referees</h2>
+        <p className="text-sm text-neutral-400 mt-2">
+          An Indonesian referee enforces rules and ensures fairness in sports
+          competitions, certified nationally or internationally.
+        </p>
 
-      <div className="mt-4">
-        <CarouselSize />
-      </div>
-
-      <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
-        <div className="col-span-2">
-          <LicenseDistribution data={licenseChart} config={chartConfigs} />
+        <div className="mt-4">
+          <CarouselSize />
         </div>
-        <div className="col-span-4">
-          <MapsChart dataMaps={dataMaps} />
-        </div>
-      </div>
 
-      <div className="flex flex-wrap mt-5 bg-white p-5">
-        <div className="text-black font-bold">Referee List</div>
-        <DataTable
-          columns={columns}
-          data={refereesData}
-          searchBy={"nama_petugas"}
-        />
-        <div className="flex flex-col">
-          <div className="flex justify-end">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" isActive>
-                    2
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+        <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
+          <div className="col-span-2">
+            <LicenseDistribution data={licenseChart} config={chartConfigs} />
+          </div>
+          <div className="col-span-4">
+            <MapsChart dataMaps={dataMaps} />
           </div>
         </div>
-      </div>
 
-      {/* <div className="mt-4">
-        <RefereeList />
-      </div> */}
+        <div className="flex flex-wrap mt-5 bg-white p-5">
+          <div className="text-black font-bold">Referee List</div>
+          <DataTable
+            columns={columns}
+            data={refereesData}
+            searchBy={"nama_petugas"}
+          />
+          <div className="flex flex-col">
+            <div className="flex justify-end">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious href="#" />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href="#">1</PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href="#" isActive>
+                      2
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink href="#">3</PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationNext href="#" />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="mt-4">
+          <RefereeList />
+        </div> */}
+      </div>
     </div>
   );
 }
