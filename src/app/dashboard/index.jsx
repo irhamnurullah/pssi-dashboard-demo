@@ -14,90 +14,82 @@ export default function DashboardPage() {
   const [player, setplayer] = useState(0);
   const [coach, setcoach] = useState(0);
   const [referee, setreferee] = useState(0);
+  const [dataMaps, setDataMaps] = useState([]);
 
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
   const getCountPlayer = async () => {
-  
     try {
+      const players = await apiService.get(
+        `/api/player/GetListData?row_from=${rowFrom}&length=${rowLength}`,
+        headers
+      );
 
-      const players = await apiService.get(`/api/player/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
-      
       if (players.status === 200) {
-        setplayer(players.data.recordsTotal);
+        setplayer(players.data.recordsTotal.toLocaleString("id-ID"));
       }
-      
-
     } catch (error) {
       console.log(error);
-      
     }
-  }
+  };
 
   const getCountCoach = async () => {
-  
     try {
+      const coach = await apiService.get(
+        `/api/coach/GetListData?row_from=${rowFrom}&length=${rowLength}`,
+        headers
+      );
 
-      const coach = await apiService.get(`/api/coach/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
-      
       if (coach.status === 200) {
-        setcoach(coach.data.recordsTotal);
+        setcoach(coach.data.recordsTotal.toLocaleString("id-ID"));
       }
-      
-
     } catch (error) {
       console.log(error);
-      
     }
-  }
+  };
 
   const getCountReferee = async () => {
-  
     try {
+      const referee = await apiService.get(
+        `/api/referee/GetListData?row_from=${rowFrom}&length=${rowLength}`,
+        headers
+      );
 
-      const referee = await apiService.get(`/api/referee/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
-      
       if (referee.status === 200) {
-        setreferee(referee.data.recordsTotal);
+        setreferee(referee.data.recordsTotal.toLocaleString("id-ID"));
       }
-      
-
     } catch (error) {
       console.log(error);
-      
     }
-  }
+  };
 
   const getProvincePlayer = async () => {
-  
     try {
+      const response = await apiService.get(
+        `/api/player/GetDataByProvinsi`,
+        headers
+      );
 
-      const response = await apiService.get(`/api/player/GetDataByProvinsi`, headers);
-      
-      const mapArray = Object.keys(response.data).map(key => response.data[key]);
-      
+      const mapArray = Object.keys(response.data).map(
+        (key) => response.data[key]
+      );
 
-      const dataMaps = mapArray.map(item => {
-          const id = getIdmaps(item.ID_PROVINSI);
-          const total = item.PRIA_ALL.TOTAL + item.WANITA_ALL.TOTAL;
-          return [id, total];
+      const mapping = mapArray.map((item) => {
+        const id = getIdmaps(item.ID_PROVINSI);
+        const total = item.PRIA_ALL.TOTAL + item.WANITA_ALL.TOTAL;
+        return [id, total];
       });
 
-      console.log(dataMaps);
-      
-
+      setDataMaps(mapping);
     } catch (error) {
       console.log(error);
-      
     }
-  }
+  };
 
   const getIdmaps = (provinsi) => {
     switch (provinsi) {
-      case 18:
-        return "id-ac";
       case 1:
         return "id-ba";
       case 2:
@@ -124,10 +116,60 @@ export default function DashboardPage() {
         return "id-ks";
       case 13:
         return "id-kt";
+      case 14:
+        return "id-ki";
+      case 15:
+        return "id-1024";
+      case 16:
+        return "id-ma";
+      case 17:
+        return "id-la";
+      case 18:
+        return "id-ac";
+      case 19:
+        return "id-nb";
+      case 20:
+        return "id-nt";
+      case 21:
+        return "id-pa";
+      case 22:
+        return "id-ri";
+      case 23:
+        return "id-se";
+      case 24:
+        return "id-st";
+      case 25:
+        return "id-sg";
+      case 26:
+        return "id-sw";
+      case 27:
+        return "id-sb";
+      case 28:
+        return "id-sl";
+      case 29:
+        return "id-sw";
+      case 30:
+        return "id-ib";
+      case 31:
+        return "id-sr";
+      case 32:
+        return "id-bb";
+      case 33:
+        return "id-kr";
+      case 35:
+        return "id-ku";
+      case 37:
+        return "id-bi"; // PAPUA TENGAH
+      case 38:
+        return "id-bi"; // PAPUA SELATAN
+      case 39:
+        return "id-bi"; // PAPUA PEGUNUNGAN
+      case 40:
+        return "id-bi"; // PAPUA BARAT DAYA
       default:
-        break;
+        return "Unknown Province";
     }
-  }
+  };
 
   useEffect(() => {
     getCountPlayer();
@@ -135,42 +177,41 @@ export default function DashboardPage() {
     getCountReferee();
     getProvincePlayer();
   }, [rowFrom, rowLength]);
-  
 
-  const dataMaps = [
-    ["id-ac", 19050],
-    ["id-su", 48466],
-    ["id-sb", 25862],
-    ["id-sl", 67061],
-    ["id-ri", 55266],
-    ["id-kr", 9906],
-    ["id-ja", 11174],
-    ["id-be", 3638],
-    ["id-bb", 2621],
-    ["id-1024", 14481],
-    ["id-jk", 127904],
-    ["id-bt", 65361],
-    ["id-jr", 210775],
-    ["id-jt", 94373],
-    ["id-yo", 23168],
-    ["id-ji", 108284],
-    ["id-nb", 4192],
-    ["id-nt", 3393],
-    ["id-kb", 5462],
-    ["id-kt", 1976],
-    ["id-ks", 6903],
-    ["id-ki", 52417],
-    ["id-sw", 5725],
-    ["id-se", 29912],
-    ["id-sr", 711],
-    ["id-st", 4327],
-    ["id-go", 1149],
-    ["id-sg", 3430],
-    ["id-ma", 3607],
-    ["id-la", 1168],
-    ["id-pa", 3911],
-    ["id-ba", 5377],
-  ];
+  // const dataMaps = [
+  //   ["id-ac", 19050],
+  //   ["id-su", 48466],
+  //   ["id-sb", 25862],
+  //   ["id-sl", 67061],
+  //   ["id-ri", 55266],
+  //   ["id-kr", 9906],
+  //   ["id-ja", 11174],
+  //   ["id-be", 3638],
+  //   ["id-bb", 2621],
+  //   ["id-1024", 14481],
+  //   ["id-jk", 127904],
+  //   ["id-bt", 65361],
+  //   ["id-jr", 210775],
+  //   ["id-jt", 94373],
+  //   ["id-yo", 23168],
+  //   ["id-ji", 108284],
+  //   ["id-nb", 4192],
+  //   ["id-nt", 3393],
+  //   ["id-kb", 5462],
+  //   ["id-kt", 1976],
+  //   ["id-ks", 6903],
+  //   ["id-ki", 52417],
+  //   ["id-sw", 5725],
+  //   ["id-se", 29912],
+  //   ["id-sr", 711],
+  //   ["id-st", 4327],
+  //   ["id-go", 1149],
+  //   ["id-sg", 3430],
+  //   ["id-ma", 3607],
+  //   ["id-la", 1168],
+  //   ["id-pa", 3911],
+  //   ["id-ba", 5377],
+  // ];
 
   const [activeCard, setActiveCard] = useState("players");
 

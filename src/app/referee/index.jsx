@@ -13,6 +13,7 @@ import MapsChart from "../../components/maps/mapsChart";
 import refree from "../../assets/refree1.jpeg";
 import redcard from "../../assets/redcard.png";
 import yellowcard from "../../assets/yellowcard.png";
+import { X } from "lucide-react"
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -127,7 +128,6 @@ export default function Referee() {
   };
 
   const handleViewDetail = async (id_petugas) => {
-    
     setIsDialogOpen(true);
 
     try {
@@ -226,14 +226,22 @@ export default function Referee() {
             <button
               onClick={() => handleViewDetail(row.original.id_petugas)}
               className="text-blue-400"
-              inert={true}
             >
               View Detail
             </button>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               {/* <DialogTrigger onClick={() => handleViewDetail(row.original.id_petugas)} className="text-blue-400">View Detail</DialogTrigger> */}
-              <DialogContent className="max-w-full xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh]">
+              <DialogContent
+                className="max-w-full xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh]"
+                openModal={isDialogOpen}
+              >
                 <DialogHeader>
+                  <button
+                    className="absolute top-2 right-2 text-gray-500 hover:text-black"
+                    onClick={() => setIsDialogOpen(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                   <DialogTitle>
                     <div className="flex flex-row mb-2 mt-5">
                       <img
