@@ -88,6 +88,52 @@ export default function DashboardPage() {
     }
   };
 
+  const getProvinceCoaches = async () => {
+    try {
+      const response = await apiService.get(
+        `/api/player/GetDataByProvinsi`,
+        headers
+      );
+
+      const mapArray = Object.keys(response.data).map(
+        (key) => response.data[key]
+      );
+
+      const mapping = mapArray.map((item) => {
+        const id = getIdmaps(item.ID_PROVINSI);
+        const total = item.PRIA_ALL.TOTAL + item.WANITA_ALL.TOTAL;
+        return [id, total];
+      });
+
+      setDataMaps(mapping);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getProvinceReferee = async () => {
+    try {
+      const response = await apiService.get(
+        `/api/player/GetDataByProvinsi`,
+        headers
+      );
+
+      const mapArray = Object.keys(response.data).map(
+        (key) => response.data[key]
+      );
+
+      const mapping = mapArray.map((item) => {
+        const id = getIdmaps(item.ID_PROVINSI);
+        const total = item.PRIA_ALL.TOTAL + item.WANITA_ALL.TOTAL;
+        return [id, total];
+      });
+
+      setDataMaps(mapping);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getIdmaps = (provinsi) => {
     switch (provinsi) {
       case 1:
@@ -175,7 +221,10 @@ export default function DashboardPage() {
     getCountPlayer();
     getCountCoach();
     getCountReferee();
-    getProvincePlayer();
+    if (activeCard === "players") getProvincePlayer();
+    if (activeCard === "coaches") getProvinceCoaches();
+    if (activeCard === "referees") getProvinceReferee();
+    
   }, [rowFrom, rowLength]);
 
   // const dataMaps = [

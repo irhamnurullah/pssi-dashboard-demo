@@ -98,6 +98,8 @@ export default function Referee() {
   ];
 
   const [refereesData, setRefereesData] = useState([]);
+  const [licenseChart, setChartLicenseDistribution] = useState([]);
+  const [chartConfigs, setChartConfig] = useState([]);
   const [detailReferee, setDetailReferee] = useState([]);
   const token = sessions.getSessionToken();
   const [rowFrom, setRowFrom] = useState(0);
@@ -110,6 +112,7 @@ export default function Referee() {
 
   useEffect(() => {
     getListReferee();
+    getChartData();
   }, [rowFrom, rowLength]);
 
   const getListReferee = async () => {
@@ -127,6 +130,41 @@ export default function Referee() {
     }
   };
 
+  const getChartData = async () => {
+    try {
+      const referee = await apiService.get(
+        `/api/referee/GetGrafikAll`,
+        headers
+      );
+      
+
+      if (referee.status === 200 || referee.length > 0) {
+
+        const licenceFormatChart = referee.data.map(item => ({
+          category: item.NAME,
+          female_coaches: item.TOTAL_WANITA,
+          male_coaches: item.TOTAL_PRIA
+        }));
+        
+        const chartConfig = {
+          female_coaches: {
+            label: 'Female Coaches',
+            color: '#FF99CF',
+          },
+          male_coaches: {
+            label: 'Total Coaches',
+            color: '#3067D3',
+          },
+        };
+        
+        setChartLicenseDistribution(licenceFormatChart);
+        setChartConfig(chartConfig);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleViewDetail = async (id_petugas) => {
     setIsDialogOpen(true);
 
@@ -135,7 +173,6 @@ export default function Referee() {
         `/api/referee/GetRecordByID?id_petugas=${id_petugas}`,
         headers
       );
-      console.log(detail);
 
       if (detail.status === 200) {
         setDetailReferee(detail.data.biodata);
@@ -405,7 +442,7 @@ export default function Referee() {
 
       <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
         <div className="col-span-2">
-          <LicenseDistribution />
+          <LicenseDistribution data={licenseChart} config={chartConfigs} />
         </div>
         <div className="col-span-4">
           <MapsChart dataMaps={dataMaps} />
@@ -466,7 +503,7 @@ function CarouselSize() {
     >
       <CarouselContent>
         {Array.from({ length: 20 }).map((_, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
+          <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/5">
             <div>
               <Card className="border-none bg-transparent shadow-none">
                 <CardContent
@@ -509,12 +546,13 @@ function CarouselSize() {
   );
 }
 
-function LicenseDistribution() {
+function LicenseDistribution({data, config}) {
+  
   return (
     <div className="px-4 py-3 ">
       <div className="">
         <h3 className="font-semibold">License Distribution</h3>
-        <MultipleBarChart />
+        <MultipleBarChart dataChart={data} config={config} />
       </div>
       {/* <div className="flex-1">
         <h3 className="font-semibold">License Distribution - Female Referees by Province</h3>
