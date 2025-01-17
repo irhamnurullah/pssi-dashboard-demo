@@ -56,6 +56,9 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { columns } from "../../components/table/example-table";
+import { useEffect, useState } from "react";
+import sessions from "../../../utils/sessions";
+import apiService from "../../../utils/services";
 
 export default function Referee() {
   const dataMaps = [
@@ -93,134 +96,53 @@ export default function Referee() {
     ["id-ba", 5377],
   ];
 
-  const refereesData = {
-    status: 200,
-    message: "Success",
-    data: {
-      recordsTotal: 4192,
-      recordsFiltered: 4192,
-      data: [
-        {
-          id_petugas: "2518982980",
-          nama_petugas: "JUSRIADI",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "1989-12-12 00:00:00",
-          kategori_petugas:
-            "Wasit                                                                           ",
-          nama_divisi: "Piala Soeratin",
-          lisensi: "C2",
-          nama_propinsi: "SULAWESI  BARAT",
-          nama_kota: "Kota Mamuju",
-        },
-        {
-          id_petugas: "2511479560",
-          nama_petugas: "ALEXANDERADAM",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "1986-01-09 00:00:00",
-          kategori_petugas:
-            "Wasit                                                                           ",
-          nama_divisi: "LIGA 4",
-          lisensi: "C2",
-          nama_propinsi: "SULAWESI  BARAT",
-          nama_kota: "Kab. Pasangkayu",
-        },
-        {
-          id_petugas: "2516969473",
-          nama_petugas: "FADIL AMRULLAH",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "1996-01-29 00:00:00",
-          kategori_petugas:
-            "Asisten Wasit                                                                   ",
-          nama_divisi: "Piala Soeratin",
-          lisensi: "C2",
-          nama_propinsi: "ACEH",
-          nama_kota: "Kab. Aceh Besar",
-        },
-        {
-          id_petugas: "2518085067",
-          nama_petugas: "M. RIJAL",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "2000-12-15 00:00:00",
-          kategori_petugas:
-            "Asisten Wasit                                                                   ",
-          nama_divisi: "Piala Soeratin",
-          lisensi: "C3",
-          nama_propinsi: "ACEH",
-          nama_kota: "Kota Banda Aceh",
-        },
-        {
-          id_petugas: "2516853730",
-          nama_petugas: "RUSDI",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "1972-04-30 00:00:00",
-          kategori_petugas: "Penilai Wasit",
-          nama_divisi: "LIGA 4",
-          lisensi: "Penilai Wasit",
-          nama_propinsi: "ACEH",
-          nama_kota: "Kota Banda Aceh",
-        },
-        {
-          id_petugas: "2514771699",
-          nama_petugas: "EKO SAIFANI",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "1991-01-21 00:00:00",
-          kategori_petugas:
-            "Wasit                                                                           ",
-          nama_divisi: "LIGA 2",
-          lisensi: "C2",
-          nama_propinsi: "ACEH",
-          nama_kota: "Kab. Aceh Singkil",
-        },
-        {
-          id_petugas: "2514807200",
-          nama_petugas: "RINALDI",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "1988-04-24 00:00:00",
-          kategori_petugas:
-            "Wasit                                                                           ",
-          nama_divisi: "LIGA 4",
-          lisensi: "C2",
-          nama_propinsi: "ACEH",
-          nama_kota: "Kab. Bireuen",
-        },
-        {
-          id_petugas: "2518666862",
-          nama_petugas: "RAMADHAN DIAS SANTOSO",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "1999-01-15 00:00:00",
-          kategori_petugas:
-            "Asisten Wasit                                                                   ",
-          nama_divisi: "LIGA 4",
-          lisensi: "C2",
-          nama_propinsi: "JAWA TIMUR",
-          nama_kota: "Kab. Bangkalan",
-        },
-        {
-          id_petugas: "2512394047",
-          nama_petugas: "RIO SEPTIAN ALIF",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "2004-09-13 00:00:00",
-          kategori_petugas:
-            "Asisten Wasit                                                                   ",
-          nama_divisi: "LIGA 4",
-          lisensi: "C2",
-          nama_propinsi: "JAWA TIMUR",
-          nama_kota: "Kota Surabaya",
-        },
-        {
-          id_petugas: "2513558891",
-          nama_petugas: "ZAINUR FADLI",
-          jenis_kelamin: "Pria",
-          tgl_lahir: "1991-09-03 00:00:00",
-          kategori_petugas:
-            "Wasit                                                                           ",
-          nama_divisi: "LIGA PRO (FUTSAL)",
-          lisensi: "Level 1",
-          nama_propinsi: "JAWA TIMUR",
-          nama_kota: "Kab. Pamekasan",
-        },
-      ],
-    },
+  const [refereesData, setRefereesData] = useState([]);
+  const [detailReferee, setDetailReferee] = useState([]);
+  const token = sessions.getSessionToken();
+  const [rowFrom, setRowFrom] = useState(0);
+  const [rowLength, setRowLength] = useState(10);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  useEffect(() => {
+    getListReferee();
+  }, [rowFrom, rowLength]);
+
+  const getListReferee = async () => {
+    try {
+      const referee = await apiService.get(
+        `/api/referee/GetListData?row_from=${rowFrom}&length=${rowLength}`,
+        headers
+      );
+
+      if (referee.status === 200) {
+        setRefereesData(referee.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleViewDetail = async (id_petugas) => {
+    
+    setIsDialogOpen(true);
+
+    try {
+      const detail = await apiService.get(
+        `/api/referee/GetRecordByID?id_petugas=${id_petugas}`,
+        headers
+      );
+      console.log(detail);
+
+      if (detail.status === 200) {
+        setDetailReferee(detail.data.biodata);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const columns = [
@@ -300,533 +222,166 @@ export default function Referee() {
       enableHiding: false,
       cell: ({ row }) => {
         return (
-          <Dialog>
-            <DialogTrigger className="text-blue-400">View Detail</DialogTrigger>
-            <DialogContent className="max-w-full xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh]">
-              <DialogHeader>
-                <DialogTitle>
-                  <div className="flex flex-row mb-2 mt-5">
-                    <img
-                      className="rounded-full w-20"
-                      src={detailReferee.data.biodata.URL_FOTO}
-                      alt="avatar"
-                    />
-                    <div className="text-gray-700 text-[18px] font-bold ml-4 mt-3">
-                      {detailReferee.data.biodata.NAMA_PETUGAS}
-                      <br></br>
-                      <span className="text-gray-700 text-sm font-normal">
-                        {detailReferee.data.biodata.NAMA_LAMPIRAN +
-                          "-" +
-                          detailReferee.data.biodata.STAT_PETUGAS}
-                      </span>
-                    </div>
-                  </div>
-                </DialogTitle>
-                <DialogDescription>
-                  <div className="flex space-x-4 mt-5">
-                    <div className="bg-white rounded-lg shadow p-6 w-1/2">
-                      <div className="flex items-center space-x-2 mb-4">
-                        <div className="text-[#989899] text-[12px] font-medium">
-                          Personal Information
-                        </div>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <div className="text-black">Birth Date</div>
-                        <div className="text-neutral-400 font-normal">
-                          {detailReferee.data.biodata.TGL_LAHIR}
-                        </div>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <div className="text-black">Gender</div>
-                        <div className="text-neutral-400 font-normal">
-                          {detailReferee.data.biodata.JNS_KELAMIN}
-                        </div>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <div className="text-black">Province</div>
-                        <div className="text-neutral-400 font-normal">
-                          {detailReferee.data.biodata.NAMA_PROPINSI}
-                        </div>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <div className="text-black">City</div>
-                        <div className="text-neutral-400 font-normal">
-                          {detailReferee.data.biodata.NAMA_KOTA}
-                        </div>
+          <div>
+            <button
+              onClick={() => handleViewDetail(row.original.id_petugas)}
+              className="text-blue-400"
+              inert={true}
+            >
+              View Detail
+            </button>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              {/* <DialogTrigger onClick={() => handleViewDetail(row.original.id_petugas)} className="text-blue-400">View Detail</DialogTrigger> */}
+              <DialogContent className="max-w-full xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh]">
+                <DialogHeader>
+                  <DialogTitle>
+                    <div className="flex flex-row mb-2 mt-5">
+                      <img
+                        className="rounded-full w-20"
+                        src={detailReferee.URL_FOTO}
+                        alt="avatar"
+                      />
+                      <div className="text-gray-700 text-[18px] font-bold ml-4 mt-3">
+                        {detailReferee.NAMA_PETUGAS}
+                        <br></br>
+                        <span className="text-gray-700 text-sm font-normal">
+                          {detailReferee.NAMA_LAMPIRAN +
+                            "-" +
+                            detailReferee.STAT_PETUGAS}
+                        </span>
                       </div>
                     </div>
-                    <div className="bg-white rounded-lg shadow p-6 w-1/2">
-                      <div className="flex items-center space-x-2 mb-4">
-                        <div className="text-[#989899] text-[12px] font-medium">
-                          Career Statistics
+                  </DialogTitle>
+                  <DialogDescription>
+                    <div className="flex space-x-4 mt-5">
+                      <div className="bg-white rounded-lg shadow p-6 w-1/2">
+                        <div className="flex items-center space-x-2 mb-4">
+                          <div className="text-[#989899] text-[12px] font-medium">
+                            Personal Information
+                          </div>
+                        </div>
+                        <div className="flex justify-between py-2">
+                          <div className="text-black">Birth Date</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.TGL_LAHIR}
+                          </div>
+                        </div>
+                        <div className="flex justify-between py-2">
+                          <div className="text-black">Gender</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.JNS_KELAMIN}
+                          </div>
+                        </div>
+                        <div className="flex justify-between py-2">
+                          <div className="text-black">Province</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.NAMA_PROPINSI}
+                          </div>
+                        </div>
+                        <div className="flex justify-between py-2">
+                          <div className="text-black">City</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.NAMA_KOTA}
+                          </div>
                         </div>
                       </div>
-                      <div className="flex justify-between py-2">
-                        <div className="text-black">License</div>
-                        <div className="text-neutral-400 font-normal">
-                          {detailReferee.data.biodata.NAMA_LAMPIRAN}
+                      <div className="bg-white rounded-lg shadow p-6 w-1/2">
+                        <div className="flex items-center space-x-2 mb-4">
+                          <div className="text-[#989899] text-[12px] font-medium">
+                            Career Statistics
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <div className="text-black">Division</div>
-                        <div className="text-neutral-400 font-normal">
-                          {detailReferee.data.biodata.NAMA_DIVISI}
+                        <div className="flex justify-between py-2">
+                          <div className="text-black">License</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.NAMA_LAMPIRAN}
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <div className="text-black">Status</div>
-                        <div className="text-neutral-400 font-normal">
-                          {detailReferee.data.biodata.STATUS}
+                        <div className="flex justify-between py-2">
+                          <div className="text-black">Division</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.NAMA_DIVISI}
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <div className="text-black">Total Matches</div>
-                        <div className="text-neutral-400 font-normal">
-                          {20 /* API Kurang Total Matches */}
+                        <div className="flex justify-between py-2">
+                          <div className="text-black">Status</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.STATUS}
+                          </div>
+                        </div>
+                        <div className="flex justify-between py-2">
+                          <div className="text-black">Total Matches</div>
+                          <div className="text-neutral-400 font-normal">
+                            {20 /* API Kurang Total Matches */}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex space-x-4 mt-5">
-                    <div className="text-[#989899] text-[12px] font-medium">
-                      Recent Matches
+                    <div className="flex space-x-4 mt-5">
+                      <div className="text-[#989899] text-[12px] font-medium">
+                        Recent Matches
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-row">
-                    <div className="w-full">
-                      <Table className="mt-2">
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead className="text-[12px]">Date</TableHead>
-                            <TableHead className="text-[12px]">
-                              Competition
-                            </TableHead>
-                            <TableHead className="text-[12px]">Match</TableHead>
-                            <TableHead className="text-[12px]">Venue</TableHead>
-                            <TableHead className="text-[12px]">Card</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell className="text-[12px]">
-                              2024-01-01
-                            </TableCell>
-                            <TableCell className="text-[12px]">
-                              BRI Liga 1
-                            </TableCell>
-                            <TableCell className="text-[12px]">
-                              Persija vs Arema
-                            </TableCell>
-                            <TableCell className="text-[12px]">
-                              Gelora Bung Karno Stadium
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center space-x-2">
-                                <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded">
-                                  0 🟨
-                                </span>
-                                <span className="px-2 py-1 bg-red-100 text-red-800 rounded">
-                                  0 🟥
-                                </span>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
+                    <div className="flex flex-row">
+                      <div className="w-full">
+                        <Table className="mt-2">
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead className="text-[12px]">
+                                Date
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Competition
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Match
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Venue
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Card
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell className="text-[12px]">
+                                2024-01-01
+                              </TableCell>
+                              <TableCell className="text-[12px]">
+                                BRI Liga 1
+                              </TableCell>
+                              <TableCell className="text-[12px]">
+                                Persija vs Arema
+                              </TableCell>
+                              <TableCell className="text-[12px]">
+                                Gelora Bung Karno Stadium
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex items-center space-x-2">
+                                  <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded">
+                                    0 🟨
+                                  </span>
+                                  <span className="px-2 py-1 bg-red-100 text-red-800 rounded">
+                                    0 🟥
+                                  </span>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </div>
                     </div>
-                  </div>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </div>
         );
       },
     },
   ];
-
-  const detailReferee = {
-    status: 200,
-    message: "Success",
-    data: {
-      biodata: {
-        ID_PETUGAS: "12101",
-        NAMA_PETUGAS: "THORIQ M ALKATIRI",
-        JNS_KELAMIN: "Pria",
-        TGL_LAHIR: "1988-11-19",
-        NAMA_PROPINSI: "JAWA BARAT",
-        NAMA_KOTA: "Kota Bandung",
-        NAMA_NEGARA: "Indonesia",
-        NAMA_LAMPIRAN: "C1",
-        NAMA_DIVISI: "LIGA 1",
-        STAT_PETUGAS: "Wasit",
-        STATUS: "Aktif",
-        URL_FOTO:
-          "https://siap.pssi.org/uploads/master_petugas/foto-thoriq-munir-alkatiri_ba01e0390d0c58ab871d3fd682bbf613.jpeg",
-      },
-      history: [
-        {
-          NAMA_KOMPETISI: "BRI LIGA 1 2024/2025",
-          TOTAL_PW: 0,
-          TOTAL_WS: 4,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 13,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "Mola Elite Pro Academy LIGA 1 U-20 2023",
-          TOTAL_PW: 0,
-          TOTAL_WS: 1,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "PEGADAIAN LIGA 2 2023-2024",
-          TOTAL_PW: 0,
-          TOTAL_WS: 4,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "BRI LIGA 1 2023-2024",
-          TOTAL_PW: 0,
-          TOTAL_WS: 26,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 4,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "BRI LIGA 1 2022-2023",
-          TOTAL_PW: 0,
-          TOTAL_WS: 12,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 1,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "LIGA 2 2021",
-          TOTAL_PW: 0,
-          TOTAL_WS: 1,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "BRI LIGA 1 2021-2022",
-          TOTAL_PW: 0,
-          TOTAL_WS: 13,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 4,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 1,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "LIGA 1 2020",
-          TOTAL_PW: 0,
-          TOTAL_WS: 3,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "LIGA 1 2019",
-          TOTAL_PW: 0,
-          TOTAL_WS: 15,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 10,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "Piala Presiden 2019",
-          TOTAL_PW: 0,
-          TOTAL_WS: 2,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "LIGA 3 2018 PUTARAN NASIONAL",
-          TOTAL_PW: 0,
-          TOTAL_WS: 1,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "GUBERNUR KALTIM 2018",
-          TOTAL_PW: 0,
-          TOTAL_WS: 2,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 1,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "GO-JEK LIGA 1 2018",
-          TOTAL_PW: 0,
-          TOTAL_WS: 16,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 2,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "PIALA PRESIDEN 2018",
-          TOTAL_PW: 0,
-          TOTAL_WS: 2,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 2,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "LIGA 1 2017",
-          TOTAL_PW: 0,
-          TOTAL_WS: 13,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 5,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "PIALA PRESIDEN 2017",
-          TOTAL_PW: 0,
-          TOTAL_WS: 3,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 3,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "ISC U21",
-          TOTAL_PW: 0,
-          TOTAL_WS: 1,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "TORABIKA SOCCER CHAMPIONSHIP 2016",
-          TOTAL_PW: 0,
-          TOTAL_WS: 17,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 6,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "OFFICIAL PRE-SEASON TOURNAMENT 2015",
-          TOTAL_PW: 0,
-          TOTAL_WS: 1,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "QNB LEAGUE 2015",
-          TOTAL_PW: 0,
-          TOTAL_WS: 2,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 1,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "U-21 ISL 2014",
-          TOTAL_PW: 0,
-          TOTAL_WS: 2,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 3,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "ISL 2014",
-          TOTAL_PW: 0,
-          TOTAL_WS: 10,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 2,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "INTER ISLAND CUP 2014",
-          TOTAL_PW: 0,
-          TOTAL_WS: 2,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 4,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "U-21 ISL 2012/2013",
-          TOTAL_PW: 0,
-          TOTAL_WS: 1,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "ISL 2012 / 2013",
-          TOTAL_PW: 0,
-          TOTAL_WS: 20,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 11,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "INTER ISLAND CUP 2012",
-          TOTAL_PW: 0,
-          TOTAL_WS: 2,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 1,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "PERANG BINTANG 2012",
-          TOTAL_PW: 0,
-          TOTAL_WS: 1,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 0,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "ISL U-21 2011/2012",
-          TOTAL_PW: 0,
-          TOTAL_WS: 3,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 1,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "DIVISI UTAMA LI 2011",
-          TOTAL_PW: 0,
-          TOTAL_WS: 4,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 5,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-        {
-          NAMA_KOMPETISI: "ISL 2011",
-          TOTAL_PW: 0,
-          TOTAL_WS: 14,
-          TOTAL_AW1: 0,
-          TOTAL_AW2: 0,
-          TOTAL_WC: 8,
-          TOTAL_VAR: 0,
-          TOTAL_AVAR: 0,
-          TOTAL_AAR1: 0,
-          TOTAL_PP: 0,
-        },
-      ],
-    },
-  };
 
   return (
     <div className="container-pssi mx-4">
@@ -853,7 +408,7 @@ export default function Referee() {
         <div className="text-black font-bold">Referee List</div>
         <DataTable
           columns={columns}
-          data={refereesData?.data?.data}
+          data={refereesData}
           searchBy={"nama_petugas"}
         />
         <div className="flex flex-col">

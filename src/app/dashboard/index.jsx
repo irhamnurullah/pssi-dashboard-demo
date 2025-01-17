@@ -3,9 +3,140 @@ import players from "../../assets/players.png";
 import quick from "../../assets/quick.png";
 import recent from "../../assets/recent.png";
 import topProvince from "../../assets/top_province.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import sessions from "../../../utils/sessions";
+import apiService from "../../../utils/services";
 
 export default function DashboardPage() {
+  const token = sessions.getSessionToken();
+  const [rowFrom, setRowFrom] = useState(0);
+  const [rowLength, setRowLength] = useState(10);
+  const [player, setplayer] = useState(0);
+  const [coach, setcoach] = useState(0);
+  const [referee, setreferee] = useState(0);
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const getCountPlayer = async () => {
+  
+    try {
+
+      const players = await apiService.get(`/api/player/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
+      
+      if (players.status === 200) {
+        setplayer(players.data.recordsTotal);
+      }
+      
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  const getCountCoach = async () => {
+  
+    try {
+
+      const coach = await apiService.get(`/api/coach/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
+      
+      if (coach.status === 200) {
+        setcoach(coach.data.recordsTotal);
+      }
+      
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  const getCountReferee = async () => {
+  
+    try {
+
+      const referee = await apiService.get(`/api/referee/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
+      
+      if (referee.status === 200) {
+        setreferee(referee.data.recordsTotal);
+      }
+      
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  const getProvincePlayer = async () => {
+  
+    try {
+
+      const response = await apiService.get(`/api/player/GetDataByProvinsi`, headers);
+      
+      const mapArray = Object.keys(response.data).map(key => response.data[key]);
+      
+
+      const dataMaps = mapArray.map(item => {
+          const id = getIdmaps(item.ID_PROVINSI);
+          const total = item.PRIA_ALL.TOTAL + item.WANITA_ALL.TOTAL;
+          return [id, total];
+      });
+
+      console.log(dataMaps);
+      
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  const getIdmaps = (provinsi) => {
+    switch (provinsi) {
+      case 18:
+        return "id-ac";
+      case 1:
+        return "id-ba";
+      case 2:
+        return "id-bt";
+      case 3:
+        return "id-be";
+      case 4:
+        return "id-yo";
+      case 5:
+        return "id-jk";
+      case 6:
+        return "id-go";
+      case 7:
+        return "id-ja";
+      case 8:
+        return "id-jr";
+      case 9:
+        return "id-jt";
+      case 10:
+        return "id-ji";
+      case 11:
+        return "id-kb";
+      case 12:
+        return "id-ks";
+      case 13:
+        return "id-kt";
+      default:
+        break;
+    }
+  }
+
+  useEffect(() => {
+    getCountPlayer();
+    getCountCoach();
+    getCountReferee();
+    getProvincePlayer();
+  }, [rowFrom, rowLength]);
+  
+
   const dataMaps = [
     ["id-ac", 19050],
     ["id-su", 48466],
@@ -68,7 +199,7 @@ export default function DashboardPage() {
                   />
                 </span>
               </div>
-              <div className="text-black text-2xl font-bold">15,678</div>
+              <div className="text-black text-2xl font-bold">{player}</div>
               <div className="text-gray-500">+4 last month</div>
             </div>
             <div
@@ -91,7 +222,7 @@ export default function DashboardPage() {
                   />
                 </span>
               </div>
-              <div className="text-black text-2xl font-bold">865</div>
+              <div className="text-black text-2xl font-bold">{coach}</div>
               <div className="text-gray-500">+4 last month</div>
             </div>
             <div
@@ -116,7 +247,7 @@ export default function DashboardPage() {
                   />
                 </span>
               </div>
-              <div className="text-black text-2xl font-bold">234</div>
+              <div className="text-black text-2xl font-bold">{referee}</div>
               <div className="text-gray-500">+4 last month</div>
             </div>
           </div>
