@@ -267,92 +267,86 @@ export default function DashboardPage() {
   const [activeCard, setActiveCard] = useState("players");
 
   return (
-    <>
-      <NavBar  bgColor="#7E0000" selectedTextColor="#FFFFFF" secondaryTextColor="#C6C6C6" />
-      <main className="container-pssi">
+    <div>
+      <div className="bg-[#7E0000] absolute h-[60vh] w-full z-10"></div>
+      <NavBar  bgColor="#FFFFFF" selectedTextColor="#7E0000" secondaryTextColor="#6C6C6C" />
+    
+      <div className="container-pssi mx-4 z-20 relative">
         <div className="container mx-auto p-4">
           <div id="map-container" className="bg-white rounded-lg shadow p-4">
-            <div className="flex flex-row">
+            <div className="flex flex-row pt-3">
+              
               <div
                 key={"players"}
                 onClick={() => setActiveCard("players")}
                 style={{ cursor: "pointer" }}
                 className={`${
                   activeCard === "players"
-                    ? "bg-gradient-to-r from-[#92D4F8] from-10% via-[#92D4F8] via-30% via-[#006FFF] via-50% via-[#16A34A] via-70% to-[#81F6E8] to-90%"
-                    : "bg-gradient-to-r from-[#E2E8F0] to-[#E2E8F0]"
-                } rounded-lg shadow p-4 w-60 ml-3`}
+                    ? "bg-[#7E0000] text-white"
+                    : "bg-slate-200 text-slate-700"
+                } rounded-lg shadow p-4 w-60 ml-3 relative`}
               >
-                <div className="flex justify-between py-2">
-                  <span className="text-gray-700 text-lg font-bold">Players</span>
-                  <span className="text-gray-900 font-medium">
-                    <img
-                      src={players}
-                      alt="Top Provinces Icon"
-                      className="w-8 h-8"
-                    />
-                  </span>
-                </div>
-                <div className="text-black text-2xl font-bold">{player}</div>
-                <div className="text-gray-500">+4 last month</div>
+                <small className="text-xs font-normal">Total Players</small>
+                <div className=" text-xl font-bold">{player} </div>
+                {
+                  activeCard === "players" ?
+                  <img src="./bg-logo-red.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
+                  :
+                  <img src="./bg-logo-grey.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
+                }
               </div>
+              
               <div
                 key={"coaches"}
                 onClick={() => setActiveCard("coaches")}
                 style={{ cursor: "pointer" }}
                 className={`${
                   activeCard === "coaches"
-                    ? "bg-gradient-to-r from-[#92D4F8] from-10% via-[#92D4F8] via-30% via-[#006FFF] via-50% via-[#16A34A] via-70% to-[#81F6E8] to-90%"
-                    : "bg-gradient-to-r from-[#E2E8F0] to-[#E2E8F0]"
-                } rounded-lg shadow p-4 w-60 ml-3`}
+                    ? "bg-[#7E0000] text-white"
+                    : "bg-slate-200 text-slate-700"
+                } rounded-lg shadow p-4 w-60 ml-3 relative`}
               >
-                <div className="flex justify-between py-2">
-                  <span className="text-gray-700 text-lg font-bold">Coaches</span>
-                  <span className="text-gray-900 font-medium">
-                    <img
-                      src={players}
-                      alt="Top Provinces Icon"
-                      className="w-8 h-8"
-                    />
-                  </span>
-                </div>
-                <div className="text-black text-2xl font-bold">{coach}</div>
-                <div className="text-gray-500">+4 last month</div>
+                <small className="text-xs font-normal">Total Coaches</small>
+                <div className=" text-xl font-bold">{coach} </div>
+               
+                {
+                  activeCard === "coaches" ?
+                  <img src="./bg-logo-red.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
+                  :
+                  <img src="./bg-logo-grey.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
+                }
+                
               </div>
+              
               <div
                 key={"referees"}
                 onClick={() => setActiveCard("referees")}
                 style={{ cursor: "pointer" }}
                 className={`${
                   activeCard === "referees"
-                    ? "bg-gradient-to-r from-[#92D4F8] from-10% via-[#92D4F8] via-30% via-[#006FFF] via-50% via-[#16A34A] via-70% to-[#81F6E8] to-90%"
-                    : "bg-gradient-to-r from-[#E2E8F0] to-[#E2E8F0]"
-                } rounded-lg shadow p-4 w-60 ml-3`}
+                    ? "bg-[#7E0000] text-white"
+                    : "bg-slate-200 text-slate-700"
+                } rounded-lg shadow p-4 w-60 ml-3 relative`}
               >
-                <div className="flex justify-between py-2">
-                  <span className="text-gray-700 text-lg font-bold">
-                    Referees
-                  </span>
-                  <span className="text-gray-900 font-medium">
-                    <img
-                      src={players}
-                      alt="Top Provinces Icon"
-                      className="w-8 h-8"
-                    />
-                  </span>
-                </div>
-                <div className="text-black text-2xl font-bold">{referee}</div>
-                <div className="text-gray-500">+4 last month</div>
+                
+
+                <small className="text-xs font-normal">Total Referees</small>
+                <div className=" text-xl font-bold">{referee} </div>
+
+                {
+                  activeCard === "referees" ?
+                  <img src="./bg-logo-red.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
+                  :
+                  <img src="./bg-logo-grey.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
+                }
               </div>
+
             </div>
             <MapsChart dataMaps={dataMaps} />
           </div>
-          
         </div>
-      </main>
 
-      <main className="container-pssi bg-[#7E0000]">
-        <div className="flex space-x-4 mt-5">
+        <div className="flex px-4 space-x-5 mt-4">
             <div className="bg-white rounded-lg shadow p-6 w-1/2">
               <div className="flex items-center space-x-2 mb-4">
                 <img
@@ -417,8 +411,8 @@ export default function DashboardPage() {
                 <span className="text-gray-900 font-medium">45</span>
               </div>
             </div>
-          </div>
-      </main>
-    </>
+        </div>
+      </div>
+    </div>
   );
 }

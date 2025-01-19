@@ -21,7 +21,7 @@ export function MultipleBarChart({dataChart, config}) {
   
   
   return (
-    <Card className="border-none shadow-none">
+    <Card className="border-none shadow-none h-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
         {Object.keys(chartConfig).map(key => (

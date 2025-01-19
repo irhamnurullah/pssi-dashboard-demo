@@ -7,9 +7,9 @@ export default function NavBar({bgColor, selectedTextColor, secondaryTextColor})
   const navigate = useNavigate();
 
   return (
-    <header className="flex items-center  px-24 py-5 sticky  top-0 z-50 ">
-      <div className="justify-self-start">
-        <img src="/pssi-logo.svg" alt="logo" />
+    <header className="flex items-center  px-24 py-5   top-0 z-50 ">
+      <div className="justify-self-start z-50">
+        <img className='w-[150px] h-auto' src="/pssi_logo_navbar.svg" alt="logo" />
       </div>
       <div className="flex justify-end w-full">
         
@@ -38,7 +38,7 @@ export default function NavBar({bgColor, selectedTextColor, secondaryTextColor})
                 <li
                   className={cn(
                     'px-4 py-1.5 rounded-full  text-sm font-light text-center  hover:text-white duration-100',
-                    // location.pathname.includes(item.link) ? ` hover:text-white font-semibold` : 'text-slate-300'
+                    location.pathname.includes(item.link) && ` font-bold` 
                   )}
                   style={{color: location.pathname.includes(item.link) ? selectedTextColor : secondaryTextColor}}
                 >
@@ -46,11 +46,11 @@ export default function NavBar({bgColor, selectedTextColor, secondaryTextColor})
                 </li>
               </Link>
             ))}
-              <Link  >
+              {/* <Link  >
                 <li className='px-4 py-1.5 text-sm text-slate-300 hover:text-white text-center' >
                   Logout
                 </li>
-              </Link>
+              </Link> */}
           </ul>
 
         </nav>

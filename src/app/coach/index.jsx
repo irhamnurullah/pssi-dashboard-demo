@@ -181,7 +181,7 @@ export default function Coach() {
     
       <div className="container-pssi mx-4 z-20 relative">
         
-      <h2 className="text-[#646B8B] text-4xl font-bold">Coach</h2>
+        <h2 className="text-[#646B8B] text-4xl font-bold">Coach</h2>
         <p className="text-sm text-neutral-400 mt-2">
           An Indonesian coach trains and guides athletes or teams, focusing on
           skill development, strategy, and performance improvement.
@@ -491,6 +491,7 @@ export default function Coach() {
             </TableBody>
           </Table>
         </div>
+        
       </div>
     </div>
   );

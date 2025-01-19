@@ -269,156 +269,193 @@ export default function Referee() {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               {/* <DialogTrigger onClick={() => handleViewDetail(row.original.id_petugas)} className="text-blue-400">View Detail</DialogTrigger> */}
               <DialogContent
-                className="max-w-full xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh]"
+                className="max-w-full xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh] bg-[#7E0000]"
                 openModal={isDialogOpen}
               >
                 <DialogHeader>
+                  
                   <button
-                    className="absolute top-2 right-2 text-gray-500 hover:text-black"
+                    className="absolute top-2 right-2 p-3  "
                     onClick={() => setIsDialogOpen(false)}
                   >
-                    <X className="h-4 w-4" />
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 21.8787L22 1.87891" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 1.87908L22 21.8789" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                   </button>
-                  <DialogTitle>
-                    <div className="flex flex-row mb-2 mt-5">
+
+                  <div className="grid grid-cols-7 pt-5">
+                    <div className="col-span-2 pt-5">
                       <img
-                        className="rounded-full w-20"
+                        className="rounded-lg w-full"
                         src={detailReferee.URL_FOTO}
                         alt="avatar"
                       />
-                      <div className="text-gray-700 text-[18px] font-bold ml-4 mt-3">
-                        {detailReferee.NAMA_PETUGAS}
-                        <br></br>
-                        <span className="text-gray-700 text-sm font-normal">
+                    </div>
+                    <div className="col-span-5 pl-5 text-slate-100">
+                      
+                      {/* name  */}
+                      <div className=" font-bold  mt-3">
+                        <p className="text-3xl">{detailReferee.NAMA_PETUGAS}</p>
+                        <span className="text-sm font-normal">
                           {detailReferee.NAMA_LAMPIRAN +
                             "-" +
                             detailReferee.STAT_PETUGAS}
                         </span>
                       </div>
-                    </div>
-                  </DialogTitle>
-                  <DialogDescription>
-                    <div className="flex space-x-4 mt-5">
-                      <div className="bg-white rounded-lg shadow p-6 w-1/2">
-                        <div className="flex items-center space-x-2 mb-4">
-                          <div className="text-[#989899] text-[12px] font-medium">
-                            Personal Information
+                      
+                      {/* personal Information */}
+                      <div className=" mt-5 border text-neutral-400 text-sm border-[#A75353] pb-3">
+                        <div className="bg-[#A75353]  flex px-4 py-3 mb-3 items-center space-x-2">
+                          <div className="text-slate-100 text-sm flex gap-2">
+                            <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M17 21H7C3 21 2 20 2 16V8C2 4 3 3 7 3H17C21 3 22 4 22 8V16C22 20 21 21 17 21Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M14 8H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M15 12H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M17 16H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M8.49994 11.2899C9.49958 11.2899 10.3099 10.4796 10.3099 9.47992C10.3099 8.48029 9.49958 7.66992 8.49994 7.66992C7.50031 7.66992 6.68994 8.48029 6.68994 9.47992C6.68994 10.4796 7.50031 11.2899 8.49994 11.2899Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M12 16.33C11.86 14.88 10.71 13.74 9.26 13.61C8.76 13.56 8.25 13.56 7.74 13.61C6.29 13.75 5.14 14.88 5 16.33" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                            </div>
+                            <span className="my-auto">Personal Information</span>
                           </div>
                         </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Birth Date</div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">Birth Date</div>
                           <div className="text-neutral-400 font-normal">
                             {detailReferee.TGL_LAHIR}
                           </div>
                         </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Gender</div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">Gender</div>
                           <div className="text-neutral-400 font-normal">
                             {detailReferee.JNS_KELAMIN}
                           </div>
                         </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Province</div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">Province</div>
                           <div className="text-neutral-400 font-normal">
                             {detailReferee.NAMA_PROPINSI}
                           </div>
                         </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">City</div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">City</div>
                           <div className="text-neutral-400 font-normal">
                             {detailReferee.NAMA_KOTA}
                           </div>
                         </div>
                       </div>
-                      <div className="bg-white rounded-lg shadow p-6 w-1/2">
-                        <div className="flex items-center space-x-2 mb-4">
-                          <div className="text-[#989899] text-[12px] font-medium">
-                            Career Statistics
+
+                      {/* careet statistic */}
+                      <div className=" text-neutral-400 text-sm border border-[#A75353] pb-3">
+                        
+                        <div className="bg-[#A75353]  flex px-4 py-3 mb-3 items-center space-x-2">
+                          <div className="text-slate-100 text-sm flex gap-2">
+                            <div>
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M6.87988 18.1501V16.0801" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                              <path d="M12 18.15V14.01" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                              <path d="M17.1201 18.1499V11.9299" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                              <path d="M17.1199 5.8501L16.6599 6.3901C14.1099 9.3701 10.6899 11.4801 6.87988 12.4301" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                              <path d="M14.1899 5.8501H17.1199V8.7701" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+
+                            </div>
+                            <span className="my-auto">Career Statistics</span>
                           </div>
                         </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">License</div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">License</div>
                           <div className="text-neutral-400 font-normal">
                             {detailReferee.NAMA_LAMPIRAN}
                           </div>
                         </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Division</div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">Division</div>
                           <div className="text-neutral-400 font-normal">
                             {detailReferee.NAMA_DIVISI}
                           </div>
                         </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Status</div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">Status</div>
                           <div className="text-neutral-400 font-normal">
                             {detailReferee.STATUS}
                           </div>
                         </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Total Matches</div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">Total Matches</div>
                           <div className="text-neutral-400 font-normal">
                             {20 /* API Kurang Total Matches */}
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex space-x-4 mt-5">
-                      <div className="text-[#989899] text-[12px] font-medium">
-                        Recent Matches
+
+                      {/* recent matches  */}
+                      <div className="text-[#989899] mt-5 text-[12px] font-medium">
+                          Recent Matches
                       </div>
-                    </div>
-                    <div className="flex flex-row">
-                      <div className="w-full">
-                        <Table className="mt-2">
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead className="text-[12px]">
-                                Date
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Competition
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Match
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Venue
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Card
-                              </TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                2024-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                BRI Liga 1
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Persija vs Arema
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Gelora Bung Karno Stadium
-                              </TableCell>
-                              <TableCell>
-                                <div className="flex items-center space-x-2">
-                                  <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded">
-                                    0 🟨
-                                  </span>
-                                  <span className="px-2 py-1 bg-red-100 text-red-800 rounded">
-                                    0 🟥
-                                  </span>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
+                      <div className="flex space-x-4 ">
+                        
+                        <div className="flex flex-row">
+                          <div className="w-full">
+                            <Table className="mt-2">
+                              <TableHeader className="text-white text-sm bg-white">
+                                <TableRow>
+                                  <TableHead className="text-[12px]">
+                                    Date
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Competition
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Match
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Venue
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Card
+                                  </TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell className="text-[12px]">
+                                    2024-01-01
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    BRI Liga 1
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    Persija vs Arema
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    Gelora Bung Karno Stadium
+                                  </TableCell>
+                                  <TableCell>
+                                    <div className="flex items-center space-x-2">
+                                      <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded">
+                                        0 🟨
+                                      </span>
+                                      <span className="px-2 py-1 bg-red-100 text-red-800 rounded">
+                                        0 🟥
+                                      </span>
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </div>
+                        </div>
                       </div>
+                      
+
                     </div>
-                  </DialogDescription>
+                  </div>
+
+                 
+                 
                 </DialogHeader>
               </DialogContent>
             </Dialog>
@@ -429,25 +466,31 @@ export default function Referee() {
   ];
 
   return (
-    <div className="relative">
+      
+    
+    <div>
       <div className="bg-[#7E0000] absolute h-[60vh] w-full z-10"></div>
-      <div className="z-20 relative w-full container-pssi mx-4">
-        <NavBar  bgColor="#FFFFFF" selectedTextColor="#7E0000" secondaryTextColor="#C6C6C6" />
-        <h2 className="text-[#A54D4D] text-4xl font-bold">Referees</h2>
-        <p className="text-sm text-neutral-400 mt-2">
+      <NavBar  bgColor="#FFFFFF" selectedTextColor="#7E0000" secondaryTextColor="#6C6C6C" />
+      <div className="container-pssi mx-4 z-20 relative">
+        <h2 className="text-slate-200 text-4xl font-bold">Referees</h2>
+        <p className="text-sm text-slate-300 mt-2">
           An Indonesian referee enforces rules and ensures fairness in sports
           competitions, certified nationally or internationally.
         </p>
 
-        <div className="mt-4">
+        <div className="mt-4 mb-10">
           <CarouselSize />
         </div>
 
-        <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
-          <div className="col-span-2">
+        <div className="mt-5 grid grid-cols-6 bg-white rounded-lg border">
+          <div className="py-3 col-span-6 border-b border-slate-200 px-4">
+            <h3 className="font-semibold">License Distribution</h3>
+          </div>
+
+          <div className="col-span-2 border-r border-slate-200 flex flex-col justify-end">
             <LicenseDistribution data={licenseChart} config={chartConfigs} />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-4 px-4 pb-4">
             <MapsChart dataMaps={dataMaps} />
           </div>
         </div>
@@ -488,10 +531,6 @@ export default function Referee() {
             </div>
           </div>
         </div>
-
-        {/* <div className="mt-4">
-          <RefereeList />
-        </div> */}
       </div>
     </div>
   );
@@ -503,7 +542,7 @@ function CarouselSize() {
       opts={{
         align: "start",
       }}
-      className="w-full md:max-w-screen-md lg:max-w-screen-xl mx-auto"
+      className="w-full  mx-auto"
     >
       <CarouselContent>
         {Array.from({ length: 20 }).map((_, index) => (
@@ -516,24 +555,18 @@ function CarouselSize() {
                 >
                   {/* <span className="text-3xl font-semibold">{index + 1}</span> */}
                   <img
-                    className=" mx-auto"
+                    className=" mx-auto rounded-t-lg"
                     src={
-                      "https://siap.pssi.org/uploads/master_petugas/foto-thoriq-munir-alkatiri_ba01e0390d0c58ab871d3fd682bbf613.jpeg"
+                      "./referee_example.jpg"
                     }
                     alt="avatar"
                   />
-                  <div className="p-2 rounded-lg bg-white backdrop-filter bg-opacity-10 backdrop-blur-md">
-                    <div className="space-y-1.5 rounded-lg w-full bg-white">
-                      <p className="text-center w-full text-sm font-semibold">
-                        <div className="flex flex-row justify-center">
-                          <img
-                            src="indo-flag.png"
-                            className="w-5 h-5 shadow-lg"
-                          />{" "}
-                          <div className="ml-2">Thoriq Munir Alkatiri</div>
-                        </div>
+                  <div className="p-2 rounded-b-lg bg-white ">
+                    <div className="py-3 px-4 rounded-lg w-full bg-white">
+                      <p className=" w-full text-sm font-semibold">
+                        Thoriq Munir Alkatiri
                       </p>
-                      <p className="text-center w-full text-xs text-neutral-600">
+                      <p className=" w-full text-xs text-neutral-600">
                         C3 Referee
                       </p>
                     </div>
@@ -553,11 +586,11 @@ function CarouselSize() {
 function LicenseDistribution({data, config}) {
   
   return (
-    <div className="px-4 py-3 ">
-      <div className="">
-        <h3 className="font-semibold">License Distribution</h3>
+    <div className="px-4 py-3 flex flex-col justify-end">
+      
+        
         <MultipleBarChart dataChart={data} config={config} />
-      </div>
+      
       {/* <div className="flex-1">
         <h3 className="font-semibold">License Distribution - Female Referees by Province</h3>
       </div> */}
