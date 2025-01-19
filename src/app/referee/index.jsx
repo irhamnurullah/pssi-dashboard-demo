@@ -429,10 +429,10 @@ export default function Referee() {
   ];
 
   return (
-    <div className="relative">
+    <div>
       <div className="bg-[#7E0000] absolute h-[60vh] w-full z-10"></div>
-      <div className="z-20 relative w-full container-pssi mx-4">
         <NavBar  bgColor="#FFFFFF" selectedTextColor="#7E0000" secondaryTextColor="#C6C6C6" />
+      <div className="z-20 relative w-full container-pssi mx-4">
         <h2 className="text-[#A54D4D] text-4xl font-bold">Referees</h2>
         <p className="text-sm text-neutral-400 mt-2">
           An Indonesian referee enforces rules and ensures fairness in sports
