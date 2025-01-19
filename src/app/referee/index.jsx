@@ -13,7 +13,7 @@ import MapsChart from "../../components/maps/mapsChart";
 import refree from "../../assets/refree1.jpeg";
 import redcard from "../../assets/redcard.png";
 import yellowcard from "../../assets/yellowcard.png";
-import { X } from "lucide-react"
+import { X } from "lucide-react";
 import NavBar from "../../components/navbar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -60,6 +60,7 @@ import { columns } from "../../components/table/example-table";
 import { useEffect, useState } from "react";
 import sessions from "../../../utils/sessions";
 import apiService from "../../../utils/services";
+import { PaginationControls } from "../../components/table/pagination";
 
 export default function Referee() {
   const dataMaps = [
@@ -98,32 +99,35 @@ export default function Referee() {
   ];
 
   const [refereesData, setRefereesData] = useState([]);
+  const [refereesTotal, setRefereesTotal] = useState([]);
   const [licenseChart, setChartLicenseDistribution] = useState([]);
   const [chartConfigs, setChartConfig] = useState([]);
   const [detailReferee, setDetailReferee] = useState([]);
   const token = sessions.getSessionToken();
-  const [rowFrom, setRowFrom] = useState(0);
-  const [rowLength, setRowLength] = useState(10);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
   useEffect(() => {
-    getListReferee();
+    getListReferee(currentPage, rowsPerPage);
     getChartData();
-  }, [rowFrom, rowLength]);
+  }, [currentPage, rowsPerPage]);
 
-  const getListReferee = async () => {
+  const getListReferee = async (page, rowsPerPage) => {
     try {
-      const referee = await apiService.get(
-        `/api/referee/GetListData?row_from=${rowFrom}&length=${rowLength}`,
-        headers
+      const referee = await apiService.get(`/api/referee/GetListData?row_from=${(page - 1) * rowsPerPage}&length=${rowsPerPage}`,headers
       );
 
       if (referee.status === 200) {
         setRefereesData(referee.data.data);
+        setRefereesTotal(referee.data.recordsTotal);
+        setTotalPages(Math.ceil(refereesTotal / rowsPerPage));
       }
     } catch (error) {
       console.log(error);
@@ -136,27 +140,25 @@ export default function Referee() {
         `/api/referee/GetGrafikAll`,
         headers
       );
-      
 
       if (referee.status === 200 || referee.length > 0) {
-
-        const licenceFormatChart = referee.data.map(item => ({
+        const licenceFormatChart = referee.data.map((item) => ({
           category: item.NAME,
           female_coaches: item.TOTAL_WANITA,
-          male_coaches: item.TOTAL_PRIA
+          male_coaches: item.TOTAL_PRIA,
         }));
-        
+
         const chartConfig = {
           female_coaches: {
-            label: 'Female Coaches',
-            color: '#FF99CF',
+            label: "Female Coaches",
+            color: "#FF99CF",
           },
           male_coaches: {
-            label: 'Total Coaches',
-            color: '#3067D3',
+            label: "Male Coaches",
+            color: "#3067D3",
           },
         };
-        
+
         setChartLicenseDistribution(licenceFormatChart);
         setChartConfig(chartConfig);
       }
@@ -495,41 +497,21 @@ export default function Referee() {
           </div>
         </div>
 
-        <div className="flex flex-wrap mt-5 bg-white p-5">
+        <div className="mt-5 bg-white p-5">
           <div className="text-black font-bold">Referee List</div>
           <DataTable
             columns={columns}
             data={refereesData}
             searchBy={"nama_petugas"}
+            totalData={refereesTotal}
           />
-          <div className="flex flex-col">
-            <div className="flex justify-end">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive>
-                      2
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            onRowsPerPageChange={setRowsPerPage}
+            rowsPerPage={rowsPerPage}
+          />
         </div>
       </div>
     </div>
@@ -583,8 +565,7 @@ function CarouselSize() {
   );
 }
 
-function LicenseDistribution({data, config}) {
-  
+function LicenseDistribution({ data, config }) {
   return (
     <div className="px-4 py-3 flex flex-col justify-end">
       
