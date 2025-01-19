@@ -33,6 +33,7 @@ import { useEffect, useState } from "react";
 import sessions from "../../../utils/sessions";
 import apiService from "../../../utils/services";
 import { DataTable } from "@/components/table/datatable";
+import { PaginationControls } from "../../components/table/pagination";
 
 export default function Coach() {
   const tableData = [
@@ -439,33 +440,38 @@ export default function Coach() {
   ];
 
   const [coachData, setCoachData] = useState([]);
+  const [coachTotal, setCoachTotal] = useState([]);
   const [licenseChart, setChartLicenseDistribution] = useState([]);
   const [chartConfigs, setChartConfig] = useState([]);
   const [detailCoach, setDetailCoach] = useState([]);
   const token = sessions.getSessionToken();
-  const [rowFrom, setRowFrom] = useState(0);
-  const [rowLength, setRowLength] = useState(10);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [lisensi, setLicensi] = useState();
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
   useEffect(() => {
-    getListCoach();
+    getListCoach(currentPage, rowsPerPage);
     getChartData();
-  }, [rowFrom, rowLength]);
+  }, [currentPage, rowsPerPage]);
 
-  const getListCoach = async () => {
+  const getListCoach = async (page, rowsPerPage) => {
     try {
       const coach = await apiService.get(
-        `/api/coach/GetListData?row_from=${rowFrom}&length=${rowLength}`,
+        `/api/coach/GetListData?row_from=${(page - 1) * rowsPerPage}&length=${rowsPerPage}`,
         headers
       );
 
       if (coach.status === 200) {
         setCoachData(coach.data.data);
+        setCoachTotal(coach.data.recordsTotal);
+        setTotalPages(Math.ceil(coachTotal / rowsPerPage));
       }
     } catch (error) {
       console.log(error);
@@ -489,7 +495,7 @@ export default function Coach() {
             color: "#FF99CF",
           },
           male_coaches: {
-            label: "Total Coaches",
+            label: "Male Coaches",
             color: "#3067D3",
           },
         };
@@ -553,6 +559,14 @@ export default function Coach() {
             columns={columns}
             data={coachData}
             searchBy={"nama_official"}
+            totalData={coachTotal}
+          />
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            onRowsPerPageChange={setRowsPerPage}
+            rowsPerPage={rowsPerPage}
           />
         </div>
       </div>

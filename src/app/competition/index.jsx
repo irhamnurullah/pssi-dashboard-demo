@@ -236,9 +236,14 @@ export default function Competition() {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Total</SelectLabel>
-                      <SelectItem value="clubs">Total Clubs</SelectItem>
-                      <SelectItem value="players">Total Players</SelectItem>
-                      <SelectItem value="official">Total Official</SelectItem>
+                      <SelectItem value="TOTAL_KLUB">Total Clubs</SelectItem>
+                      <SelectItem value="TOTAL_PEMAIN">Total Players</SelectItem>
+                      <SelectItem value="TOTAL_OFFICIAL">Total Official</SelectItem>
+                      <SelectItem value="TOTAL_PERTANDINGAN">Total Pertandingan</SelectItem>
+                      <SelectItem value="TOTAL_GOL">Total Gol</SelectItem>
+                      <SelectItem value="TOTAL_KML">Total Kartu Merah Langsung</SelectItem>
+                      <SelectItem value="TOTAL_KMT">Total Kartu Merah Tidak Langsung</SelectItem>
+                      <SelectItem value="TOTAL_KK">Total Kartu Kuning</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>

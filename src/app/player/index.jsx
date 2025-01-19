@@ -39,6 +39,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { PaginationControls } from "../../components/table/pagination";
 
 const playersCardsDataDummy = [
   {
@@ -120,13 +121,16 @@ export default function Player() {
   ];
 
   const [playerData, setplayerData] = useState([]);
+  const [playerTotal, setPlayerTotal] = useState([]);
   const [licenseChart, setChartLicenseDistribution] = useState([]);
   const [chartConfigs, setChartConfig] = useState([]);
   const [detailPlayer, setDetailPlayer] = useState([]);
   const token = sessions.getSessionToken();
-  const [rowFrom, setRowFrom] = useState(0);
-  const [rowLength, setRowLength] = useState(10);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
   const columns = [
     {
@@ -224,9 +228,13 @@ export default function Player() {
                         alt="avatar"
                       />
                       <div className="text-gray-700 text-[18px] font-bold ml-4 mt-3">
-                        {detailPlayer.NAMA_PEMAIN}<br></br>
+                        {detailPlayer.NAMA_PEMAIN}
+                        <br></br>
                         <span className="text-gray-700 text-sm font-normal">
-                          {detailPlayer.NAMATIM} - {detailPlayer.JENIS_KELAMIN === "Pria" ? "Men" : "Women"}
+                          {detailPlayer.NAMATIM} -{" "}
+                          {detailPlayer.JENIS_KELAMIN === "Pria"
+                            ? "Men"
+                            : "Women"}
                         </span>
                       </div>
                     </div>
@@ -362,19 +370,23 @@ export default function Player() {
   };
 
   useEffect(() => {
-    getListPlayer();
+    getListPlayer(currentPage, rowsPerPage);
     getChartData();
-  }, [rowFrom, rowLength]);
+  }, [currentPage, rowsPerPage]);
 
-  const getListPlayer = async () => {
+  const getListPlayer = async (page, rowsPerPage) => {
     try {
       const player = await apiService.get(
-        `/api/player/GetListData?row_from=${rowFrom}&length=${rowLength}`,
+        `/api/player/GetListData?row_from=${
+          (page - 1) * rowsPerPage
+        }&length=${rowsPerPage}`,
         headers
       );
 
       if (player.status === 200) {
         setplayerData(player.data.data);
+        setPlayerTotal(player.data.recordsTotal);
+        setTotalPages(Math.ceil(playerTotal / rowsPerPage));
       }
     } catch (error) {
       console.log(error);
@@ -418,7 +430,7 @@ export default function Player() {
       const detail = await apiService.get(
         `/api/player/GetRecordByID?id_pemain=${id_pemain}`,
         headers
-      );      
+      );
 
       if (detail.status === 200) {
         setDetailPlayer(detail.data);
@@ -484,11 +496,22 @@ export default function Player() {
           <CarouselNext />
         </Carousel>
 
-        <DataTable
-          columns={columns}
-          data={playerData}
-          searchBy={"nama_pemain"}
-        />
+        <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
+          <DataTable
+            columns={columns}
+            data={playerData}
+            searchBy={"nama_pemain"}
+            totalData={playerTotal}
+          />
+
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            onRowsPerPageChange={setRowsPerPage}
+            rowsPerPage={rowsPerPage}
+          />
+        </div>
 
         <div className="grid grid-cols-12 gap-4">
           <div className="flex flex-col col-span-5 p-4 gap-4 bg-white rounded-lg shadow-lg">
