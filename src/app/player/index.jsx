@@ -40,21 +40,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PaginationControls } from "../../components/table/pagination";
+import { X } from "lucide-react";
 
 const playersCardsDataDummy = [
   {
     label: "Total Players",
-    value: 1152,
+    value: 0,
     color: "green",
   },
   {
     label: "Male Players",
-    value: 710,
+    value: 0,
     color: "blue",
   },
   {
     label: "Female Players",
-    value: 442,
+    value: 0,
     color: "pink",
   },
 ];
@@ -122,8 +123,6 @@ export default function Player() {
 
   const [playerData, setplayerData] = useState([]);
   const [playerTotal, setPlayerTotal] = useState([]);
-  const [licenseChart, setChartLicenseDistribution] = useState([]);
-  const [chartConfigs, setChartConfig] = useState([]);
   const [detailPlayer, setDetailPlayer] = useState([]);
   const token = sessions.getSessionToken();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -131,6 +130,33 @@ export default function Player() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
+
+  const [totalPlayer, setTotalPlayer] = useState([
+    {
+      label: "Total Players",
+      value: 0,
+      color: "green",
+    },
+    {
+      label: "Male Players",
+      value: 0,
+      color: "blue",
+    },
+    {
+      label: "Female Players",
+      value: 0,
+      color: "pink",
+    },
+  ]);
+
+  const [playerByAge, setPlayerByAge] = useState([
+    { age: "U17", male: 0, female: 0 },
+    { age: "U20", male: 0, female: 0 },
+    { age: "U23", male: 0, female: 0 },
+    { age: "Senior", male: 0, female: 0 },
+  ]);
+
+  const [playerProvince, setPlayerProvince] = useState([]);
 
   const columns = [
     {
@@ -220,6 +246,12 @@ export default function Player() {
                 openModal={isDialogOpen}
               >
                 <DialogHeader>
+                  <button
+                    className="absolute top-2 right-2 text-gray-500 hover:text-black"
+                    onClick={() => setIsDialogOpen(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                   <DialogTitle>
                     <div className="flex flex-row mb-2 mt-5">
                       <img
@@ -372,6 +404,7 @@ export default function Player() {
   useEffect(() => {
     getListPlayer(currentPage, rowsPerPage);
     getChartData();
+    getChartDataByProvince();
   }, [currentPage, rowsPerPage]);
 
   const getListPlayer = async (page, rowsPerPage) => {
@@ -395,28 +428,74 @@ export default function Player() {
 
   const getChartData = async () => {
     try {
-      const player = await apiService.get(`/api/player/GetGrafikAll`, headers);
+      const player = await apiService.get(`/api/player/GetData`, headers);
 
-      if (player.status === 200 || player.length > 0) {
-        const licenceFormatChart = player.data.map((item) => ({
-          category: item.NAME,
-          female_playeres: item.TOTAL_WANITA,
-          male_playeres: item.TOTAL_PRIA,
-        }));
-
-        const chartConfig = {
-          female_playeres: {
-            label: "Female playeres",
-            color: "#FF99CF",
+      if (player.status === 200) {
+        setTotalPlayer([
+          {
+            label: "Total Players",
+            value: (
+              player.data.PRIA_ALL.TOTAL + player.data.WANITA_ALL.TOTAL
+            ).toLocaleString("id-ID"),
+            color: "green",
           },
-          male_playeres: {
-            label: "Total playeres",
-            color: "#3067D3",
+          {
+            label: "Male Players",
+            value: player.data.PRIA_ALL.TOTAL.toLocaleString("id-ID"),
+            color: "blue",
           },
-        };
+          {
+            label: "Female Players",
+            value: player.data.WANITA_ALL.TOTAL.toLocaleString("id-ID"),
+            color: "pink",
+          },
+        ]);
 
-        setChartLicenseDistribution(licenceFormatChart);
-        setChartConfig(chartConfig);
+        setPlayerByAge([
+          {
+            age: "U17",
+            male: player.data.PRIA_U17.TOTAL,
+            female: player.data.WANITA_U17.TOTAL,
+          },
+          {
+            age: "U20",
+            male: player.data.PRIA_U20.TOTAL,
+            female: player.data.WANITA_U20.TOTAL,
+          },
+          {
+            age: "U23",
+            male: player.data.PRIA_U23.TOTAL,
+            female: player.data.WANITA_U23.TOTAL,
+          },
+          {
+            age: "Senior",
+            male: player.data.PRIA_ALL.TOTAL,
+            female: player.data.WANITA_ALL.TOTAL,
+          },
+        ]);
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getChartDataByProvince = async () => {
+    try {
+      const player = await apiService.get(`/api/player/GetDataByProvinsi`, headers);
+
+      if (player.status === 200) {
+        
+        const playerChartByProvince = Object.entries(player.data)
+          .map(([province, values]) => ({
+            province,
+            male: values.PRIA_ALL.TOTAL,
+            female: values.WANITA_ALL.TOTAL,
+          }))
+          .sort((a, b) => b.male - a.male)
+          .slice(0, 10);
+
+        setPlayerProvince(playerChartByProvince);
       }
     } catch (error) {
       console.log(error);
@@ -460,7 +539,7 @@ export default function Player() {
         </div>
 
         <div className="grid grid-cols-3 p-4 gap-4 bg-white border rounded-lg">
-          {playersCardsDataDummy.map((card, idx) => (
+          {totalPlayer.map((card, idx) => (
             <CardGradient
               key={idx}
               title={card.label}
@@ -520,14 +599,14 @@ export default function Player() {
             </p>
 
             <ChartContainer config={chartConfig} className="h-full">
-              <BarChart accessibilityLayer data={playersChartDataByAge}>
+              <BarChart accessibilityLayer data={playerByAge}>
                 <CartesianGrid vertical={false} />
                 <XAxis
                   dataKey="age"
                   tickLine={true}
                   tickMargin={10}
                   axisLine={true}
-                  tickFormatter={(value) => value.slice(0, 3)}
+                  tickFormatter={(value) => value}
                 />
                 <YAxis
                   tickLine={true}
@@ -557,14 +636,14 @@ export default function Player() {
             <p className="font-bold">Player Distribution by Province</p>
 
             <ChartContainer config={chartConfig} className="h-full">
-              <BarChart accessibilityLayer data={playersChartDataByProvince}>
+              <BarChart accessibilityLayer data={playerProvince}>
                 <CartesianGrid vertical={false} />
                 <XAxis
                   dataKey="province"
                   tickLine={true}
                   tickMargin={10}
                   axisLine={true}
-                  tickFormatter={(value) => value.slice(0, 3)}
+                  tickFormatter={(value) => value.slice(0, 5)}
                 />
                 <YAxis
                   tickLine={true}

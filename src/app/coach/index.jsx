@@ -34,6 +34,7 @@ import sessions from "../../../utils/sessions";
 import apiService from "../../../utils/services";
 import { DataTable } from "@/components/table/datatable";
 import { PaginationControls } from "../../components/table/pagination";
+import { X } from "lucide-react";
 
 export default function Coach() {
   const tableData = [
@@ -136,7 +137,10 @@ export default function Coach() {
         return (
           <div>
             <button
-              onClick={() => {handleViewDetail(row.original.id_official); setLicensi(row.original.lisensi)}}
+              onClick={() => {
+                handleViewDetail(row.original.id_official);
+                setLicensi(row.original.lisensi);
+              }}
               className="text-blue-400"
             >
               View Detail
@@ -147,6 +151,12 @@ export default function Coach() {
                 openModal={isDialogOpen}
               >
                 <DialogHeader>
+                  <button
+                    className="absolute top-2 right-2 text-gray-500 hover:text-black"
+                    onClick={() => setIsDialogOpen(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
                   <DialogTitle>
                     <div className="flex flex-row mb-2 mt-5">
                       <img
@@ -155,7 +165,8 @@ export default function Coach() {
                         alt="avatar"
                       />
                       <div className="text-gray-700 text-[18px] font-bold ml-4 mt-3">
-                        {detailCoach.NAMA_OFFICIAL}<br></br>
+                        {detailCoach.NAMA_OFFICIAL}
+                        <br></br>
                         <span className="text-gray-700 text-sm font-normal">
                           {detailCoach.NAMA_JABATAN} {"-" + lisensi}
                         </span>
@@ -447,7 +458,7 @@ export default function Coach() {
   const token = sessions.getSessionToken();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [lisensi, setLicensi] = useState();
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
@@ -464,7 +475,9 @@ export default function Coach() {
   const getListCoach = async (page, rowsPerPage) => {
     try {
       const coach = await apiService.get(
-        `/api/coach/GetListData?row_from=${(page - 1) * rowsPerPage}&length=${rowsPerPage}`,
+        `/api/coach/GetListData?row_from=${
+          (page - 1) * rowsPerPage
+        }&length=${rowsPerPage}`,
         headers
       );
 
@@ -508,7 +521,7 @@ export default function Coach() {
     }
   };
 
-  const handleViewDetail = async (id_official,) => {
+  const handleViewDetail = async (id_official) => {
     setIsDialogOpen(true);
 
     try {
