@@ -448,7 +448,7 @@ export default function Player() {
         </div>
 
         <div className="grid grid-cols-3 p-4 gap-4 bg-white border rounded-lg">
-          {playersCardsData.map((card, idx) => (
+          {playersCardsDataDummy.map((card, idx) => (
             <CardGradient
               key={idx}
               title={card.label}
