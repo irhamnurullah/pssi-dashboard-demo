@@ -503,7 +503,7 @@ export default function Referee() {
           competitions, certified nationally or internationally.
         </p>
 
-        <div className="mt-4 mb-10">
+        <div className="mt-4 py-5 px-3 mb-10">
           <CarouselSize data={dataSlide} />
         </div>
 
@@ -543,38 +543,71 @@ export default function Referee() {
 }
 
 function CarouselSize({data}) {
+ 
   return (
     <Carousel
       opts={{
         align: "start",
       }}
-      className="w-full  mx-auto"
+      className="w-full  mx-auto "
     >
       <CarouselContent>
         {data.map((slide, index) => (
           <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/5">
             <div>
-              <Card className="border-none bg-transparent shadow-none">
+              <Card className="border hover:border-2 hover:border-[#7E0000] rounded-lg cursor-pointer border-slate-200 bg-transparent shadow-none">
                 <CardContent
-                  // className="flex flex-col items-center aspect-square p-6"
                   className="p-0"
                 >
                   {/* <span className="text-3xl font-semibold">{index + 1}</span> */}
                   <img
-                    className="mx-auto rounded-t-lg object-cover w-full h-[45vh]"
+                    className="mx-auto rounded-t-lg object-cover w-full h-[30vh]"
                     src={slide.URL_FOTO}
                     alt="avatar"
-                    style={{objectPosition: "middle" }}
+                    style={{objectPosition: "top" }}
                   />
-                  <div className="p-2 rounded-b-lg bg-white ">
-                    <div className="py-3 px-4 rounded-lg w-full bg-white">
-                      <p className=" w-full text-sm font-semibold">
+
+                  <div className="p-2 rounded-b-lg hover:shadow-xl  bg-white " style={{backgroundImage: `url('./pattern-white.svg')`}}>
+                    <div className="py-3 px-4  relative">
+                      <p className=" w-full text-md font-semibold">
                         {slide.NAMA_PETUGAS}
                       </p>
-                      {/* <p className=" w-full text-xs text-neutral-600">
-                        C3 Referee
-                      </p> */}
+                      <div className="grid grid-cols-2 mt-2">
+                        <div className="col-span-1">
+                          <div className="flex gap-2">
+                            <svg className="mt-1" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.49 2.23006L5.50003 4.11006C4.35003 4.54006 3.41003 5.90006 3.41003 7.12006V14.5501C3.41003 15.7301 4.19003 17.2801 5.14003 17.9901L9.44003 21.2001C10.85 22.2601 13.17 22.2601 14.58 21.2001L18.88 17.9901C19.83 17.2801 20.61 15.7301 20.61 14.5501V7.12006C20.61 5.89006 19.67 4.53006 18.52 4.10006L13.53 2.23006C12.68 1.92006 11.32 1.92006 10.49 2.23006Z" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9.05005 11.8701L10.66 13.4801L14.96 9.18005" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div className="my-auto">
+                              <small className="text-xs text-neutral-400">Division</small>
+                              <p className="text-xs text-neutral-700">
+                                {slide.NAMA_DIVISI}
+                              </p>
+                            </div>
+                            
+                          </div>  
+                        </div>
+
+                        <div className="col-span-1">
+                          <div className="flex gap-2">
+                            <svg width="18" height="18" className="mt-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.38 12L10.79 14.42L15.62 9.57996" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10.75 2.44995C11.44 1.85995 12.57 1.85995 13.27 2.44995L14.85 3.80995C15.15 4.06995 15.71 4.27995 16.11 4.27995H17.81C18.87 4.27995 19.74 5.14995 19.74 6.20995V7.90995C19.74 8.29995 19.95 8.86995 20.21 9.16995L21.57 10.7499C22.16 11.4399 22.16 12.5699 21.57 13.2699L20.21 14.8499C19.95 15.1499 19.74 15.7099 19.74 16.1099V17.8099C19.74 18.8699 18.87 19.7399 17.81 19.7399H16.11C15.72 19.7399 15.15 19.9499 14.85 20.2099L13.27 21.5699C12.58 22.1599 11.45 22.1599 10.75 21.5699L9.17 20.2099C8.87 19.9499 8.31 19.7399 7.91 19.7399H6.18C5.12 19.7399 4.25 18.8699 4.25 17.8099V16.0999C4.25 15.7099 4.04 15.1499 3.79 14.8499L2.44 13.2599C1.86 12.5699 1.86 11.4499 2.44 10.7599L3.79 9.16995C4.04 8.86995 4.25 8.30995 4.25 7.91995V6.19995C4.25 5.13995 5.12 4.26995 6.18 4.26995H7.91C8.3 4.26995 8.87 4.05995 9.17 3.79995L10.75 2.44995Z" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+
+                            <div className="my-auto">
+                              <small className="text-xs text-neutral-400">Status</small>
+                              <p className="text-xs text-neutral-700">
+                                {slide.STAT_PETUGAS}
+                              </p>
+                            </div>
+                            
+                          </div>  
+                        </div>
+                      </div>
                     </div>
+                    
                   </div>
                 </CardContent>
               </Card>
