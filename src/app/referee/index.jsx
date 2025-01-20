@@ -571,9 +571,9 @@ function CarouselSize({data}) {
                       <p className=" w-full text-sm font-semibold">
                         {slide.NAMA_PETUGAS}
                       </p>
-                      {/* <p className=" w-full text-xs text-neutral-600">
-                        C3 Referee
-                      </p> */}
+                      <p className=" w-full text-xs text-neutral-600">
+                        {slide.NAMA_DIVISI + ' - ' + slide.STAT_PETUGAS}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
