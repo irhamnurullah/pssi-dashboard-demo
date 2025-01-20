@@ -61,14 +61,14 @@ export function DataTable({columns, data, searchBy}) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="Filter..."
           value={table.getColumn(searchBy)?.getFilterValue() ?? ""}
           onChange={(event) =>
             table.getColumn(searchBy)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Columns <ChevronDown />
@@ -93,7 +93,7 @@ export function DataTable({columns, data, searchBy}) {
                 );
               })}
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
       <div className="rounded-md border">
         <Table>
