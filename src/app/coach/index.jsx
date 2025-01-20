@@ -573,6 +573,7 @@ export default function Coach() {
             data={coachData}
             searchBy={"nama_official"}
             totalData={coachTotal}
+            placeholderText="Filter Nama Official..."
           />
           <PaginationControls
             currentPage={currentPage}
