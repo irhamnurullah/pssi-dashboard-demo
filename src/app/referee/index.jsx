@@ -515,7 +515,7 @@ export default function Referee() {
         </p>
 
         <div className="mt-4 py-5 px-3 mb-10">
-          <CarouselSize data={dataSlide} />
+          <CarouselSize data={dataSlide}  handleViewDetail={handleViewDetail} />
         </div>
 
         <div className="mt-5 grid grid-cols-6 bg-white rounded-lg border">
@@ -553,7 +553,7 @@ export default function Referee() {
   );
 }
 
-function CarouselSize({data}) {
+function CarouselSize({data, handleViewDetail }) {
  
   return (
     <Carousel
@@ -564,7 +564,11 @@ function CarouselSize({data}) {
     >
       <CarouselContent>
         {data.map((slide, index) => (
-          <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/5">
+          <CarouselItem 
+            key={index} 
+            className="md:basis-1/5 lg:basis-1/5"
+            onClick={() => handleViewDetail(slide.ID_PETUGAS)}
+          >
             <div>
               <Card className="border hover:border-2 hover:border-[#7E0000] rounded-lg cursor-pointer border-slate-200 bg-transparent shadow-none">
                 <CardContent
@@ -646,11 +650,11 @@ function LicenseDistribution({ data, config }) {
   );
 }
 
-function RefereeList() {
-  return (
-    <Card className="p-4">
-      <h3 className="font-semibold">Referee List</h3>
-      <DataTableExample />
-    </Card>
-  );
-}
+// function RefereeList() {
+//   return (
+//     <Card className="p-4">
+//       <h3 className="font-semibold">Referee List</h3>
+//       <DataTableExample />
+//     </Card>
+//   );
+// }
