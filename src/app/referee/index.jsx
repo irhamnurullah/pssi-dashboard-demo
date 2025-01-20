@@ -158,11 +158,11 @@ export default function Referee() {
 
         const chartConfig = {
           female_coaches: {
-            label: "Female Coaches",
+            label: "Female",
             color: "#FF99CF",
           },
           male_coaches: {
-            label: "Male Coaches",
+            label: "Male",
             color: "#3067D3",
           },
         };
@@ -394,9 +394,21 @@ export default function Referee() {
                           </div>
                         </div>
                         <div className="flex justify-between pl-12 pr-4">
-                          <div className="">Total Matches</div>
+                          <div className="">Total Red Card (RC)</div>
                           <div className="text-neutral-400 font-normal">
-                            {20 /* API Kurang Total Matches */}
+                            {detailReferee.TOTAL_RC}
+                          </div>
+                        </div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">Total Second Yellow Card (SYC)</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.TOTAL_SYC}
+                          </div>
+                        </div>
+                        <div className="flex justify-between pl-12 pr-4">
+                          <div className="">Total Yellow Card (YC)</div>
+                          <div className="text-neutral-400 font-normal">
+                            {detailReferee.TOTAL_YC}
                           </div>
                         </div>
                       </div>
@@ -413,27 +425,21 @@ export default function Referee() {
                               <TableHeader className="text-white text-sm bg-white">
                                 <TableRow>
                                   <TableHead className="text-[12px]">
-                                    Date
-                                  </TableHead>
-                                  <TableHead className="text-[12px]">
                                     Competition
                                   </TableHead>
                                   <TableHead className="text-[12px]">
                                     Match
                                   </TableHead>
                                   <TableHead className="text-[12px]">
-                                    Venue
+                                    Date
                                   </TableHead>
                                   <TableHead className="text-[12px]">
-                                    Card
+                                    Status
                                   </TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
                                 <TableRow>
-                                  <TableCell className="text-[12px]">
-                                    2024-01-01
-                                  </TableCell>
                                   <TableCell className="text-[12px]">
                                     BRI Liga 1
                                   </TableCell>
@@ -441,17 +447,10 @@ export default function Referee() {
                                     Persija vs Arema
                                   </TableCell>
                                   <TableCell className="text-[12px]">
-                                    Gelora Bung Karno Stadium
+                                    2024-01-01
                                   </TableCell>
-                                  <TableCell>
-                                    <div className="flex items-center space-x-2">
-                                      <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded">
-                                        0 🟨
-                                      </span>
-                                      <span className="px-2 py-1 bg-red-100 text-red-800 rounded">
-                                        0 🟥
-                                      </span>
-                                    </div>
+                                  <TableCell className="text-[12px]">
+                                    Gelora Bung Karno Stadium
                                   </TableCell>
                                 </TableRow>
                               </TableBody>
