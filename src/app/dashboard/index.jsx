@@ -286,7 +286,7 @@ export default function DashboardPage() {
                     : "bg-slate-200 text-slate-700"
                 } rounded-lg shadow p-4 w-60 ml-3 relative`}
               >
-                <small className="text-xs font-normal">Total Players</small>
+                <small className="text-xs font-normal">Total Players.</small>
                 <div className=" text-xl font-bold">{player} </div>
                 {
                   activeCard === "players" ?
