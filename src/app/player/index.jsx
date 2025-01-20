@@ -131,6 +131,8 @@ export default function Player() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
+  const [dataSlide, setDataSlide] = useState([]);
+
   const [totalPlayer, setTotalPlayer] = useState([
     {
       label: "Total Players",
@@ -405,6 +407,7 @@ export default function Player() {
     getListPlayer(currentPage, rowsPerPage);
     getChartData();
     getChartDataByProvince();
+    getCarouselData();
   }, [currentPage, rowsPerPage]);
 
   const getListPlayer = async (page, rowsPerPage) => {
@@ -473,7 +476,6 @@ export default function Player() {
             female: player.data.WANITA_ALL.TOTAL,
           },
         ]);
-
       }
     } catch (error) {
       console.log(error);
@@ -482,10 +484,12 @@ export default function Player() {
 
   const getChartDataByProvince = async () => {
     try {
-      const player = await apiService.get(`/api/player/GetDataByProvinsi`, headers);
+      const player = await apiService.get(
+        `/api/player/GetDataByProvinsi`,
+        headers
+      );
 
       if (player.status === 200) {
-        
         const playerChartByProvince = Object.entries(player.data)
           .map(([province, values]) => ({
             province,
@@ -513,6 +517,18 @@ export default function Player() {
 
       if (detail.status === 200) {
         setDetailPlayer(detail.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCarouselData = async () => {
+    try {
+      const playerSlide = await apiService.get(`/api/player/GetSlide`, headers);
+
+      if (playerSlide.status === 200 || playerSlide.length > 0) {
+        setDataSlide(playerSlide.data);
       }
     } catch (error) {
       console.log(error);
@@ -556,17 +572,17 @@ export default function Player() {
           className="w-full !overflow-visible"
         >
           <CarouselContent className="!overflow-visible">
-            {Array.from({ length: 20 }).map((_, index) => (
+            {dataSlide.map((slide, index) => (
               <CarouselItem
                 key={index}
                 className="md:basis-1/5 lg:basis-1/5 !overflow-visible"
               >
                 <PlayerCard
-                  img={PlayerImg}
+                  img={slide.URL_FOTO}
                   alt="player"
-                  country="Indonesia"
-                  playerName="Marselino Ferdinand"
-                  playerPosition="Midfielder - Senior Men"
+                  country={slide.NAMA_NEGARA}
+                  playerName={slide.NAMA_PEMAIN}
+                  playerPosition=""
                 />
               </CarouselItem>
             ))}
