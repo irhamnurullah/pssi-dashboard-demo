@@ -545,7 +545,7 @@ export default function Player() {
         secondaryTextColor="#C6C6C6"
       />
 
-      <div className="z-20 relative container-pssi flex flex-col gap-8 px-5 md:px-[150px] py-10 ">
+      <div className="z-20 relative flex flex-col gap-5 container-pssi mx-4 z-20 relative ">
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold text-[#646B8B]">Players</h1>
           <p className="text-gray-400">
@@ -573,7 +573,7 @@ export default function Player() {
           }}
           className="w-full !overflow-visible"
         >
-          <CarouselContent className="!overflow-visible p-5">
+          <CarouselContent className="!overflow-visible">
             {dataSlide.map((slide, index) => (
               <CarouselItem
                 key={index}
