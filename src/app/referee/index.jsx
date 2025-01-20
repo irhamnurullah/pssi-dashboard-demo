@@ -125,7 +125,12 @@ export default function Referee() {
       );
 
       if (referee.status === 200) {
-        setRefereesData(referee.data.data);
+        const formattedData = referee.data.data.map((ref) => ({
+          ...ref,
+          tgl_lahir: ref.tgl_lahir.split(" ")[0],
+        }));
+
+        setRefereesData(formattedData);
         setRefereesTotal(referee.data.recordsTotal);
         setTotalPages(Math.ceil(refereesTotal / rowsPerPage));
       }
@@ -504,6 +509,7 @@ export default function Referee() {
             data={refereesData}
             searchBy={"nama_petugas"}
             totalData={refereesTotal}
+            placeholderText={"Filter Nama..."}
           />
           <PaginationControls
             currentPage={currentPage}
