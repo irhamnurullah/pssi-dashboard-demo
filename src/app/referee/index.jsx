@@ -103,6 +103,7 @@ export default function Referee() {
   const [licenseChart, setChartLicenseDistribution] = useState([]);
   const [chartConfigs, setChartConfig] = useState([]);
   const [detailReferee, setDetailReferee] = useState([]);
+  const [recentMatch, setRecentMatch] = useState([]);
   const token = sessions.getSessionToken();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -186,6 +187,7 @@ export default function Referee() {
 
       if (detail.status === 200) {
         setDetailReferee(detail.data.biodata);
+        setRecentMatch(detail.data.recent_match);
       }
     } catch (error) {
       console.log(error);
@@ -439,20 +441,30 @@ export default function Referee() {
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
-                                <TableRow>
-                                  <TableCell className="text-[12px]">
-                                    BRI Liga 1
-                                  </TableCell>
-                                  <TableCell className="text-[12px]">
-                                    Persija vs Arema
-                                  </TableCell>
-                                  <TableCell className="text-[12px]">
-                                    2024-01-01
-                                  </TableCell>
-                                  <TableCell className="text-[12px]">
-                                    Gelora Bung Karno Stadium
-                                  </TableCell>
-                                </TableRow>
+                                {recentMatch.length > 0 ? (
+                                  recentMatch.map((match, index) => (
+                                    <TableRow key={index}>
+                                      <TableCell className="text-[12px]">
+                                        {match.COMPETITION}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {match.MATCH}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {new Date(match.DATE).toLocaleDateString()}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {match.STATUS}
+                                      </TableCell>
+                                    </TableRow>
+                                  ))
+                                ) : (
+                                  <TableRow>
+                                    <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                      Tidak ada data
+                                    </TableCell>
+                                  </TableRow>
+                                )}
                               </TableBody>
                             </Table>
                           </div>
