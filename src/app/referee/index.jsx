@@ -110,6 +110,8 @@ export default function Referee() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
+  const [dataSlide, setDataSlide] = useState([]);
+
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -117,6 +119,7 @@ export default function Referee() {
   useEffect(() => {
     getListReferee(currentPage, rowsPerPage);
     getChartData();
+    getCarouselData();
   }, [currentPage, rowsPerPage]);
 
   const getListReferee = async (page, rowsPerPage) => {
@@ -472,6 +475,21 @@ export default function Referee() {
     },
   ];
 
+  const getCarouselData = async () => {
+    try {
+      const refereeSlide = await apiService.get(
+        `/api/referee/GetSlide`,
+        headers
+      );
+
+      if (refereeSlide.status === 200 || refereeSlide.length > 0) {
+        setDataSlide(refereeSlide.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
       
     
@@ -486,7 +504,7 @@ export default function Referee() {
         </p>
 
         <div className="mt-4 mb-10">
-          <CarouselSize />
+          <CarouselSize data={dataSlide} />
         </div>
 
         <div className="mt-5 grid grid-cols-6 bg-white rounded-lg border">
@@ -524,7 +542,7 @@ export default function Referee() {
   );
 }
 
-function CarouselSize() {
+function CarouselSize({data}) {
   return (
     <Carousel
       opts={{
@@ -533,7 +551,7 @@ function CarouselSize() {
       className="w-full  mx-auto"
     >
       <CarouselContent>
-        {Array.from({ length: 20 }).map((_, index) => (
+        {data.map((slide, index) => (
           <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/5">
             <div>
               <Card className="border-none bg-transparent shadow-none">
@@ -543,20 +561,19 @@ function CarouselSize() {
                 >
                   {/* <span className="text-3xl font-semibold">{index + 1}</span> */}
                   <img
-                    className=" mx-auto rounded-t-lg"
-                    src={
-                      "./referee_example.jpg"
-                    }
+                    className="mx-auto rounded-t-lg object-cover w-full h-[45vh]"
+                    src={slide.URL_FOTO}
                     alt="avatar"
+                    style={{objectPosition: "middle" }}
                   />
                   <div className="p-2 rounded-b-lg bg-white ">
                     <div className="py-3 px-4 rounded-lg w-full bg-white">
                       <p className=" w-full text-sm font-semibold">
-                        Thoriq Munir Alkatiri
+                        {slide.NAMA_PETUGAS}
                       </p>
-                      <p className=" w-full text-xs text-neutral-600">
+                      {/* <p className=" w-full text-xs text-neutral-600">
                         C3 Referee
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </CardContent>

@@ -459,6 +459,8 @@ export default function Coach() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [lisensi, setLicensi] = useState();
 
+  const [dataSlide, setDataSlide] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
@@ -470,6 +472,7 @@ export default function Coach() {
   useEffect(() => {
     getListCoach(currentPage, rowsPerPage);
     getChartData();
+    getCarouselData();
   }, [currentPage, rowsPerPage]);
 
   const getListCoach = async (page, rowsPerPage) => {
@@ -538,6 +541,21 @@ export default function Coach() {
     }
   };
 
+  const getCarouselData = async () => {
+    try {
+      const coachSlide = await apiService.get(
+        `/api/coach/GetSlide`,
+        headers
+      );
+
+      if (coachSlide.status === 200 || coachSlide.length > 0) {
+        setDataSlide(coachSlide.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="bg-[#212B5A] absolute h-[60vh] w-full z-10"></div>
@@ -555,7 +573,7 @@ export default function Coach() {
         </p>
 
         <div className="mt-4">
-          <CarouselSize />
+          <CarouselSize data={dataSlide} />
         </div>
 
         <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
@@ -589,7 +607,7 @@ export default function Coach() {
   );
 }
 
-function CarouselSize() {
+function CarouselSize({data}) {
   return (
     <Carousel
       opts={{
@@ -598,7 +616,7 @@ function CarouselSize() {
       className="w-full md:max-w-screen-md lg:max-w-screen-xl mx-auto"
     >
       <CarouselContent>
-        {Array.from({ length: 20 }).map((_, index) => (
+        {data.map((slide, index) => (
           <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/5">
             <div>
               <Card className="border-none bg-transparent shadow-none">
@@ -609,15 +627,15 @@ function CarouselSize() {
                   {/* <span className="text-3xl font-semibold">{index + 1}</span> */}
                   <img
                     className="rounded-t-lg mx-auto"
-                    src={coachImage}
+                    src={slide.URL_FOTO}
                     alt="avatar"
                   />
                   <div className="p-2 rounded-b-lg bg-white border backdrop-filter bg-opacity-10 backdrop-blur-md">
                     <div className="py-3 pb-4  rounded-lg w-full bg-white">
-                      <p className="text-center w-full text-sm font-semibold">
-                        Patrick Kluivert
+                      <p className="text-center w-full text-[13px] truncate font-semibold">
+                        {slide.NAMA_OFFICIAL}
                       </p>
-                      {/* <p className="text-center w-full text-xs text-neutral-600">C3 coach</p> */}
+                      <p className="text-center w-full text-xs text-neutral-600 truncate">{slide.NAMA_JABATAN + " - " + slide.NAMATIM}</p>
                     </div>
                   </div>
                 </CardContent>

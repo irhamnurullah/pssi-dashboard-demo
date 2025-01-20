@@ -50,7 +50,7 @@ export default function NavBar({ bgColor, selectedTextColor, secondaryTextColor 
                 </li>
               </Link>
             ))}
-            <Button onClick={handleLogout}>Logout</Button>
+            <small className='px-6 border-l border-slate-600 cursor-pointer text-slate-700 my-auto' style={{  }} onClick={handleLogout}>Logout</small>
           </ul>
         </nav>
       </div>
