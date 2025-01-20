@@ -529,6 +529,7 @@ export default function Player() {
 
       if (playerSlide.status === 200 || playerSlide.length > 0) {
         setDataSlide(playerSlide.data);
+        console.log(playerSlide.data);
       }
     } catch (error) {
       console.log(error);
@@ -546,7 +547,7 @@ export default function Player() {
 
       <div className="z-20 relative container-pssi flex flex-col gap-8 px-5 md:px-[150px] py-10 ">
         <div className="flex flex-col">
-          <h1 className="text-3xl font-bold text-primary-pssi">Players</h1>
+          <h1 className="text-3xl font-bold text-[#646B8B]">Players</h1>
           <p className="text-gray-400">
             An Indonesian football player represents clubs or the national team,
             showcasing skills and passion in domestic and international
@@ -554,16 +555,17 @@ export default function Player() {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 p-4 gap-4 bg-white border rounded-lg">
+        <div className="grid grid-cols-3 gap-4 ">
           {totalPlayer.map((card, idx) => (
-            <CardGradient
-              key={idx}
-              title={card.label}
-              subtitle={card.value}
-              color={card.color}
-            />
+            <div className="relative bg-slate-50 rounded-lg p-5 " style={{backgroundImage: `url('./bg-logo-grey.svg')`, backgroundRepeat: 'no-repeat', backgroundPosition: '100% 200%'}}>
+              <p className="text-sm text-slate-600">{card.label}</p>
+              <p className="font-bold text-[#212B5A] text-xl">{card.value}</p>
+              {/* <img src="" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" /> */}
+            </div>
           ))}
         </div>
+
+        
 
         <Carousel
           opts={{
@@ -571,7 +573,7 @@ export default function Player() {
           }}
           className="w-full !overflow-visible"
         >
-          <CarouselContent className="!overflow-visible">
+          <CarouselContent className="!overflow-visible p-5">
             {dataSlide.map((slide, index) => (
               <CarouselItem
                 key={index}
@@ -582,7 +584,7 @@ export default function Player() {
                   alt="player"
                   country={slide.NAMA_NEGARA}
                   playerName={slide.NAMA_PEMAIN}
-                  playerPosition=""
+                  namaTim={slide.NAMATIM}
                 />
               </CarouselItem>
             ))}
