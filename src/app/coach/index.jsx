@@ -608,12 +608,13 @@ export default function Coach() {
 }
 
 function CarouselSize({data}) {
+  console.log(data);
   return (
     <Carousel
       opts={{
         align: "start",
       }}
-      className="w-full md:max-w-screen-md lg:max-w-screen-xl mx-auto"
+      className="w-full  mx-auto"
     >
       <CarouselContent>
         {data.map((slide, index) => (
@@ -621,21 +622,78 @@ function CarouselSize({data}) {
             <div>
               <Card className="border-none bg-transparent shadow-none">
                 <CardContent
-                  // className="flex flex-col items-center aspect-square p-6"
                   className="p-0"
                 >
-                  {/* <span className="text-3xl font-semibold">{index + 1}</span> */}
+                  
                   <img
-                    className="rounded-t-lg mx-auto"
+                    className="mx-auto rounded-t-lg object-cover w-full h-[30vh]"
                     src={slide.URL_FOTO}
                     alt="avatar"
+                    style={{objectPosition: "top" }}
                   />
-                  <div className="p-2 rounded-b-lg bg-white border backdrop-filter bg-opacity-10 backdrop-blur-md">
-                    <div className="py-3 pb-4  rounded-lg w-full bg-white">
-                      <p className="text-center w-full text-[13px] truncate font-semibold">
+
+                  <div className="px-4 py-3 border rounded-b-lg hover:shadow-xl  bg-white " style={{backgroundImage: `url('./pattern-white.svg')`}}>
+                    <div className=" rounded-lg w-full ">
+                      <p className="w-full text-[#212B5A] text-sm truncate font-semibold">
                         {slide.NAMA_OFFICIAL}
                       </p>
-                      <p className="text-center w-full text-xs text-neutral-600 truncate">{slide.NAMA_JABATAN + " - " + slide.NAMATIM}</p>
+
+                      <div className="grid grid-cols-3 mt-2">
+                        <div className="col-span-2">
+                          <div className="flex gap-1">
+                            <svg className="mt-1" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.49 2.23006L5.50003 4.11006C4.35003 4.54006 3.41003 5.90006 3.41003 7.12006V14.5501C3.41003 15.7301 4.19003 17.2801 5.14003 17.9901L9.44003 21.2001C10.85 22.2601 13.17 22.2601 14.58 21.2001L18.88 17.9901C19.83 17.2801 20.61 15.7301 20.61 14.5501V7.12006C20.61 5.89006 19.67 4.53006 18.52 4.10006L13.53 2.23006C12.68 1.92006 11.32 1.92006 10.49 2.23006Z" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9.05005 11.8701L10.66 13.4801L14.96 9.18005" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div className="my-auto">
+                              <small className="text-xs text-neutral-400">Jabatan</small>
+                              <p className="text-xs text-neutral-700">
+                                {slide.NAMA_JABATAN}
+                              </p>
+                            </div>
+                            
+                          </div>  
+                        </div>
+
+                        <div className="col-span-1">
+                          <div className="flex gap-1">
+                            <svg width="18" height="18" className="mt-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.15002 2V22" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M5.15002 4H16.35C19.05 4 19.65 5.5 17.75 7.4L16.55 8.6C15.75 9.4 15.75 10.7 16.55 11.4L17.75 12.6C19.65 14.5 18.95 16 16.35 16H5.15002" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+
+
+                            <div className="my-auto">
+                              <small className="text-xs text-neutral-400">Negara</small>
+                              <p className="text-xs text-neutral-700">
+                                {slide.NAMA_NEGARA}
+                              </p>
+                            </div>
+                            
+                          </div>  
+                        </div>
+
+                        <div className="col-span-2 mt-1">
+                          <div className="flex gap-1">
+                            <svg width="18" height="18" className="mt-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.67 14H4C2.9 14 2 14.9 2 16V22H8.67V14Z" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M13.33 10H10.66C9.56003 10 8.66003 10.9 8.66003 12V22H15.33V12C15.33 10.9 14.44 10 13.33 10Z" stroke="grey" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M20 17H15.33V22H22V19C22 17.9 21.1 17 20 17Z" stroke="grey" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12.52 2.07007L13.05 3.13006C13.12 3.28006 13.31 3.42006 13.47 3.44006L14.43 3.60007C15.04 3.70007 15.19 4.15005 14.75 4.58005L14 5.33005C13.87 5.46005 13.8 5.70006 13.84 5.87006L14.05 6.79007C14.22 7.52007 13.83 7.80007 13.19 7.42007L12.29 6.89007C12.13 6.79007 11.86 6.79007 11.7 6.89007L10.8 7.42007C10.16 7.80007 9.76998 7.52007 9.93998 6.79007L10.15 5.87006C10.19 5.70006 10.12 5.45005 9.98999 5.33005L9.24999 4.59006C8.80999 4.15006 8.94999 3.71005 9.56999 3.61005L10.53 3.45007C10.69 3.42007 10.88 3.28007 10.95 3.14007L11.48 2.08005C11.77 1.50005 12.23 1.50007 12.52 2.07007Z" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+
+                            <div className="my-auto">
+                              <small className="text-xs text-neutral-400">Club</small>
+                              <p className="text-xs text-neutral-700">
+                                {slide.NAMATIM}
+                              </p>
+                            </div>
+                            
+                          </div>  
+                        </div>
+                      </div>
+
+                      {/* <p className=" w-full text-xs text-neutral-600 truncate">{slide.NAMA_JABATAN + " - " + slide.NAMATIM}</p> */}
                     </div>
                   </div>
                 </CardContent>
