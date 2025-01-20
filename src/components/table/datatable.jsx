@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/table";
 
 
-export function DataTable({columns, data, searchBy}) {
+export function DataTable({columns, data, searchBy, placeholderText}) {
   const [sorting, setSorting] = React.useState([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -61,7 +61,7 @@ export function DataTable({columns, data, searchBy}) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter Nama Official..."
+          placeholder={placeholderText}
           value={table.getColumn(searchBy)?.getFilterValue() ?? ""}
           onChange={(event) =>
             table.getColumn(searchBy)?.setFilterValue(event.target.value)
