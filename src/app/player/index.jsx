@@ -737,6 +737,7 @@ export default function Player() {
               <CarouselItem
                 key={index}
                 className="md:basis-1/5 lg:basis-1/5 !overflow-visible"
+                onClick={() => handleViewDetail(slide.ID_PEMAIN)}
               >
                 <PlayerCard
                   img={slide.URL_FOTO}
