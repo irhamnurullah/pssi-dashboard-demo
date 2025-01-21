@@ -81,8 +81,8 @@ export default function Competition() {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    getListCompetition(17);
-  });
+    getListCompetition(dataHeader[0].id);
+  }, []);
 
   const getListCompetition = async (id_divisi) => {
     try {
@@ -181,7 +181,8 @@ export default function Competition() {
     ["id-ba", 5377],
   ];
 
-  const [activeCard, setActiveCard] = useState(1);
+  const [activeCard, setActiveCard] = useState(dataHeader[0].id);
+  const [activeLabelCard, setActiveLabelCard] = useState(dataHeader[0].title);
 
   const columns = [
     {
@@ -286,7 +287,13 @@ export default function Competition() {
               {dataHeader.map((item) => (
                 <div
                   key={item.id}
-                  onClick={() => setActiveCard(item.id)}
+                  onClick={() => {
+                    console.log(item);
+                    
+                    setActiveCard(item.id);
+                    setActiveLabelCard(item.title);
+                    getListCompetition(item.id);
+                  }}
                   style={{ cursor: "pointer" }}
                   className={`${
                     activeCard === item.id
@@ -319,7 +326,6 @@ export default function Competition() {
                       </div>
                     </div>
                   
-
                     <div className="absolute z-10 bottom-[-1px] right-1">
                       <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M8.67 14H4C2.9 14 2 14.9 2 16V22H8.67V14Z" stroke="#9A5250" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -361,7 +367,7 @@ export default function Competition() {
         </div>
 
         <div className="mt-5 bg-white p-5">
-          <div className="text-black font-bold">Player List</div>
+          <div className="text-black font-bold">Player List {activeLabelCard}</div>
           <DataTable columns={columns} data={refereesData} searchBy={'NAMA_PROVINSI'} totalData={refereesTotal} placeholderText={'Filter Nama...'} />
           {/* <PaginationControls
             currentPage={currentPage}
