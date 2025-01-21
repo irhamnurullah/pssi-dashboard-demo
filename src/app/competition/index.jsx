@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState } from "react";
+import { Fragment, useEffect, useState } from 'react';
 import NavBar from "../../components/navbar";
 
 import {
@@ -19,9 +19,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MultipleBarChart } from "../../components/charts/barchart/multiple";
-
+import { DataTable } from '@/components/table/datatable';
+import { PaginationControls } from '../../components/table/pagination';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+import { Checkbox } from '@/components/ui/checkbox';
+import sessions from '../../../utils/sessions';
+import apiService from "../../../utils/services";
 
 import {
   Select,
@@ -66,6 +70,34 @@ const chartConfig = {
 };
 
 export default function Competition() {
+  const [competition, setCompetition] = useState([]);
+  const token = sessions.getSessionToken();  
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const [refereesData, setRefereesData] = useState([]);
+  const [refereesTotal, setRefereesTotal] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+
+  useEffect(() => {
+    getListCompetition(17);
+  });
+
+  const getListCompetition = async (id_divisi) => {
+    try {
+      const competition = await apiService.get(`/api/competition/GetData?id_divisi=${id_divisi}`, headers);
+
+      if (competition.status === 200) {
+        setRefereesData(competition.data);
+        setRefereesTotal(competition.recordsTotal);
+        setTotalPages(refereesTotal);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const dataHeader = [
     {
       id: 17,
@@ -150,6 +182,42 @@ export default function Competition() {
   ];
 
   const [activeCard, setActiveCard] = useState(1);
+
+  const columns = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: 'NAMA_PROVINSI',
+      header: 'PROVINCE',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('NAMA_PROVINSI')}</div>,
+    },
+    {
+      accessorKey: 'TOTAL_KLUB',
+      header: 'TOTAL CLUB',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('TOTAL_KLUB')}</div>,
+    },
+    {
+      accessorKey: 'TOTAL_PEMAIN',
+      header: 'TOTAL PLAYER',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('TOTAL_PEMAIN')}</div>,
+    },
+    {
+      accessorKey: 'TOTAL_OFFICIAL',
+      header: 'TOTAL OFFICIAL',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('TOTAL_OFFICIAL')}</div>,
+    },
+  ];
 
   return (
     <div>
@@ -292,82 +360,16 @@ export default function Competition() {
           </div>
         </div>
 
-        <div className="flex flex-row mt-5 bg-white p-5">
-          <div className="w-full ml-5">
-            <div className="text-black font-bold">Player List SoeratinU13</div>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[100px]">PROVINCE</TableHead>
-                  <TableHead>TOTAL CLUB</TableHead>
-                  <TableHead>TOTAL PLAYERS</TableHead>
-                  <TableHead>TOTAL OFFICIAL</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Jakarta</TableCell>
-                  <TableCell>100</TableCell>
-                  <TableCell>1000</TableCell>
-                  <TableCell>200</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Bandung</TableCell>
-                  <TableCell>150</TableCell>
-                  <TableCell>900</TableCell>
-                  <TableCell>250</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Surabaya</TableCell>
-                  <TableCell>200</TableCell>
-                  <TableCell>1100</TableCell>
-                  <TableCell>300</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Medan</TableCell>
-                  <TableCell>120</TableCell>
-                  <TableCell>800</TableCell>
-                  <TableCell>220</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Yogyakarta</TableCell>
-                  <TableCell>180</TableCell>
-                  <TableCell>950</TableCell>
-                  <TableCell>280</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Makassar</TableCell>
-                  <TableCell>140</TableCell>
-                  <TableCell>870</TableCell>
-                  <TableCell>240</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Denpasar</TableCell>
-                  <TableCell>170</TableCell>
-                  <TableCell>920</TableCell>
-                  <TableCell>270</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Semarang</TableCell>
-                  <TableCell>130</TableCell>
-                  <TableCell>890</TableCell>
-                  <TableCell>230</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Palembang</TableCell>
-                  <TableCell>160</TableCell>
-                  <TableCell>940</TableCell>
-                  <TableCell>260</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Pekanbaru</TableCell>
-                  <TableCell>190</TableCell>
-                  <TableCell>1020</TableCell>
-                  <TableCell>290</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+        <div className="mt-5 bg-white p-5">
+          <div className="text-black font-bold">Player List</div>
+          <DataTable columns={columns} data={refereesData} searchBy={'NAMA_PROVINSI'} totalData={refereesTotal} placeholderText={'Filter Nama...'} />
+          {/* <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            onRowsPerPageChange={setRowsPerPage}
+            rowsPerPage={rowsPerPage}
+          /> */}
         </div>
       </div>
     </div>
