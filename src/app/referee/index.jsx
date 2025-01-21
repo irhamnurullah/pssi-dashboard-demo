@@ -424,7 +424,9 @@ export default function Referee() {
       const response = await apiService.get(`/api/referee/GetGrafikByIDLicensi?id_licensi=${id_license}`);
       const result = response.data;
       const mapArray = Object.keys(result).map((key) => result[key]);
+      console.log('🐙 ~ handleClickChart ~ mapArray:', mapArray);
       const mappingArray = mappingReferee(mapArray, category.dataKey);
+      console.log('🐙 ~ handleClickChart ~ mappingArray:', mappingArray);
       setDataMaps(mappingArray);
     } catch (error) {
       console.error(error);
