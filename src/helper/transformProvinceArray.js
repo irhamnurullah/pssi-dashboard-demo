@@ -10,10 +10,22 @@ export const mapping = (daraArray) => {
   return mapArray;
 };
 
-export const mappingReferee = (daraArray) => {
-  const mapArray = daraArray.map((item) => {
+export const mappingReferee = (dataArray, dataKey) => {
+  const mapArray = dataArray.map((item) => {
     const id = getIdmaps(item.ID_PROVINSI);
-    const total = item.TOTAL_PRIA + item.TOTAL_WANITA;
+    // Tentukan total berdasarkan dataKey
+    const total = dataKey === 'male_referee' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
+    return [id, total];
+  });
+
+  return mapArray;
+};
+
+export const mappingCoach = (dataArray, dataKey) => {
+  const mapArray = dataArray.map((item) => {
+    const id = getIdmaps(item.ID_PROVINSI);
+    // Tentukan total berdasarkan dataKey
+    const total = dataKey === 'male_coaches' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
     return [id, total];
   });
 

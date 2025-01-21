@@ -23,12 +23,24 @@ const dataSelect = [
   { label: 'BRI LIGA 3 2024/2025', value: 32 },
 ];
 
+const chartConfig = [
+  {
+    dataKey: 'female_referee',
+    label: 'Female',
+    color: '#FF99CF',
+  },
+  {
+    dataKey: 'male_referee',
+    label: 'Male',
+    color: '#3067D3',
+  },
+];
+
 export default function Referee() {
   const [dataMaps, setDataMaps] = useState([]);
   const [refereesData, setRefereesData] = useState([]);
   const [refereesTotal, setRefereesTotal] = useState([]);
   const [licenseChart, setChartLicenseDistribution] = useState([]);
-  const [chartConfigs, setChartConfig] = useState([]);
   const [detailReferee, setDetailReferee] = useState([]);
   const [recentMatch, setRecentMatch] = useState([]);
   const token = sessions.getSessionToken();
@@ -80,23 +92,11 @@ export default function Referee() {
         const licenceFormatChart = referee.data.map((item) => ({
           id_license: item.ID_LICENSI,
           category: item.NAME,
-          female_coaches: item.TOTAL_WANITA,
-          male_coaches: item.TOTAL_PRIA,
+          female_referee: item.TOTAL_WANITA,
+          male_referee: item.TOTAL_PRIA,
         }));
 
-        const chartConfig = {
-          female_coaches: {
-            label: 'Female',
-            color: '#FF99CF',
-          },
-          male_coaches: {
-            label: 'Male',
-            color: '#3067D3',
-          },
-        };
-
         setChartLicenseDistribution(licenceFormatChart);
-        setChartConfig(chartConfig);
       }
     } catch (error) {
       console.log(error);
@@ -223,7 +223,7 @@ export default function Referee() {
                                 d="M4.19611 101.362L97.1961 293.862C104.153 308.263 111.732 340.167 126 349L287.196 273.362C301.996 266.562 299.363 253.195 296.196 247.362L184.196 12.8623C178.996 1.6623 166.696 -0.638021 157.696 4.86231L12.1961 73.3623C0.996111 79.3623 0.196165 93.3623 4.19611 101.362Z"
                                 fill="#FFE137"
                                 stroke="#8A7500"
-                                stroke-width="4"
+                                strokeWidth="4"
                               />
                               <path
                                 d="M105.023 311.342L63.0227 223.342C57.8227 229.742 44.1894 269.342 38.0227 288.342C36.8227 311.942 83.0227 396.842 98.5227 437.842V488.842H193.523V437.842C215.923 415.842 218.189 389.675 216.523 379.342C209.523 336.842 193.023 358.842 183.523 244.842C181.923 211.642 149.023 218.342 149.023 241.342V301.842C144.023 340.842 113.523 330.342 105.023 311.342Z"
@@ -242,7 +242,7 @@ export default function Referee() {
                                 d="M4.19611 101.362L97.1961 293.862C104.153 308.263 111.732 340.167 126 349L287.196 273.362C301.996 266.562 299.363 253.195 296.196 247.362L184.196 12.8623C178.996 1.6623 166.696 -0.638021 157.696 4.86231L12.1961 73.3623C0.996111 79.3623 0.196165 93.3623 4.19611 101.362Z"
                                 fill="#FFE137"
                                 stroke="#8A7500"
-                                stroke-width="4"
+                                strokeWidth="4"
                               />
                               <path
                                 d="M105.023 311.342L63.0227 223.342C57.8227 229.742 44.1894 269.342 38.0227 288.342C36.8227 311.942 83.0227 396.842 98.5227 437.842V488.842H193.523V437.842C215.923 415.842 218.189 389.675 216.523 379.342C209.523 336.842 193.023 358.842 183.523 244.842C181.923 211.642 149.023 218.342 149.023 241.342V301.842C144.023 340.842 113.523 330.342 105.023 311.342Z"
@@ -416,14 +416,15 @@ export default function Referee() {
   };
 
   const handleClickChart = async (category) => {
-    const { category: categoryLabel, id_license } = category.activePayload[0].payload;
-    setActiveCategory(categoryLabel);
+    const { category: categoryLabel, id_license } = category.data.payload;
+
+    setActiveCategory({ categoryLabel, dataKey: category.dataKey });
 
     try {
       const response = await apiService.get(`/api/referee/GetGrafikByIDLicensi?id_licensi=${id_license}`);
       const result = response.data;
       const mapArray = Object.keys(result).map((key) => result[key]);
-      const mappingArray = mappingReferee(mapArray);
+      const mappingArray = mappingReferee(mapArray, category.dataKey);
       setDataMaps(mappingArray);
     } catch (error) {
       console.error(error);
@@ -457,16 +458,19 @@ export default function Referee() {
         {/* License Distribution */}
         <div className="mt-5 grid grid-cols-6 bg-white rounded-lg border">
           <div className="py-3 col-span-6 border-b border-slate-200 px-4">
-            <h3 className="font-semibold">
-              License Distribution
-              {activeCategory && <span className="font-bold p-2 rounded-lg ml-4 bg-primary-pssi text-white">{activeCategory}</span>}
-            </h3>
+            <h3 className="font-semibold">License Distribution</h3>
           </div>
 
           <div className="col-span-2 border-r border-slate-200 flex flex-col justify-end">
-            <LicenseDistribution data={licenseChart} config={chartConfigs} onClick={handleClickChart} />
+            <LicenseDistribution data={licenseChart} config={chartConfig} onClick={handleClickChart} />
           </div>
           <div className="col-span-4 px-4 pb-4">
+            {activeCategory && (
+              <center className="font-bold p-2 rounded-lg ml-4 text-center">
+                {activeCategory?.categoryLabel} : {activeCategory?.dataKey}
+              </center>
+            )}
+
             <MapsChart dataMaps={dataMaps} />
           </div>
         </div>
