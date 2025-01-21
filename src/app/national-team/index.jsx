@@ -177,7 +177,7 @@ export default function NatioanalTeams() {
     <div>
       <div className="bg-[#212B5A] absolute h-[60vh] w-full z-10"></div>
       <NavBar  bgColor="#FFFFFF" selectedTextColor="#212B5A" secondaryTextColor="#C6C6C6" />
-      <div className="z-20 relative container-pssi">
+      <div className="container-pssi mx-4 z-20 relative">
         <h2 className="text-slate-100 text-3xl font-bold">National Team</h2>
         <p className="text-sm text-slate-100 mt-2">
           An Indonesian competition is an organized event where participants
