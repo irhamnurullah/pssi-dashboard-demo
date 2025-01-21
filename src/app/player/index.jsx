@@ -32,6 +32,14 @@ import apiService from "../../../utils/services";
 import { DataTable } from "@/components/table/datatable";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -124,6 +132,9 @@ export default function Player() {
   const [playerData, setplayerData] = useState([]);
   const [playerTotal, setPlayerTotal] = useState([]);
   const [detailPlayer, setDetailPlayer] = useState([]);
+  const [detailPlayerBiodata, setDetailPlayerBiodata] = useState([]);
+  const [detailPlayerContract, setDetailPlayerContract] = useState([]);
+  const [detailPlayerCompetition, setDetailPlayerCompetition] = useState([]);
   const token = sessions.getSessionToken();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -258,15 +269,15 @@ export default function Player() {
                     <div className="flex flex-row mb-2 mt-5">
                       <img
                         className="rounded-full w-24"
-                        src={detailPlayer.URL_FOTO}
+                        src={detailPlayerBiodata.URL_FOTO}
                         alt="avatar"
                       />
                       <div className="text-gray-700 text-[18px] font-bold ml-4 mt-3">
-                        {detailPlayer.NAMA_PEMAIN}
+                        {detailPlayerBiodata.NAMA_PEMAIN}
                         <br></br>
                         <span className="text-gray-700 text-sm font-normal">
-                          {detailPlayer.NAMATIM} -{" "}
-                          {detailPlayer.JENIS_KELAMIN === "Pria"
+                          {detailPlayerBiodata.NAMATIM} -{" "}
+                          {detailPlayerBiodata.JENIS_KELAMIN === "Pria"
                             ? "Men"
                             : "Women"}
                         </span>
@@ -390,6 +401,129 @@ export default function Player() {
                       </div>
                     </div>
                   </DialogDescription>
+
+                  <div className="flex space-x-4 mt-5">
+                      <div className="text-[#989899] text-[12px] font-medium">
+                        Recent Contract
+                      </div>
+                    </div>
+                    <div className="flex flex-row">
+                      <div className="w-full">
+                        <Table className="mt-2">
+                          <TableHeader className="bg-[#F6F6F6]">
+                            <TableRow>
+                              <TableHead className="text-[12px]">
+                                Club
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Status
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Start
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                End
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {detailPlayer.hasOwnProperty("CONTRACT_HISTORY") ? (
+                              detailPlayerContract.length > 0 ? (
+                                detailPlayerContract.map((detail, index) => (
+                                  <TableRow key={index}>
+                                    <TableCell className="text-[12px]">
+                                      {detail.CLUB}
+                                    </TableCell>
+                                    <TableCell className="text-[12px]">
+                                      {detail.STATUS}
+                                    </TableCell>
+                                    <TableCell className="text-[12px]">
+                                      {detail.START_DATE}
+                                    </TableCell>
+                                    <TableCell className="text-[12px]">
+                                      {detail.END_DATE}
+                                    </TableCell>
+                                  </TableRow>
+                                ))
+                              ) : (
+                                <TableRow>
+                                  <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                    Tidak ada data
+                                  </TableCell>
+                                </TableRow>
+                              )
+                            ) : (
+                              <TableRow>
+                                <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                  Tidak ada data
+                                </TableCell>
+                              </TableRow>
+                            )}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+
+                    <div className="flex space-x-4 mt-5">
+                      <div className="text-[#989899] text-[12px] font-medium">
+                        Contract History
+                      </div>
+                    </div>
+                    <div className="flex flex-row">
+                      <div className="w-full">
+                        <Table className="mt-2">
+                          <TableHeader className="bg-[#F6F6F6]">
+                            <TableRow>
+                              <TableHead className="text-[12px]">
+                                Competition
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Club
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Position
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Playing
+                              </TableHead>
+                              <TableHead className="text-[12px]">
+                                Subtition
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {detailPlayerCompetition.length > 0 ? (
+                              detailPlayerCompetition.map((detail, index) => (
+                                <TableRow key={index}>
+                                  <TableCell className="text-[12px]">
+                                    {detail.COMPETITION}
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    {detail.CLUB}
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    {detail.POSITION}
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    {detail.PLAYING}
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    {detail.SUBTITION}
+                                  </TableCell>
+                                </TableRow>
+                              ))
+                            ) : (
+                              <TableRow>
+                                <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                  Tidak ada data
+                                </TableCell>
+                              </TableRow>
+                            )}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
+
                 </DialogHeader>
               </DialogContent>
             </Dialog>
@@ -517,6 +651,9 @@ export default function Player() {
 
       if (detail.status === 200) {
         setDetailPlayer(detail.data);
+        setDetailPlayerBiodata(detail.data.BIODATA);
+        setDetailPlayerContract(detail.data.CONTRACT_HISTORY);
+        setDetailPlayerCompetition(detail.data.COMPETITION_HISTORY);
       }
     } catch (error) {
       console.log(error);
