@@ -12,20 +12,25 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { PaginationControls } from '../../components/table/pagination';
-import { X } from 'lucide-react';
+import { LoaderCircleIcon, X } from 'lucide-react';
+import { MultipleBarChart } from '../../components/charts/barchart/multiple';
+import MapsChart from '../../components/maps/mapsChart';
+import { mappingPlayer } from '../../helper/transformProvinceArray';
+
+const chartConfig = [
+  {
+    dataKey: 'female_player',
+    label: 'Female',
+    color: '#FF99CF',
+  },
+  {
+    dataKey: 'male_player',
+    label: 'Male',
+    color: '#3067D3',
+  },
+];
 
 export default function Player() {
-  const chartConfig = {
-    female: {
-      label: 'Female Player',
-      color: '#FF99CF',
-    },
-    male: {
-      label: 'Male Player',
-      color: '#3067D3',
-    },
-  };
-
   const [playerData, setplayerData] = useState([]);
   const [playerTotal, setPlayerTotal] = useState([]);
   const [detailPlayer, setDetailPlayer] = useState([]);
@@ -41,30 +46,13 @@ export default function Player() {
 
   const [dataSlide, setDataSlide] = useState([]);
 
-  const [totalPlayer, setTotalPlayer] = useState([
-    {
-      label: 'Total Players',
-      value: 0,
-      color: 'green',
-    },
-    {
-      label: 'Male Players',
-      value: 0,
-      color: 'blue',
-    },
-    {
-      label: 'Female Players',
-      value: 0,
-      color: 'pink',
-    },
-  ]);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [dataMaps, setDataMaps] = useState([]);
+  const [loadingDataMaps, setLoadingDataMaps] = useState(false);
 
-  const [playerByAge, setPlayerByAge] = useState([
-    { age: 'U17', male: 0, female: 0 },
-    { age: 'U20', male: 0, female: 0 },
-    { age: 'U23', male: 0, female: 0 },
-    { age: 'Senior', male: 0, female: 0 },
-  ]);
+  const [totalPlayer, setTotalPlayer] = useState(null);
+
+  const [playerByAge, setPlayerByAge] = useState([]);
 
   const [playerProvince, setPlayerProvince] = useState([]);
 
@@ -446,7 +434,14 @@ export default function Player() {
     getChartData();
     getChartDataByProvince();
     getCarouselData();
-  }, [currentPage, rowsPerPage, totalPlayer]);
+  }, [currentPage, rowsPerPage]);
+
+  /* Total Player Pie Chart */
+  useEffect(() => {
+    if (totalPlayer) {
+      updateChartData();
+    }
+  }, [totalPlayer]);
 
   const getListPlayer = async (page, rowsPerPage) => {
     try {
@@ -464,27 +459,45 @@ export default function Player() {
 
   const updateChartData = async () => {
     const updatedChartData = totalPlayer
-      .filter((player) => player.label !== "Total Players")
+      .filter((player) => player.label !== 'Total Players')
       .map((player) => {
-        const playerValue = typeof player.value === "string"
-          ? parseInt(player.value.replace(/\./g, ""), 10)
-          : player.value;
-        
+        const playerValue = typeof player.value === 'string' ? parseInt(player.value.replace(/\./g, ''), 10) : player.value;
+
         return {
-          gender: player.label === "Male Players" ? "male" : "female",
+          gender: player.label === 'Male Players' ? 'male' : 'female',
           player: playerValue,
-          fill: player.color === "blue" ? "var(--color-male)" : "var(--color-female)",
+          fill: player.color === 'blue' ? 'var(--color-male)' : 'var(--color-female)',
         };
       });
-  
+
+    console.log('🐙 ~ updateChartData ~ updatedChartData:', updatedChartData);
+
     setChartDataExample(updatedChartData);
     // console.log(updatedChartData);
-    
   };
 
   const getChartData = async () => {
     try {
       const player = await apiService.get(`/api/player/GetData`, headers);
+      const transformData = (data) => {
+        const groupedData = {};
+
+        // Iterasi menggunakan Object.entries
+        Object.entries(data).forEach(([key, value]) => {
+          const [gender, category] = key.split('_');
+          if (!groupedData[category]) {
+            groupedData[category] = { category, female_player: 0, male_player: 0 };
+          }
+          if (gender === 'PRIA') {
+            groupedData[category].male_player = value.TOTAL;
+          } else if (gender === 'WANITA') {
+            groupedData[category].female_player = value.TOTAL;
+          }
+        });
+
+        // Ubah hasil menjadi array
+        return Object.values(groupedData);
+      };
 
       if (player.status === 200) {
         setTotalPlayer([
@@ -505,30 +518,7 @@ export default function Player() {
           },
         ]);
 
-        setPlayerByAge([
-          {
-            age: 'U17',
-            male: player.data.PRIA_U17.TOTAL,
-            female: player.data.WANITA_U17.TOTAL,
-          },
-          {
-            age: 'U20',
-            male: player.data.PRIA_U20.TOTAL,
-            female: player.data.WANITA_U20.TOTAL,
-          },
-          {
-            age: 'U23',
-            male: player.data.PRIA_U23.TOTAL,
-            female: player.data.WANITA_U23.TOTAL,
-          },
-          {
-            age: 'Senior',
-            male: player.data.PRIA_ALL.TOTAL,
-            female: player.data.WANITA_ALL.TOTAL,
-          },
-        ]);
-
-        updateChartData();
+        setPlayerByAge(transformData(player.data));
       }
     } catch (error) {
       console.log(error);
@@ -586,6 +576,37 @@ export default function Player() {
     }
   };
 
+  const transformDataByCategory = (data, category) => {
+    const totalPriaKey = `PRIA_${category}`;
+    const totalWanitaKey = `WANITA_${category}`;
+
+    return {
+      ID_PROVINSI: data.ID_PROVINSI,
+      PROVINSI: data.PROVINSI,
+      TOTAL_PRIA: data[totalPriaKey]?.TOTAL || 0,
+      TOTAL_WANITA: data[totalWanitaKey]?.TOTAL || 0,
+    };
+  };
+
+  const handleClickPlayerByAge = async (category) => {
+    setLoadingDataMaps(true);
+    const { category: categoryLabel } = category.data.payload;
+
+    setActiveCategory({ categoryLabel, dataKey: category.dataKey });
+
+    try {
+      const response = await apiService.get(`/api/player/GetDataByProvinsi`);
+      const result = response.data;
+      const mapArray = Object.keys(result).map((key) => transformDataByCategory(result[key], category.data.category));
+      const mappingArray = mappingPlayer(mapArray, category.dataKey);
+      setDataMaps(mappingArray);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingDataMaps(false);
+    }
+  };
+
   return (
     <div>
       <div className="bg-[#212B5A] absolute h-[60vh] w-full z-10"></div>
@@ -599,8 +620,6 @@ export default function Player() {
             competitions.
           </p>
         </div>
-
-        
 
         <Carousel
           opts={{
@@ -619,52 +638,29 @@ export default function Player() {
           <CarouselNext />
         </Carousel>
 
-        <div className="grid grid-cols-3 gap-4 ">
-          {totalPlayer.map((card, idx) => (
-            <div
-              className="relative bg-white border rounded-lg p-5 "
-              style={{ backgroundImage: `url('./bg-logo-white.svg')`, backgroundRepeat: 'no-repeat', backgroundPosition: '100% 200%' }}
-            >
-              <p className="text-sm text-slate-600">{card.label}</p>
-              <p className="font-bold text-[#212B5A] text-xl">{card.value}</p>
-              {/* <img src="" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" /> */}
-            </div>
-          ))}
-        </div>
-
-        
-
-        <div className="grid grid-cols-12 gap-4">
-          <div className="flex flex-col col-span-5 p-4 gap-4 bg-white rounded-lg shadow-lg">
-            <p className="font-bold">Player Distribution by Age Category and Gender</p>
-
-            <ChartContainer config={chartConfig} className="h-full">
-              <BarChart accessibilityLayer data={playerByAge}>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="age" tickLine={true} tickMargin={10} axisLine={true} tickFormatter={(value) => value} />
-                <YAxis tickLine={true} tickMargin={10} axisLine={true} tickFormatter={(value) => value.toLocaleString()} />
-                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-                <ChartLegend content={<ChartLegendContent />} />
-                <Bar dataKey="male" stackId="a" fill="var(--color-male)" radius={[0, 0, 4, 4]} />
-                <Bar dataKey="female" stackId="a" fill="var(--color-female)" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ChartContainer>
+        {/* License Distribution */}
+        <div className="mt-5 grid grid-cols-6 bg-white rounded-lg border">
+          <div className="py-3 col-span-6 border-b border-slate-200 px-4">
+            <h3 className="font-semibold">Player Distribution by Province</h3>
           </div>
 
-          <div className="flex flex-col col-span-7 p-4 gap-4 bg-white rounded-lg shadow-lg">
-            <p className="font-bold">Player Distribution by Province</p>
+          <div className="col-span-2 border-r border-slate-200">
+            <PlayerDistributionChart data={playerByAge} config={chartConfig} onClick={handleClickPlayerByAge} />
+          </div>
+          <div className="col-span-4 px-4 pb-4">
+            {activeCategory && (
+              <center className="font-bold p-2 rounded-lg ml-4 text-center">
+                {activeCategory?.categoryLabel} : {activeCategory?.dataKey}
+              </center>
+            )}
 
-            <ChartContainer config={chartConfig} className="h-full">
-              <BarChart accessibilityLayer data={playerProvince}>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="province" tickLine={true} tickMargin={10} axisLine={true} tickFormatter={(value) => value.slice(0, 5)} />
-                <YAxis tickLine={true} tickMargin={10} axisLine={true} tickFormatter={(value) => value.toLocaleString()} />
-                <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-                <ChartLegend content={<ChartLegendContent />} />
-                <Bar dataKey="male" stackId="a" fill="var(--color-male)" radius={[0, 0, 4, 4]} />
-                <Bar dataKey="female" stackId="a" fill="var(--color-female)" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ChartContainer>
+            {loadingDataMaps ? (
+              <div className="flex items-center justify-center h-full">
+                <LoaderCircleIcon className="animate-spin" />
+              </div>
+            ) : (
+              <MapsChart dataMaps={dataMaps} />
+            )}
           </div>
         </div>
 
@@ -686,6 +682,19 @@ export default function Player() {
           />
         </div>
       </div>
+    </div>
+  );
+}
+
+function PlayerDistributionChart({ data, config, onClick }) {
+  return (
+    <div className="px-4 py-3 ">
+      <div className="">
+        <MultipleBarChart dataChart={data} config={config} onClick={onClick} />
+      </div>
+      {/* <div className="flex-1">
+            <h3 className="font-semibold">License Distribution - Female coachs by Province</h3>
+          </div> */}
     </div>
   );
 }

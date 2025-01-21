@@ -31,3 +31,14 @@ export const mappingCoach = (dataArray, dataKey) => {
 
   return mapArray;
 };
+
+export const mappingPlayer = (dataArray, dataKey) => {
+  const mapArray = dataArray.map((item) => {
+    const id = getIdmaps(item.ID_PROVINSI);
+    // Tentukan total berdasarkan dataKey
+    const total = dataKey === 'male_player' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
+    return [id, total];
+  });
+
+  return mapArray;
+};
