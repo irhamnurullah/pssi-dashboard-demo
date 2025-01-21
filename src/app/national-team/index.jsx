@@ -178,158 +178,177 @@ export default function NatioanalTeams() {
       <div className="bg-[#212B5A] absolute h-[60vh] w-full z-10"></div>
       <NavBar  bgColor="#FFFFFF" selectedTextColor="#212B5A" secondaryTextColor="#C6C6C6" />
       <div className="z-20 relative container-pssi">
-        <h2 className="text-[#646B8B] text-3xl font-bold">National Team</h2>
-        <p className="text-sm text-neutral-400 mt-2">
+        <h2 className="text-slate-100 text-3xl font-bold">National Team</h2>
+        <p className="text-sm text-slate-100 mt-2">
           An Indonesian competition is an organized event where participants
           compete in various fields, such as sports, arts, or academics, at
           regional, national, or international levels.
         </p>
 
-        <div className="flex flex-wrap mt-5 bg-white p-5">
-          {dataHeader.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setActiveCard(item.id)}
-              style={{ cursor: "pointer" }}
-              className={`${
-                activeCard === item.id ? "bg-[#28166F]" : "bg-[#F3F4F6]"
-              } rounded-md shadow-lg p-3 w-[calc(20%_-_1rem)] ml-3 mb-3`}
-            >
-              <div className="flex justify-center">
-                <span
+        <div className="grid gap-4 grid-cols-6">
+          {/* left side  */}
+          <div className="mt-5 ">
+            <div className="bg-white border px-2 py-2 rounded-lg">
+              {dataHeader?.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => setActiveCard(item.id)}
+                  style={{ cursor: "pointer" }}
                   className={`${
-                    activeCard === item.id ? "text-white" : "text-black"
-                  } text-[16px] text-lg font-normal`}
+                    activeCard === item.id ? "bg-[#28166F]" : ""
+                  } rounded-md p-3  mb-1`}
                 >
-                  {item.title}
-                </span>
-              </div>
+                  
+                    <span
+                      className={`${
+                        activeCard === item.id ? "text-white" : "text-black"
+                      } text-sm font-normal`}
+                    >
+                      {item.title}
+                    </span>
+                  
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* right side */}
+          <div className="col-span-5">
+            <div className=" mt-5 bg-white rounded-lg border ">
+              <div className="text-black font-bold border-b px-4 py-3">Senior Men Players</div>
+              <div className="flex flex-wrap p-5">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[100px]">ID</TableHead>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Position</TableHead>
+                      <TableHead>Clubs</TableHead>
+                      <TableHead>Federation</TableHead>
+                      <TableHead>Caps</TableHead>
+                      <TableHead>Goal</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {playersData?.map((player) => (
+                      <TableRow key={player.id}>
+                        <TableCell>{player.id}</TableCell>
+                        <TableCell>{player.name}</TableCell>
+                        <TableCell>{player.position}</TableCell>
+                        <TableCell>{player.club}</TableCell>
+                        <TableCell>{player.federation}</TableCell>
+                        <TableCell>{player.caps}</TableCell>
+                        <TableCell>{player.goals}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              {/* <div className="flex flex-col">
+                <div className="flex justify-end">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious href="#" />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#">1</PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#" isActive>
+                          2
+                        </PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#">3</PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationNext href="#" />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              </div> */}
+            </div>
+
+            <div className=" mt-5 rounded-lg border bg-white ">
+              <div className="text-black font-bold border-b px-4 py-3">Senior Women Players</div>
+              <div className="p-5 flex flex-wrap">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[100px]">ID</TableHead>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Position</TableHead>
+                      <TableHead>Clubs</TableHead>
+                      <TableHead>Federation</TableHead>
+                      <TableHead>Caps</TableHead>
+                      <TableHead>Goal</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {playersData?.map((player) => (
+                      <TableRow key={player.id}>
+                        <TableCell>{player.id}</TableCell>
+                        <TableCell>{player.name}</TableCell>
+                        <TableCell>{player.position}</TableCell>
+                        <TableCell>{player.club}</TableCell>
+                        <TableCell>{player.federation}</TableCell>
+                        <TableCell>{player.caps}</TableCell>
+                        <TableCell>{player.goals}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              {/* <div className="flex flex-col">
+                <div className="flex justify-end">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious href="#" />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#">1</PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#" isActive>
+                          2
+                        </PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink href="#">3</PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationNext href="#" />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              </div> */}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-wrap mt-5 bg-white p-5">
+        {/* <div className="flex flex-wrap mt-5 bg-white p-5">
           <div className="w-1/2">
             <PieChartLabel title={"Position Distribution"} />
           </div>
           <div className="w-1/2">
             <HorizontalChart title={"Player Caps"} />
           </div>
-        </div>
+        </div> */}
 
-        <div className="flex flex-wrap mt-5 bg-white p-5">
-          <div className="text-black font-bold">Senior Men Players</div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">ID</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Position</TableHead>
-                <TableHead>Clubs</TableHead>
-                <TableHead>Federation</TableHead>
-                <TableHead>Caps</TableHead>
-                <TableHead>Goal</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {playersData.map((player) => (
-                <TableRow key={player.id}>
-                  <TableCell>{player.id}</TableCell>
-                  <TableCell>{player.name}</TableCell>
-                  <TableCell>{player.position}</TableCell>
-                  <TableCell>{player.club}</TableCell>
-                  <TableCell>{player.federation}</TableCell>
-                  <TableCell>{player.caps}</TableCell>
-                  <TableCell>{player.goals}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className="flex flex-col">
-            <div className="flex justify-end">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive>
-                      2
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-wrap mt-5 bg-white p-5">
-          <div className="text-black font-bold">Senior Women Players</div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">ID</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Position</TableHead>
-                <TableHead>Clubs</TableHead>
-                <TableHead>Federation</TableHead>
-                <TableHead>Caps</TableHead>
-                <TableHead>Goal</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {playersData.map((player) => (
-                <TableRow key={player.id}>
-                  <TableCell>{player.id}</TableCell>
-                  <TableCell>{player.name}</TableCell>
-                  <TableCell>{player.position}</TableCell>
-                  <TableCell>{player.club}</TableCell>
-                  <TableCell>{player.federation}</TableCell>
-                  <TableCell>{player.caps}</TableCell>
-                  <TableCell>{player.goals}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className="flex flex-col">
-            <div className="flex justify-end">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive>
-                      2
-                    </PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
-        </div>
+        
+
+          
+
+
       </div>
     </div>
   );
