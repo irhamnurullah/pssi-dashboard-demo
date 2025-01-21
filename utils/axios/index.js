@@ -1,7 +1,6 @@
 import axios from 'axios';
 import sessions from '../sessions';
 
-
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
@@ -28,7 +27,7 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
-      const { status, config } = error.response;
+      const { status } = error.response;
       if (status === 401 || status === 403) {
         localStorage.clear();
         window.location.replace('/login');

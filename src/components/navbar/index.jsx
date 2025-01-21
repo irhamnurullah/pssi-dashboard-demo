@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { navList } from '@/assets/data/list-nav';
 import { cn } from '@/lib/utils.js';
-import { Button } from '@/components/ui/button';
 import sessions from '../../../utils/sessions';
 
 export default function NavBar({ bgColor, selectedTextColor, secondaryTextColor }) {
@@ -50,7 +49,9 @@ export default function NavBar({ bgColor, selectedTextColor, secondaryTextColor 
                 </li>
               </Link>
             ))}
-            <small className='px-6 border-l border-slate-600 cursor-pointer text-slate-700 my-auto' style={{  }} onClick={handleLogout}>Logout</small>
+            <small className="px-6 border-l border-slate-600 cursor-pointer text-slate-700 my-auto" style={{}} onClick={handleLogout}>
+              Logout
+            </small>
           </ul>
         </nav>
       </div>
