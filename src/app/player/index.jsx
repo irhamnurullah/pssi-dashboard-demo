@@ -446,7 +446,7 @@ export default function Player() {
     getChartData();
     getChartDataByProvince();
     getCarouselData();
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, totalPlayer]);
 
   const getListPlayer = async (page, rowsPerPage) => {
     try {
@@ -462,23 +462,24 @@ export default function Player() {
     }
   };
 
-  const updateChartData = () => {
+  const updateChartData = async () => {
     const updatedChartData = totalPlayer
-      .filter((player) => player.label !== 'Total Players') // Hanya ambil Male dan Female
+      .filter((player) => player.label !== "Total Players")
       .map((player) => {
-        const playerValue =
-          typeof player.value === 'string'
-            ? parseInt(player.value.replace(/\./g, ''), 10) // Jika string, konversi ke angka
-            : player.value; // Jika sudah angka, gunakan langsung
-
+        const playerValue = typeof player.value === "string"
+          ? parseInt(player.value.replace(/\./g, ""), 10)
+          : player.value;
+        
         return {
-          gender: player.label.toLowerCase().includes('male') ? 'male' : 'female',
+          gender: player.label === "Male Players" ? "male" : "female",
           player: playerValue,
-          fill: player.color === 'blue' ? 'var(--color-male)' : 'var(--color-female)',
+          fill: player.color === "blue" ? "var(--color-male)" : "var(--color-female)",
         };
       });
-
+  
     setChartDataExample(updatedChartData);
+    // console.log(updatedChartData);
+    
   };
 
   const getChartData = async () => {
@@ -578,7 +579,7 @@ export default function Player() {
 
       if (playerSlide.status === 200 || playerSlide.length > 0) {
         setDataSlide(playerSlide.data);
-        console.log(playerSlide.data);
+        // console.log(playerSlide.data);
       }
     } catch (error) {
       console.log(error);

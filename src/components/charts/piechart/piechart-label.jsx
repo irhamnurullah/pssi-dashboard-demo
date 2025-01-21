@@ -1,7 +1,7 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { Pie, PieChart } from "recharts";
+import { Pie, PieChart, Cell } from "recharts";
 
 import {
   Card,
@@ -37,7 +37,7 @@ const chartConfig = {
   },
 };
 
-export function PieChartLabel({ title, chartData = chartDataExample }) {
+export function PieChartLabel({ title, chartData }) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="pb-0">
@@ -50,7 +50,11 @@ export function PieChartLabel({ title, chartData = chartDataExample }) {
         >
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="player" label nameKey="gender" />
+            <Pie data={chartData} dataKey="player" label nameKey="gender">
+              {chartData.map((entry) => (
+                <Cell key={entry.gender} fill={entry.fill} />
+              ))}
+            </Pie>
             <ChartLegend content={<ChartLegendContent />} />
           </PieChart>
         </ChartContainer>
