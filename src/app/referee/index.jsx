@@ -444,7 +444,7 @@ export default function Referee() {
 
         <div className="mt-5 grid grid-cols-6 bg-white rounded-lg border">
           <div className="py-3 col-span-6 border-b border-slate-200 px-4">
-            <h3 className="font-semibold">Referee Distribution</h3>
+            <h3 className="font-semibold">Penugasan Wasit</h3>
           </div>
 
           <div className="col-span-full border-r border-slate-200 flex flex-col justify-end">
