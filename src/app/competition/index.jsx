@@ -21,30 +21,8 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import MapsChart from '../../components/maps/mapsChart';
-
-const chartData = [
-  { city: 'Jakarta', totalclubs: 186, totalplayers: 80, totalofficial: 20 },
-  { city: 'Medan', totalclubs: 100, totalplayers: 200, totalofficial: 50 },
-  { city: 'Bandung', totalclubs: 150, totalplayers: 200, totalofficial: 70 },
-  { city: 'Banten', totalclubs: 73, totalplayers: 190, totalofficial: 90 },
-  { city: 'Jambi', totalclubs: 209, totalplayers: 130, totalofficial: 50 },
-  { city: 'Bali', totalclubs: 214, totalplayers: 140, totalofficial: 40 },
-];
-
-const chartConfig = {
-  totalclubs: {
-    label: 'TOTAL CLUBS',
-    color: '#4ADE80',
-  },
-  totalplayers: {
-    label: 'TOTAL PLAYERS',
-    color: '#1D4ED8',
-  },
-  totalofficial: {
-    label: 'TOTAL OFFICIAL',
-    color: '#FDA4AF',
-  },
-};
+import { mappingCompetition } from '../../helper/transformProvinceArray';
+import { LoaderCircleIcon } from 'lucide-react';
 
 export default function Competition() {
   const [competition, setCompetition] = useState([]);
@@ -57,11 +35,17 @@ export default function Competition() {
   const [refereesTotal, setRefereesTotal] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
+  const [activeSelect, setActiveSelect] = useState('');
+  const [dataMaps, setDataMaps] = useState([]);
+
+  const [isLoadingGetCompetition, setIsLoadingGetCompetition] = useState(false);
+
   useEffect(() => {
     getListCompetition(dataHeader[0].id);
   }, []);
 
   const getListCompetition = async (id_divisi) => {
+    setIsLoadingGetCompetition(true);
     try {
       const competition = await apiService.get(`/api/competition/GetData?id_divisi=${id_divisi}`, headers);
 
@@ -72,7 +56,15 @@ export default function Competition() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoadingGetCompetition(false);
     }
+  };
+
+  const handleChangeSelect = (value) => {
+    const mapArray = mappingCompetition(refereesData, value);
+    setDataMaps(mapArray);
+    setActiveSelect(value);
   };
 
   const dataHeader = [
@@ -123,39 +115,15 @@ export default function Competition() {
     },
   ];
 
-  const dataMaps = [
-    ['id-ac', 19050],
-    ['id-su', 48466],
-    ['id-sb', 25862],
-    ['id-sl', 67061],
-    ['id-ri', 55266],
-    ['id-kr', 9906],
-    ['id-ja', 11174],
-    ['id-be', 3638],
-    ['id-bb', 2621],
-    ['id-1024', 14481],
-    ['id-jk', 127904],
-    ['id-bt', 65361],
-    ['id-jr', 210775],
-    ['id-jt', 94373],
-    ['id-yo', 23168],
-    ['id-ji', 108284],
-    ['id-nb', 4192],
-    ['id-nt', 3393],
-    ['id-kb', 5462],
-    ['id-kt', 1976],
-    ['id-ks', 6903],
-    ['id-ki', 52417],
-    ['id-sw', 5725],
-    ['id-se', 29912],
-    ['id-sr', 711],
-    ['id-st', 4327],
-    ['id-go', 1149],
-    ['id-sg', 3430],
-    ['id-ma', 3607],
-    ['id-la', 1168],
-    ['id-pa', 3911],
-    ['id-ba', 5377],
+  const dataSelect = [
+    { value: 'TOTAL_KLUB', label: 'Total Clubs' },
+    { value: 'TOTAL_PEMAIN', label: 'Total Players' },
+    { value: 'TOTAL_OFFICIAL', label: 'Total Official' },
+    { value: 'TOTAL_PERTANDINGAN', label: 'Total Pertandingan' },
+    { value: 'TOTAL_GOL', label: 'Total Gol' },
+    { value: 'TOTAL_RC', label: 'Total Kartu Merah' },
+    { value: 'TOTAL_YC', label: 'Total Kartu Kuning' },
+    { value: 'TOTAL_SYC', label: 'Total Akumulasi Kartu Kuning' },
   ];
 
   const [activeCard, setActiveCard] = useState(dataHeader[0].id);
@@ -286,49 +254,66 @@ export default function Competition() {
                 <div
                   key={item.id}
                   onClick={() => {
-                    console.log(item);
-                    
+                    setDataMaps([]);
+                    setActiveSelect('');
                     setActiveCard(item.id);
                     setActiveLabelCard(item.title);
                     getListCompetition(item.id);
                   }}
-                  style={{ cursor: "pointer" }}
-                  className={`${
-                    activeCard === item.id
-                      ? "bg-[#7E0000] text-white"
-                      : "bg-slate-100"
-                  } rounded-lg  p-3 w-full relative`}
+                  style={{ cursor: 'pointer' }}
+                  className={`${activeCard === item.id ? 'bg-[#7E0000] text-white' : 'bg-slate-100'} rounded-lg  p-3 w-full relative`}
                 >
                   <div className="flex mb-2 z-20 relative justify-between">
                     <span className="  text-sm font-bold">{item.title}</span>
                   </div>
                   {activeCard === item.id && (
                     <>
-                    <div className="z-20 relative">
-                      <div className="flex text-xs justify-between">
-                        <span className="">Total Club</span>
-                        <span className=" font-medium ">
-                          {item.totalClubs}
-                        </span>
+                      <div className="z-20 relative">
+                        <div className="flex text-xs justify-between">
+                          <span className="">Total Club</span>
+                          <span className=" font-medium ">{item.totalClubs}</span>
+                        </div>
+                        <div className="flex text-xs  justify-between">
+                          <span className=" ">Total Players</span>
+                          <span className="font-medium ">{item.totalPlayers}</span>
+                        </div>
                       </div>
-                      <div className="flex text-xs  justify-between">
-                        <span className=" ">
-                          Total Players
-                        </span>
-                        <span className="font-medium ">
-                          {item.totalPlayers}
-                        </span>
+
+                      <div className="absolute z-10 bottom-[-1px] right-1">
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M8.67 14H4C2.9 14 2 14.9 2 16V22H8.67V14Z"
+                            stroke="#9A5250"
+                            strokeWidth="1.5"
+                            strokeMiterlimit="10"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M13.33 10H10.66C9.56003 10 8.66003 10.9 8.66003 12V22H15.33V12C15.33 10.9 14.44 10 13.33 10Z"
+                            stroke="#9A5250"
+                            strokeWidth="1.5"
+                            strokeMiterlimit="10"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M20 17H15.33V22H22V19C22 17.9 21.1 17 20 17Z"
+                            stroke="#9A5250"
+                            strokeWidth="1.5"
+                            strokeMiterlimit="10"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M12.52 2.07007L13.05 3.13006C13.12 3.28006 13.31 3.42006 13.47 3.44006L14.43 3.60007C15.04 3.70007 15.19 4.15005 14.75 4.58005L14 5.33005C13.87 5.46005 13.8 5.70006 13.84 5.87006L14.05 6.79007C14.22 7.52007 13.83 7.80007 13.19 7.42007L12.29 6.89007C12.13 6.79007 11.86 6.79007 11.7 6.89007L10.8 7.42007C10.16 7.80007 9.76998 7.52007 9.93998 6.79007L10.15 5.87006C10.19 5.70006 10.12 5.45005 9.98999 5.33005L9.24999 4.59006C8.80999 4.15006 8.94999 3.71005 9.56999 3.61005L10.53 3.45007C10.69 3.42007 10.88 3.28007 10.95 3.14007L11.48 2.08005C11.77 1.50005 12.23 1.50007 12.52 2.07007Z"
+                            stroke="#9A5250"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
                       </div>
-                    </div>
-                  
-                    <div className="absolute z-10 bottom-[-1px] right-1">
-                      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8.67 14H4C2.9 14 2 14.9 2 16V22H8.67V14Z" stroke="#9A5250" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M13.33 10H10.66C9.56003 10 8.66003 10.9 8.66003 12V22H15.33V12C15.33 10.9 14.44 10 13.33 10Z" stroke="#9A5250" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M20 17H15.33V22H22V19C22 17.9 21.1 17 20 17Z" stroke="#9A5250" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M12.52 2.07007L13.05 3.13006C13.12 3.28006 13.31 3.42006 13.47 3.44006L14.43 3.60007C15.04 3.70007 15.19 4.15005 14.75 4.58005L14 5.33005C13.87 5.46005 13.8 5.70006 13.84 5.87006L14.05 6.79007C14.22 7.52007 13.83 7.80007 13.19 7.42007L12.29 6.89007C12.13 6.79007 11.86 6.79007 11.7 6.89007L10.8 7.42007C10.16 7.80007 9.76998 7.52007 9.93998 6.79007L10.15 5.87006C10.19 5.70006 10.12 5.45005 9.98999 5.33005L9.24999 4.59006C8.80999 4.15006 8.94999 3.71005 9.56999 3.61005L10.53 3.45007C10.69 3.42007 10.88 3.28007 10.95 3.14007L11.48 2.08005C11.77 1.50005 12.23 1.50007 12.52 2.07007Z" stroke="#9A5250" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </div>
                     </>
                   )}
                 </div>
@@ -337,27 +322,33 @@ export default function Competition() {
 
             <div className="flex flex-col mt-3 p-5">
               <div className="flex justify-end">
-                <Select>
+                <Select disabled={isLoadingGetCompetition} onValueChange={handleChangeSelect} value={activeSelect}>
                   <SelectTrigger className="w-[280px]">
                     <SelectValue placeholder="Filter" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Total</SelectLabel>
-                      <SelectItem value="TOTAL_KLUB">Total Clubs</SelectItem>
-                      <SelectItem value="TOTAL_PEMAIN">Total Players</SelectItem>
-                      <SelectItem value="TOTAL_OFFICIAL">Total Official</SelectItem>
-                      <SelectItem value="TOTAL_PERTANDINGAN">Total Pertandingan</SelectItem>
-                      <SelectItem value="TOTAL_GOL">Total Gol</SelectItem>
-                      <SelectItem value="TOTAL_KML">Total Kartu Merah Langsung</SelectItem>
-                      <SelectItem value="TOTAL_KMT">Total Kartu Merah Tidak Langsung</SelectItem>
-                      <SelectItem value="TOTAL_KK">Total Kartu Kuning</SelectItem>
+                      {dataSelect.map((item) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               </div>
             </div>
-            <MapsChart dataMaps={dataMaps} />
+
+            <div className="min-h-40">
+              {isLoadingGetCompetition ? (
+                <div className="flex items-center justify-center h-full">
+                  <LoaderCircleIcon className="animate-spin" />
+                </div>
+              ) : (
+                <MapsChart dataMaps={dataMaps} />
+              )}
+            </div>
           </div>
         </div>
 

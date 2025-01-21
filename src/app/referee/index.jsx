@@ -219,11 +219,23 @@ export default function Referee() {
                         <div className="bg-slate-100 rounded-lg px-3 py-2 relative">
                           <div className="w-7 absolute right-1  bottom-0">
                             <svg width="100%" height="100%" viewBox="0 0 355 524" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M47.1645 98.2341L105.324 303.959C109.675 319.348 111.599 352.084 124.116 363.261L295.998 316.763C311.754 312.637 311.481 299.016 309.376 292.721L239.798 42.3353C236.622 30.4025 224.908 26.0012 215.09 29.8552L59.9051 72.0487C47.8334 76.0127 44.6145 89.6611 47.1645 98.2341Z" fill="#FFE137" stroke="#8A7500" stroke-width="4"/>
-                            <path d="M4.19611 136.362L97.1961 328.862C104.153 343.263 111.732 375.167 126 384L287.196 308.362C301.996 301.562 299.363 288.195 296.196 282.362L184.196 47.8623C178.996 36.6623 166.696 34.362 157.696 39.8623L12.1961 108.362C0.996111 114.362 0.196165 128.362 4.19611 136.362Z" fill="#FFE137" stroke="#8A7500" stroke-width="4"/>
-                            <path d="M105.023 346.342L63.0227 258.342C57.8227 264.742 44.1894 304.342 38.0227 323.342C36.8227 346.942 83.0227 431.842 98.5227 472.842V523.842H193.523V472.842C215.923 450.842 218.189 424.675 216.523 414.342C209.523 371.842 193.023 393.842 183.523 279.842C181.923 246.642 149.023 253.342 149.023 276.342V336.842C144.023 375.842 113.523 365.342 105.023 346.342Z" fill="#F4D5C6"/>
+                              <path
+                                d="M47.1645 98.2341L105.324 303.959C109.675 319.348 111.599 352.084 124.116 363.261L295.998 316.763C311.754 312.637 311.481 299.016 309.376 292.721L239.798 42.3353C236.622 30.4025 224.908 26.0012 215.09 29.8552L59.9051 72.0487C47.8334 76.0127 44.6145 89.6611 47.1645 98.2341Z"
+                                fill="#FFE137"
+                                stroke="#8A7500"
+                                strokeWidth="4"
+                              />
+                              <path
+                                d="M4.19611 136.362L97.1961 328.862C104.153 343.263 111.732 375.167 126 384L287.196 308.362C301.996 301.562 299.363 288.195 296.196 282.362L184.196 47.8623C178.996 36.6623 166.696 34.362 157.696 39.8623L12.1961 108.362C0.996111 114.362 0.196165 128.362 4.19611 136.362Z"
+                                fill="#FFE137"
+                                stroke="#8A7500"
+                                strokeWidth="4"
+                              />
+                              <path
+                                d="M105.023 346.342L63.0227 258.342C57.8227 264.742 44.1894 304.342 38.0227 323.342C36.8227 346.942 83.0227 431.842 98.5227 472.842V523.842H193.523V472.842C215.923 450.842 218.189 424.675 216.523 414.342C209.523 371.842 193.023 393.842 183.523 279.842C181.923 246.642 149.023 253.342 149.023 276.342V336.842C144.023 375.842 113.523 365.342 105.023 346.342Z"
+                                fill="#F4D5C6"
+                              />
                             </svg>
-
                           </div>
                           <div className="text-[#7E0000] font-bold">{detailReferee.TOTAL_SYC}</div>
                           <small className="text-xs text-slate-700  ">Second Yellow Card (SYC)</small>
@@ -388,7 +400,6 @@ export default function Referee() {
                       </div>
                     </div>
                   </div>
-
                 </DialogHeader>
               </DialogContent>
             </Dialog>
@@ -419,9 +430,7 @@ export default function Referee() {
       const response = await apiService.get(`/api/referee/GetGrafikByIDLicensi?id_licensi=${id_license}`);
       const result = response.data;
       const mapArray = Object.keys(result).map((key) => result[key]);
-      console.log('🐙 ~ handleClickChart ~ mapArray:', mapArray);
       const mappingArray = mappingReferee(mapArray, category.dataKey);
-      console.log('🐙 ~ handleClickChart ~ mappingArray:', mappingArray);
       setDataMaps(mappingArray);
     } catch (error) {
       console.error(error);

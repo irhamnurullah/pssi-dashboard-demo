@@ -42,3 +42,14 @@ export const mappingPlayer = (dataArray, dataKey) => {
 
   return mapArray;
 };
+
+export const mappingCompetition = (dataArray, dataFilter) => {
+  const mapArray = dataArray.map((item) => {
+    const id = getIdmaps(item.ID_PROVINSI);
+    // Tentukan total berdasarkan dataKey
+    const total = item[dataFilter];
+    return [id, total];
+  });
+
+  return mapArray;
+};
