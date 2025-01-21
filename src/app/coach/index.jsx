@@ -269,23 +269,31 @@ export default function Coach() {
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
-                                {detailContract.length > 0 ? (
-                                  detailContract.map((detail, index) => (
-                                    <TableRow key={index}>
-                                      <TableCell className="text-[12px]">
-                                        {detail.CLUB}
-                                      </TableCell>
-                                      <TableCell className="text-[12px]">
-                                        {detail.POSITION}
-                                      </TableCell>
-                                      <TableCell className="text-[12px]">
-                                        {detail.START_DATE}
-                                      </TableCell>
-                                      <TableCell className="text-[12px]">
-                                        {detail.END_DATE}
+                                {detailCoach.hasOwnProperty("CONTRACT_HISTORY") ? (
+                                  detailContract.length > 0 ? (
+                                    detailContract.map((detail, index) => (
+                                      <TableRow key={index}>
+                                        <TableCell className="text-[12px]">
+                                          {detail.CLUB}
+                                        </TableCell>
+                                        <TableCell className="text-[12px]">
+                                          {detail.POSITION}
+                                        </TableCell>
+                                        <TableCell className="text-[12px]">
+                                          {detail.START_DATE}
+                                        </TableCell>
+                                        <TableCell className="text-[12px]">
+                                          {detail.END_DATE}
+                                        </TableCell>
+                                      </TableRow>
+                                    ))
+                                  ) : (
+                                    <TableRow>
+                                      <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                        Tidak ada data
                                       </TableCell>
                                     </TableRow>
-                                  ))
+                                  )
                                 ) : (
                                   <TableRow>
                                     <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
