@@ -24,8 +24,8 @@ export function BarChartInteractive({ chartData }) {
             margin={{
               left: 12,
               right: 12,
+              bottom: 50,
             }}
-            barGap={0}
           >
             <CartesianGrid vertical={false} />
             <XAxis
@@ -34,12 +34,12 @@ export function BarChartInteractive({ chartData }) {
               axisLine={false}
               tickMargin={8}
               interval={0} // Pastikan semua label muncul
-              //   angle={-45} // Rotasi label jika terlalu panjang
+              angle={-15} // Rotasi label jika terlalu panjang
               textAnchor="end" // Atur posisi label setelah
             />
             <YAxis />
             <ChartTooltip content={<ChartTooltipContent className="w-[150px]" labelFormatter={(value) => `Petugas: ${value}`} />} />
-            <Bar barSize={20} dataKey="TOTAL_TUGAS" fill="var(--color-tugas)" />
+            <Bar barSize={30} dataKey="TOTAL_TUGAS" fill="var(--color-tugas)" />
           </BarChart>
         </ChartContainer>
       </CardContent>
