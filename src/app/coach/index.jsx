@@ -147,264 +147,220 @@ export default function Coach() {
             </button>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogContent
-                className="max-w-full xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh]"
+                className="max-w-full xl:max-w-4xl p-4 xl:p-5 bg-[#212B5A] overflow-y-auto h-[90vh]"
                 openModal={isDialogOpen}
               >
                 <DialogHeader>
                   <button
-                    className="absolute top-2 right-2 text-gray-500 hover:text-black"
+                    className="fixed top-2 right-2 p-3  "
                     onClick={() => setIsDialogOpen(false)}
                   >
-                    <X className="h-4 w-4" />
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2 21.8787L22 1.87891" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 1.87908L22 21.8789" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                   </button>
-                  <DialogTitle>
-                    <div className="flex flex-row mb-2 mt-5">
-                      <img
-                        className="rounded-full w-24"
-                        src={detailCoach.URL_FOTO}
-                        alt="avatar"
-                      />
-                      <div className="text-gray-700 text-[18px] font-bold ml-4 mt-3">
-                        {detailCoach.NAMA_OFFICIAL}
-                        <br></br>
-                        <span className="text-gray-700 text-sm font-normal">
-                          {detailCoach.NAMA_JABATAN} {"-" + lisensi}
-                        </span>
-                      </div>
-                    </div>
-                  </DialogTitle>
+
                   <DialogDescription>
-                    <div className="flex flex-row mt-5 bg-white p-1">
-                      <div
-                        style={{ cursor: "pointer" }}
-                        className={`bg-[#518EDC] bg-opacity-5 border-l-4 border-[#518EDC] p-2 w-full`}
-                      >
-                        <div className="flex justify-between">
-                          <div className="text-[#2D3748] text-[12px] text-lg font-bold">
-                            {"30"}
-                          </div>
-                        </div>
-                        <div className="text-neutral-400 text-[10px] font-normal">
-                          {"Total Match"}
-                        </div>
+
+                    <div className="grid grid-cols-7 pt-5">
+
+                      {/* left  */}
+                      <div className="col-span-2 pt-5">
+                        <img
+                          className="rounded-lg w-full"
+                          src={detailCoachBiodata.URL_FOTO}
+                          alt="avatar"
+                        />
                       </div>
-                      <div
-                        style={{ cursor: "pointer" }}
-                        className={`bg-[#16A34A] bg-opacity-5 border-l-4 border-[#16A34A] p-2 w-full`}
-                      >
-                        <div className="flex justify-between">
-                          <div className="text-[#2D3748] text-[12px] text-lg font-bold">
-                            {"74%"}
+
+                      {/* right  */}
+                      <div className="col-span-5 pl-5 text-slate-100">
+                        
+                        {/* name  */}
+                        <div className="font-bold  mt-3">
+                          <p className="text-xl">{detailCoachBiodata.NAMA_OFFICIAL}</p>
+                          <span className=" text-sm font-normal">
+                            {detailCoachBiodata.NAMA_JABATAN} {"-" + lisensi}
+                          </span>
+                        </div>
+
+
+                        {/* personal information          */}
+                        <div className=" mt-5 border text-neutral-400 text-sm border-[#646b8b] pb-3">
+                          <div className="bg-[#646b8b]  flex px-4 py-3 mb-3 items-center space-x-2">
+                            <div className="text-slate-100 text-sm flex gap-2">
+                              <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 21H7C3 21 2 20 2 16V8C2 4 3 3 7 3H17C21 3 22 4 22 8V16C22 20 21 21 17 21Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 8H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M15 12H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17 16H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8.49994 11.2899C9.49958 11.2899 10.3099 10.4796 10.3099 9.47992C10.3099 8.48029 9.49958 7.66992 8.49994 7.66992C7.50031 7.66992 6.68994 8.48029 6.68994 9.47992C6.68994 10.4796 7.50031 11.2899 8.49994 11.2899Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 16.33C11.86 14.88 10.71 13.74 9.26 13.61C8.76 13.56 8.25 13.56 7.74 13.61C6.29 13.75 5.14 14.88 5 16.33" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                              </div>
+                              <span className="my-auto">Personal Information</span>
+                            </div>
+                          </div>
+                          <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
+                            <div className="">Birth Date</div>
+                            <div className=" font-normal">
+                            {detailCoachBiodata.TGL_LAHIR}
+                            </div>
+                          </div>
+                          <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
+                            <div className="">Jenis Kelamin</div>
+                            <div className=" font-normal">
+                            {detailCoachBiodata.JENIS_KELAMIN}
+                            </div>
+                          </div>
+                          <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
+                            <div className="">Kewarganegaraan</div>
+                            <div className=" font-normal">
+                            {detailCoachBiodata.KEWARGANEGARAAN}
+                            </div>
+                          </div>
+                          <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
+                            <div className="">Jabatan</div>
+                            <div className="font-normal">
+                            {detailCoachBiodata.NAMA_JABATAN}
+                            </div>
+                          </div>
+                          <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
+                            <div className="">Club</div>
+                            <div className="font-normal">
+                            {detailCoachBiodata.NAMATIM}
+                            </div>
+                          </div>
+                          <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
+                            <div className="">Lisensi</div>
+                            <div className="font-normal">
+                            {detailCoachBiodata.LISENSI}
+                            </div>
                           </div>
                         </div>
-                        <div className="text-neutral-400 text-[10px] font-normal">
-                          {"Win Rate"}
+
+
+                        
+
+                        {/* contract history  */} 
+                        <div className="flex space-x-4 mt-5">
+                          <div className="text-[#989899] text-[12px] font-medium">
+                            Contract History
+                          </div>
                         </div>
+                        <div className="flex flex-row">
+                          <div className="w-full">
+                            <Table className="mt-2">
+                              <TableHeader className="bg-[#F6F6F6]">
+                                <TableRow>
+                                  <TableHead className="text-[12px]">
+                                    Club
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Position
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Start Date
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    End Date
+                                  </TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {detailContract.length > 0 ? (
+                                  detailContract.map((detail, index) => (
+                                    <TableRow key={index}>
+                                      <TableCell className="text-[12px]">
+                                        {detail.CLUB}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {detail.POSITION}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {detail.START_DATE}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {detail.END_DATE}
+                                      </TableCell>
+                                    </TableRow>
+                                  ))
+                                ) : (
+                                  <TableRow>
+                                    <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                      Tidak ada data
+                                    </TableCell>
+                                  </TableRow>
+                                )}
+                              </TableBody>
+                            </Table>
+                          </div>
+                        </div>
+
+
+                        {/* copetition history  */} 
+                        <div className="flex space-x-4 mt-5">
+                          <div className="text-[#989899] text-[12px] font-medium">
+                            Competition History
+                          </div>
+                        </div>
+                        <div className="flex flex-row">
+                          <div className="w-full">
+                            <Table className="mt-2">
+                              <TableHeader className="bg-[#F6F6F6]">
+                                <TableRow>
+                                  <TableHead className="text-[12px]">
+                                    Club
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Competition
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Position
+                                  </TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {detailCompetition.length > 0 ? (
+                                  detailCompetition.map((detail, index) => (
+                                    <TableRow key={index}>
+                                      <TableCell className="text-[12px]">
+                                        {detail.COMPETITION}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {detail.CLUB}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {detail.POSITION}
+                                      </TableCell>
+                                    </TableRow>
+                                  ))
+                                ) : (
+                                  <TableRow>
+                                    <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                      Tidak ada data
+                                    </TableCell>
+                                  </TableRow>
+                                )}
+                              </TableBody>
+                            </Table>
+                          </div>
+                        </div>
+
                       </div>
-                      <div
-                        style={{ cursor: "pointer" }}
-                        className={`bg-[#FACC15] bg-opacity-5 border-l-4 border-[#FACC15] p-2 w-full`}
-                      >
-                        <div className="flex justify-between">
-                          <div className="text-[#2D3748] text-[12px] text-lg font-bold">
-                            {"21%"}
-                          </div>
-                        </div>
-                        <div className="text-neutral-400 text-[10px] font-normal">
-                          {"Draw Rate"}
-                        </div>
-                      </div>
-                      <div
-                        style={{ cursor: "pointer" }}
-                        className={`bg-[#CC0101] bg-opacity-5 border-l-4 border-[#CC0101] p-2 w-full`}
-                      >
-                        <div className="flex justify-between">
-                          <div className="text-[#2D3748] text-[12px] text-lg font-bold">
-                            {"11%"}
-                          </div>
-                        </div>
-                        <div className="text-neutral-400 text-[10px] font-normal">
-                          {"Lose Rate"}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex space-x-4 mt-5">
-                      <div className="text-[#989899] text-[12px] font-medium">
-                        Personal Information
-                      </div>
-                    </div>
-                    <div className="flex space-x-4 mt-1">
-                      <div className="bg-white rounded-lg shadow p-6 w-full">
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Birth Date</div>
-                          <div className="text-[#6B7280] font-normal">
-                            {detailCoach.TGL_LAHIR}
-                          </div>
-                        </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Birt Place</div>
-                          <div className="text-[#6B7280] font-normal">
-                            {detailCoach.TGL_LAHIR}
-                          </div>
-                        </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Experience</div>
-                          <div className="text-[#6B7280] font-normal">
-                            38 Years
-                          </div>
-                        </div>
-                        <div className="flex justify-between py-2">
-                          <div className="text-black">Education</div>
-                          <div className="text-[#6B7280] font-normal">
-                            Rotterdam University
-                          </div>
-                        </div>
-                      </div>
+
                     </div>
 
-                    <div className="flex space-x-4 mt-5">
-                      <div className="text-[#989899] text-[12px] font-medium">
-                        Recent Matches
-                      </div>
-                    </div>
-                    <div className="flex flex-row">
-                      <div className="w-full">
-                        <Table className="mt-2">
-                          <TableHeader className="bg-[#F6F6F6]">
-                            <TableRow>
-                              <TableHead className="text-[12px]">
-                                Date
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Match
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Venue
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Result
-                              </TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                2024-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Indonesia vs Australia
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Gelora Bung Karno Stadium
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2 - 1
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                2024-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Indonesia vs Bahrain
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Gelora Bung Karno Stadium
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                3 - 1
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                2024-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Indonesia vs China
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Gelora Bung Karno Stadium
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                1 - 1
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </div>
-                    </div>
 
-                    <div className="flex space-x-4 mt-5">
-                      <div className="text-[#989899] text-[12px] font-medium">
-                        Contract History
-                      </div>
-                    </div>
-                    <div className="flex flex-row">
-                      <div className="w-full">
-                        <Table className="mt-2">
-                          <TableHeader className="bg-[#F6F6F6]">
-                            <TableRow>
-                              <TableHead className="text-[12px]">
-                                Club
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Position
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                Start Date
-                              </TableHead>
-                              <TableHead className="text-[12px]">
-                                End Date
-                              </TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                Timnas Indonesia Senior
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Head Coach
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2025-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2027-01-01
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                Timnas Indonesia U23
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Head Coach
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2025-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2027-01-01
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                Timnas Indonesia U21
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Head Coach
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2025-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2027-01-01
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </div>
-                    </div>
+
+
+                    
+                    
+
+                    
+
+                    
                   </DialogDescription>
                 </DialogHeader>
               </DialogContent>
@@ -455,6 +411,9 @@ export default function Coach() {
   const [licenseChart, setChartLicenseDistribution] = useState([]);
   const [chartConfigs, setChartConfig] = useState([]);
   const [detailCoach, setDetailCoach] = useState([]);
+  const [detailCoachBiodata, setDetailCoachBiodata] = useState([]);
+  const [detailCompetition, setDetailCompetition] = useState([]);
+  const [detailContract, setDetailContract] = useState([]);
   const token = sessions.getSessionToken();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [lisensi, setLicensi] = useState();
@@ -534,7 +493,11 @@ export default function Coach() {
       );
 
       if (detail.status === 200) {
+        console.log(detail.data)
         setDetailCoach(detail.data);
+        setDetailCoachBiodata(detail.data.BIODATA);
+        setDetailContract(detail.data.CONTRACT_HISTORY);
+        setDetailCompetition(detail.data.COMPETITION_HISTORY);
       }
     } catch (error) {
       console.log(error);
@@ -573,7 +536,7 @@ export default function Coach() {
         </p>
 
         <div className="mt-4">
-          <CarouselSize data={dataSlide} />
+          <CarouselSize data={dataSlide} handleViewDetail={handleViewDetail} />
         </div>
 
         <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
@@ -607,8 +570,8 @@ export default function Coach() {
   );
 }
 
-function CarouselSize({data}) {
-  console.log(data);
+function CarouselSize({data, handleViewDetail}) {
+  // console.log(data);
   return (
     <Carousel
       opts={{
@@ -618,7 +581,11 @@ function CarouselSize({data}) {
     >
       <CarouselContent>
         {data.map((slide, index) => (
-          <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/5">
+          <CarouselItem 
+            key={index} 
+            className="md:basis-1/5 lg:basis-1/5"
+            onClick={() => handleViewDetail(slide.ID_OFFICIAL)}
+          >
             <div>
               <Card className="border-none bg-transparent shadow-none">
                 <CardContent
@@ -722,11 +689,11 @@ function LicenseDistribution({ data, config }) {
   );
 }
 
-function coachList() {
-  return (
-    <Card className="p-4">
-      <h3 className="font-semibold">coach List</h3>
-      <DataTableExample />
-    </Card>
-  );
-}
+// function coachList() {
+//   return (
+//     <Card className="p-4">
+//       <h3 className="font-semibold">coach List</h3>
+//       <DataTableExample />
+//     </Card>
+//   );
+// }
