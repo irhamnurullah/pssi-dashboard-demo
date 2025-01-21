@@ -322,26 +322,34 @@ export default function Coach() {
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
-                                {detailCompetition.length > 0 ? (
-                                  detailCompetition.map((detail, index) => (
-                                    <TableRow key={index}>
-                                      <TableCell className="text-[12px]">
-                                        {detail.COMPETITION}
-                                      </TableCell>
-                                      <TableCell className="text-[12px]">
-                                        {detail.CLUB}
-                                      </TableCell>
-                                      <TableCell className="text-[12px]">
-                                        {detail.POSITION}
+                                {detailCoach.hasOwnProperty("COMPETITION_HISTORY") ? (
+                                  detailCompetition.length > 0 ? (
+                                    detailCompetition.map((detail, index) => (
+                                      <TableRow key={index}>
+                                        <TableCell className="text-[12px]">
+                                          {detail.COMPETITION}
+                                        </TableCell>
+                                        <TableCell className="text-[12px]">
+                                          {detail.CLUB}
+                                        </TableCell>
+                                        <TableCell className="text-[12px]">
+                                          {detail.POSITION}
+                                        </TableCell>
+                                      </TableRow>
+                                    ))
+                                  ) : (
+                                    <TableRow>
+                                      <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                        Tidak ada data
                                       </TableCell>
                                     </TableRow>
-                                  ))
+                                  )
                                 ) : (
                                   <TableRow>
                                     <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
                                       Tidak ada data
                                     </TableCell>
-                                  </TableRow>
+                                  </TableRow> 
                                 )}
                               </TableBody>
                             </Table>
