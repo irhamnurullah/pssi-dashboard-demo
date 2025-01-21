@@ -160,6 +160,8 @@ export default function Player() {
 
   const [playerProvince, setPlayerProvince] = useState([]);
 
+  const [chartDataExample, setChartDataExample] = useState([]);
+
   const columns = [
     {
       id: "select",
@@ -408,7 +410,7 @@ export default function Player() {
     getChartData();
     getChartDataByProvince();
     getCarouselData();
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, totalPlayer]);
 
   const getListPlayer = async (page, rowsPerPage) => {
     try {
@@ -427,6 +429,26 @@ export default function Player() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const updateChartData = async () => {
+    const updatedChartData = totalPlayer
+      .filter((player) => player.label !== "Total Players")
+      .map((player) => {
+        const playerValue = typeof player.value === "string"
+          ? parseInt(player.value.replace(/\./g, ""), 10)
+          : player.value;
+        
+        return {
+          gender: player.label === "Male Players" ? "male" : "female",
+          player: playerValue,
+          fill: player.color === "blue" ? "var(--color-male)" : "var(--color-female)",
+        };
+      });
+  
+    setChartDataExample(updatedChartData);
+    // console.log(updatedChartData);
+    
   };
 
   const getChartData = async () => {
@@ -476,6 +498,8 @@ export default function Player() {
             female: player.data.WANITA_ALL.TOTAL,
           },
         ]);
+
+        updateChartData();
       }
     } catch (error) {
       console.log(error);
@@ -529,7 +553,7 @@ export default function Player() {
 
       if (playerSlide.status === 200 || playerSlide.length > 0) {
         setDataSlide(playerSlide.data);
-        console.log(playerSlide.data);
+        // console.log(playerSlide.data);
       }
     } catch (error) {
       console.log(error);
@@ -690,7 +714,7 @@ export default function Player() {
 
         <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg">
           <div className="w-full justify-center">
-            <PieChartLabel title={"Overall Player Distribution by Gender"} />
+            <PieChartLabel title={"Overall Player Distribution by Gender"} chartData={chartDataExample} />
           </div>
         </div>
       </div>
