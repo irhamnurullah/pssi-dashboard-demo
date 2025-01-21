@@ -196,6 +196,16 @@ export default function Competition() {
       cell: ({ row }) => <div className="capitalize">{row.getValue('TOTAL_OFFICIAL')}</div>,
     },
     {
+      accessorKey: 'TOTAL_PERTANDINGAN',
+      header: 'TOTAL PERTANDINGAN',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('TOTAL_PERTANDINGAN')}</div>,
+    },
+    {
+      accessorKey: 'TOTAL_GOL',
+      header: 'TOTAL GOL',
+      cell: ({ row }) => <div className="capitalize">{row.getValue('TOTAL_GOL')}</div>,
+    },
+    {
       accessorKey: 'TOTAL_RC',
       header: 'TOTAL RED CARD',
       cell: ({ row }) => <div className="capitalize">{row.getValue('TOTAL_RC')}</div>,
