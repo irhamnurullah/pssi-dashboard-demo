@@ -37,7 +37,7 @@ const chartConfig = {
   },
 };
 
-export function PieChartLabel({ title, chartData = chartDataExample }) {
+export function PieChartLabel({ title, chartData }) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="pb-0">
