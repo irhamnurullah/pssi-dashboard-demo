@@ -281,13 +281,13 @@ export default function Referee() {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               {/* <DialogTrigger onClick={() => handleViewDetail(row.original.id_petugas)} className="text-blue-400">View Detail</DialogTrigger> */}
               <DialogContent
-                className="max-w-full xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh] bg-[#7E0000]"
+                className="max-w-full  xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh] bg-[#7E0000]"
                 openModal={isDialogOpen}
               >
-                <DialogHeader>
+                <DialogHeader className="relative">
                   
                   <button
-                    className="absolute top-2 right-2 p-3  "
+                    className="fixed top-2 right-2 p-3  "
                     onClick={() => setIsDialogOpen(false)}
                   >
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -315,6 +315,49 @@ export default function Referee() {
                             detailReferee.STAT_PETUGAS}
                         </span>
                       </div>
+
+                      <div className="grid grid-cols-3 mt-4 gap-2">
+                        <div className="bg-slate-100 relative rounded-lg px-3 py-2">
+                          <div className="w-7 absolute right-1  bottom-0">
+                            <svg width="100%" height="100%" viewBox="0 0 297 487" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.19611 99.3623L95.1961 291.862C102.153 306.263 109.732 338.167 124 347L285.196 271.362C299.996 264.562 297.363 251.195 294.196 245.362L182.196 10.8623C176.996 -0.337695 164.696 -2.63802 155.696 2.86231L10.1961 71.3623C-1.00389 77.3623 -1.80383 91.3623 2.19611 99.3623Z" fill="#FF0000"/>
+                            <path d="M103.023 309.342L61.0227 221.342C55.8227 227.742 42.1894 267.342 36.0227 286.342C34.8227 309.942 81.0227 394.842 96.5227 435.842V486.842H191.523V435.842C213.923 413.842 216.189 387.675 214.523 377.342C207.523 334.842 191.023 356.842 181.523 242.842C179.923 209.642 147.023 216.342 147.023 239.342V299.842C142.023 338.842 111.523 328.342 103.023 309.342Z" fill="#F4D5C6"/>
+                            </svg>
+                          </div>
+                          <div className="text-[#7E0000] font-bold">
+                            {detailReferee.TOTAL_RC}
+                          </div>
+                          <small className="text-xs text-slate-700  ">Red Card (RC)</small>
+                        </div>
+
+                        <div className="bg-slate-100 rounded-lg px-3 py-2 relative">
+                          <div className="w-7 absolute right-1  bottom-0">
+                            <svg width="100%" height="100%" viewBox="0 0 301 489" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.19611 101.362L97.1961 293.862C104.153 308.263 111.732 340.167 126 349L287.196 273.362C301.996 266.562 299.363 253.195 296.196 247.362L184.196 12.8623C178.996 1.6623 166.696 -0.638021 157.696 4.86231L12.1961 73.3623C0.996111 79.3623 0.196165 93.3623 4.19611 101.362Z" fill="#FFE137" stroke="#8A7500" stroke-width="4"/>
+                            <path d="M105.023 311.342L63.0227 223.342C57.8227 229.742 44.1894 269.342 38.0227 288.342C36.8227 311.942 83.0227 396.842 98.5227 437.842V488.842H193.523V437.842C215.923 415.842 218.189 389.675 216.523 379.342C209.523 336.842 193.023 358.842 183.523 244.842C181.923 211.642 149.023 218.342 149.023 241.342V301.842C144.023 340.842 113.523 330.342 105.023 311.342Z" fill="#F4D5C6"/>
+                            </svg>
+
+                          </div>
+                          <div className="text-[#7E0000] font-bold">
+                          {detailReferee.TOTAL_SYC}
+                          </div>
+                          <small className="text-xs text-slate-700  ">Second Yellow Card (SYC)</small>
+                        </div>
+
+                        <div className="bg-slate-100 rounded-lg px-3 py-4 relative">
+                          <div className="w-7 absolute right-1  bottom-0">
+                            <svg width="100%" height="100%" viewBox="0 0 301 489" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.19611 101.362L97.1961 293.862C104.153 308.263 111.732 340.167 126 349L287.196 273.362C301.996 266.562 299.363 253.195 296.196 247.362L184.196 12.8623C178.996 1.6623 166.696 -0.638021 157.696 4.86231L12.1961 73.3623C0.996111 79.3623 0.196165 93.3623 4.19611 101.362Z" fill="#FFE137" stroke="#8A7500" stroke-width="4"/>
+                            <path d="M105.023 311.342L63.0227 223.342C57.8227 229.742 44.1894 269.342 38.0227 288.342C36.8227 311.942 83.0227 396.842 98.5227 437.842V488.842H193.523V437.842C215.923 415.842 218.189 389.675 216.523 379.342C209.523 336.842 193.023 358.842 183.523 244.842C181.923 211.642 149.023 218.342 149.023 241.342V301.842C144.023 340.842 113.523 330.342 105.023 311.342Z" fill="#F4D5C6"/>
+                            </svg>
+                          </div>
+                          <div className="text-[#7E0000] font-bold">
+                          {detailReferee.TOTAL_YC}
+                          </div>
+                          <small className="text-xs text-slate-700  ">Yellow Card (YC)</small>
+                        </div>
+
+                      </div>
                       
                       {/* personal Information */}
                       <div className=" mt-5 border text-neutral-400 text-sm border-[#A75353] pb-3">
@@ -332,27 +375,27 @@ export default function Referee() {
                             <span className="my-auto">Personal Information</span>
                           </div>
                         </div>
-                        <div className="flex justify-between pl-12 pr-4">
+                        <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                           <div className="">Birth Date</div>
-                          <div className="text-neutral-400 font-normal">
+                          <div className=" font-normal">
                             {detailReferee.TGL_LAHIR}
                           </div>
                         </div>
-                        <div className="flex justify-between pl-12 pr-4">
+                        <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                           <div className="">Gender</div>
-                          <div className="text-neutral-400 font-normal">
+                          <div className=" font-normal">
                             {detailReferee.JNS_KELAMIN}
                           </div>
                         </div>
-                        <div className="flex justify-between pl-12 pr-4">
+                        <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                           <div className="">Province</div>
-                          <div className="text-neutral-400 font-normal">
+                          <div className=" font-normal">
                             {detailReferee.NAMA_PROPINSI}
                           </div>
                         </div>
-                        <div className="flex justify-between pl-12 pr-4">
+                        <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
                           <div className="">City</div>
-                          <div className="text-neutral-400 font-normal">
+                          <div className="font-normal">
                             {detailReferee.NAMA_KOTA}
                           </div>
                         </div>
@@ -377,42 +420,25 @@ export default function Referee() {
                             <span className="my-auto">Career Statistics</span>
                           </div>
                         </div>
-                        <div className="flex justify-between pl-12 pr-4">
+                        <div className="flex text-slate-200 py-1  justify-between pl-12 pr-4">
                           <div className="">License</div>
-                          <div className="text-neutral-400 font-normal">
+                          <div className=" font-normal">
                             {detailReferee.NAMA_LAMPIRAN}
                           </div>
                         </div>
-                        <div className="flex justify-between pl-12 pr-4">
+                        <div className="flex text-slate-200 py-1  justify-between pl-12 pr-4">
                           <div className="">Division</div>
-                          <div className="text-neutral-400 font-normal">
+                          <div className=" font-normal">
                             {detailReferee.NAMA_DIVISI}
                           </div>
                         </div>
-                        <div className="flex justify-between pl-12 pr-4">
+                        <div className="flex text-slate-200 py-1  justify-between pl-12 pr-4">
                           <div className="">Status</div>
-                          <div className="text-neutral-400 font-normal">
+                          <div className="font-normal">
                             {detailReferee.STATUS}
                           </div>
                         </div>
-                        <div className="flex justify-between pl-12 pr-4">
-                          <div className="">Total Red Card (RC)</div>
-                          <div className="text-neutral-400 font-normal">
-                            {detailReferee.TOTAL_RC}
-                          </div>
-                        </div>
-                        <div className="flex justify-between pl-12 pr-4">
-                          <div className="">Total Second Yellow Card (SYC)</div>
-                          <div className="text-neutral-400 font-normal">
-                            {detailReferee.TOTAL_SYC}
-                          </div>
-                        </div>
-                        <div className="flex justify-between pl-12 pr-4">
-                          <div className="">Total Yellow Card (YC)</div>
-                          <div className="text-neutral-400 font-normal">
-                            {detailReferee.TOTAL_YC}
-                          </div>
-                        </div>
+                        
                       </div>
 
                       {/* recent matches  */}
@@ -421,9 +447,9 @@ export default function Referee() {
                       </div>
                       <div className="flex space-x-4 ">
                         
-                        <div className="flex flex-row">
+                        <div className="flex border border-[#A75353] flex-row">
                           <div className="w-full">
-                            <Table className="mt-2">
+                            <Table className="">
                               <TableHeader className="text-white text-sm bg-white">
                                 <TableRow>
                                   <TableHead className="text-[12px]">
