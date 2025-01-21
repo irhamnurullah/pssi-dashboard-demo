@@ -18,10 +18,10 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart";
-const chartData = [
-  { gender: "female", player: 275, fill: "var(--color-female)" },
-  { gender: "male", player: 200, fill: "var(--color-male)" },
-];
+// const chartDataExample = [
+//   { gender: "female", player: 275, fill: "var(--color-female)" },
+//   { gender: "male", player: 200, fill: "var(--color-male)" },
+// ];
 
 const chartConfig = {
   player: {
@@ -37,7 +37,7 @@ const chartConfig = {
   },
 };
 
-export function PieChartLabel({ title, chartData }) {
+export function PieChartLabel({ title, chartData = chartDataExample }) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="pb-0">
