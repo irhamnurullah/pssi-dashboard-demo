@@ -371,12 +371,12 @@ export default function Player() {
             color: 'green',
           },
           {
-            label: 'Male Players',
+            label: 'Total Male Players',
             value: player.data.PRIA_ALL.TOTAL.toLocaleString('id-ID'),
             color: 'blue',
           },
           {
-            label: 'Female Players',
+            label: 'Total Female Players',
             value: player.data.WANITA_ALL.TOTAL.toLocaleString('id-ID'),
             color: 'pink',
           },
@@ -468,27 +468,16 @@ export default function Player() {
       <div className="bg-[#212B5A] absolute h-[60vh] w-full z-10"></div>
       <NavBar bgColor="#FFFFFF" selectedTextColor="#212B5A" secondaryTextColor="#C6C6C6" />
 
-      <div className="z-20 relative flex flex-col gap-5 container-pssi mx-4 z-20 relative ">
+      <div className=" flex flex-col gap-5 container-pssi mx-4 z-20 relative ">
         <div className="flex flex-col">
-          <h1 className="text-3xl font-bold text-[#646B8B]">Players</h1>
-          <p className="text-gray-400">
+          <h1 className="text-3xl font-bold text-slate-200">Players</h1>
+          <p className="text-slate-200">
             An Indonesian football player represents clubs or the national team, showcasing skills and passion in domestic and international
             competitions.
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 ">
-          {totalPlayer.map((card, idx) => (
-            <div
-              className="relative bg-slate-50 rounded-lg p-5 "
-              style={{ backgroundImage: `url('./bg-logo-grey.svg')`, backgroundRepeat: 'no-repeat', backgroundPosition: '100% 200%' }}
-            >
-              <p className="text-sm text-slate-600">{card.label}</p>
-              <p className="font-bold text-[#212B5A] text-xl">{card.value}</p>
-              {/* <img src="" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" /> */}
-            </div>
-          ))}
-        </div>
+        
 
         <Carousel
           opts={{
@@ -507,17 +496,20 @@ export default function Player() {
           <CarouselNext />
         </Carousel>
 
-        <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
-          <DataTable columns={columns} data={playerData} searchBy={'nama_pemain'} totalData={playerTotal} />
-
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            onRowsPerPageChange={setRowsPerPage}
-            rowsPerPage={rowsPerPage}
-          />
+        <div className="grid grid-cols-3 gap-4 ">
+          {totalPlayer.map((card, idx) => (
+            <div
+              className="relative bg-white border rounded-lg p-5 "
+              style={{ backgroundImage: `url('./bg-logo-white.svg')`, backgroundRepeat: 'no-repeat', backgroundPosition: '100% 200%' }}
+            >
+              <p className="text-sm text-slate-600">{card.label}</p>
+              <p className="font-bold text-[#212B5A] text-xl">{card.value}</p>
+              {/* <img src="" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" /> */}
+            </div>
+          ))}
         </div>
+
+        
 
         <div className="grid grid-cols-12 gap-4">
           <div className="flex flex-col col-span-5 p-4 gap-4 bg-white rounded-lg shadow-lg">
@@ -557,6 +549,18 @@ export default function Player() {
           <div className="w-full justify-center">
             <PieChartLabel title={'Overall Player Distribution by Gender'} chartData={chartDataExample} />
           </div>
+        </div>
+
+        <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
+          <DataTable columns={columns} data={playerData} searchBy={'nama_pemain'} totalData={playerTotal} />
+
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            onRowsPerPageChange={setRowsPerPage}
+            rowsPerPage={rowsPerPage}
+          />
         </div>
       </div>
     </div>

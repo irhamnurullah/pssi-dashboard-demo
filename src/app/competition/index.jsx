@@ -226,8 +226,8 @@ export default function Competition() {
       <div className="relative flex flex-col gap-5 container-pssi mx-4 z-20  ">
         
         <div>
-          <h2 className="text-[#A54D4D] text-3xl font-bold">Competition</h2>
-          <p className="text-sm text-neutral-400 ">
+          <h2 className="text-slate-200 text-3xl font-bold">Competition</h2>
+          <p className="text-sm text-slate-200 ">
             An Indonesian competition is an organized event where participants
             compete in various fields, such as sports, arts, or academics, at
             regional, national, or international levels.

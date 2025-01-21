@@ -418,8 +418,8 @@ export default function Coach() {
       <NavBar bgColor="#FFFFFF" selectedTextColor="#212B5A" secondaryTextColor="#C6C6C6" />
 
       <div className="container-pssi mx-4 z-20 relative">
-        <h2 className="text-[#646B8B] text-4xl font-bold">Coach</h2>
-        <p className="text-sm text-neutral-400 mt-2">
+        <h2 className="text-slate-200 text-4xl font-bold">Coach</h2>
+        <p className="text-sm text-slate-200 mt-2">
           An Indonesian coach trains and guides athletes or teams, focusing on skill development, strategy, and performance improvement.
         </p>
 
