@@ -97,16 +97,16 @@ export default function Player() {
       header: 'Nama TIM',
       cell: ({ row }) => <div className="capitalize">{row.getValue('NAMATIM')}</div>,
     },
-    {
-      accessorKey: 'CAPS',
-      header: 'Caps',
-      cell: ({ row }) => <div className="capitalize">{'-'}</div>,
-    },
-    {
-      accessorKey: 'Goals',
-      header: 'Goals',
-      cell: ({ row }) => <div className="capitalize">{'-'}</div>,
-    },
+    // {
+    //   accessorKey: 'CAPS',
+    //   header: 'Caps',
+    //   cell: ({ row }) => <div className="capitalize">{'-'}</div>,
+    // },
+    // {
+    //   accessorKey: 'Goals',
+    //   header: 'Goals',
+    //   cell: ({ row }) => <div className="capitalize">{'-'}</div>,
+    // },
     {
       id: 'actions',
       enableHiding: false,
