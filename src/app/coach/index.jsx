@@ -161,14 +161,14 @@ export default function Coach() {
                     <div className="flex flex-row mb-2 mt-5">
                       <img
                         className="rounded-full w-24"
-                        src={detailCoach.URL_FOTO}
+                        src={detailCoachBiodata.URL_FOTO}
                         alt="avatar"
                       />
                       <div className="text-gray-700 text-[18px] font-bold ml-4 mt-3">
-                        {detailCoach.NAMA_OFFICIAL}
+                        {detailCoachBiodata.NAMA_OFFICIAL}
                         <br></br>
                         <span className="text-gray-700 text-sm font-normal">
-                          {detailCoach.NAMA_JABATAN} {"-" + lisensi}
+                          {detailCoachBiodata.NAMA_JABATAN} {"-" + lisensi}
                         </span>
                       </div>
                     </div>
@@ -238,13 +238,13 @@ export default function Coach() {
                         <div className="flex justify-between py-2">
                           <div className="text-black">Birth Date</div>
                           <div className="text-[#6B7280] font-normal">
-                            {detailCoach.TGL_LAHIR}
+                            {detailCoachBiodata.TGL_LAHIR}
                           </div>
                         </div>
                         <div className="flex justify-between py-2">
                           <div className="text-black">Birt Place</div>
                           <div className="text-[#6B7280] font-normal">
-                            {detailCoach.TGL_LAHIR}
+                            -
                           </div>
                         </div>
                         <div className="flex justify-between py-2">
@@ -287,48 +287,38 @@ export default function Coach() {
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                2024-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Indonesia vs Australia
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Gelora Bung Karno Stadium
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2 - 1
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                2024-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Indonesia vs Bahrain
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Gelora Bung Karno Stadium
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                3 - 1
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                2024-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Indonesia vs China
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Gelora Bung Karno Stadium
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                1 - 1
-                              </TableCell>
-                            </TableRow>
+                            {detailCoach.hasOwnProperty("COMPETITION_HISTORY") ? (
+                              detailCompetition.length > 0 ? (
+                                detailCompetition.map((detail, index) => (
+                                  <TableRow key={index}>
+                                    <TableCell className="text-[12px]">
+                                      -
+                                    </TableCell>
+                                    <TableCell className="text-[12px]">
+                                      {detail.COMPETITION}
+                                    </TableCell>
+                                    <TableCell className="text-[12px]">
+                                      -
+                                    </TableCell>
+                                    <TableCell className="text-[12px]">
+                                      -
+                                    </TableCell>
+                                  </TableRow>
+                                ))
+                              ) : (
+                                <TableRow>
+                                  <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                    Tidak ada data
+                                  </TableCell>
+                                </TableRow>
+                              )
+                            ) : (
+                              <TableRow>
+                                <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                  Tidak ada data
+                                </TableCell>
+                              </TableRow>
+                            )}
                           </TableBody>
                         </Table>
                       </div>
@@ -359,48 +349,30 @@ export default function Coach() {
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                Timnas Indonesia Senior
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Head Coach
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2025-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2027-01-01
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                Timnas Indonesia U23
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Head Coach
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2025-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2027-01-01
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className="text-[12px]">
-                                Timnas Indonesia U21
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                Head Coach
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2025-01-01
-                              </TableCell>
-                              <TableCell className="text-[12px]">
-                                2027-01-01
-                              </TableCell>
-                            </TableRow>
+                            {detailContract.length > 0 ? (
+                              detailContract.map((detail, index) => (
+                                <TableRow key={index}>
+                                  <TableCell className="text-[12px]">
+                                    {detail.CLUB}
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    {detail.POSITION}
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    {new Date(detail.START_DATE).toLocaleDateString()}
+                                  </TableCell>
+                                  <TableCell className="text-[12px]">
+                                    {detail.END_DATE}
+                                  </TableCell>
+                                </TableRow>
+                              ))
+                            ) : (
+                              <TableRow>
+                                <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: "center" }}>
+                                  Tidak ada data
+                                </TableCell>
+                              </TableRow>
+                            )}
                           </TableBody>
                         </Table>
                       </div>
@@ -455,6 +427,9 @@ export default function Coach() {
   const [licenseChart, setChartLicenseDistribution] = useState([]);
   const [chartConfigs, setChartConfig] = useState([]);
   const [detailCoach, setDetailCoach] = useState([]);
+  const [detailCoachBiodata, setDetailCoachBiodata] = useState([]);
+  const [detailCompetition, setDetailCompetition] = useState([]);
+  const [detailContract, setDetailContract] = useState([]);
   const token = sessions.getSessionToken();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [lisensi, setLicensi] = useState();
@@ -535,6 +510,9 @@ export default function Coach() {
 
       if (detail.status === 200) {
         setDetailCoach(detail.data);
+        setDetailCoachBiodata(detail.data.BIODATA);
+        setDetailContract(detail.data.CONTRACT_HISTORY);
+        setDetailCompetition(detail.data.COMPETITION_HISTORY);
       }
     } catch (error) {
       console.log(error);
@@ -573,7 +551,7 @@ export default function Coach() {
         </p>
 
         <div className="mt-4">
-          <CarouselSize data={dataSlide} />
+          <CarouselSize data={dataSlide} handleViewDetail={handleViewDetail} />
         </div>
 
         <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
@@ -607,8 +585,8 @@ export default function Coach() {
   );
 }
 
-function CarouselSize({data}) {
-  console.log(data);
+function CarouselSize({data, handleViewDetail}) {
+  // console.log(data);
   return (
     <Carousel
       opts={{
@@ -618,7 +596,11 @@ function CarouselSize({data}) {
     >
       <CarouselContent>
         {data.map((slide, index) => (
-          <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/5">
+          <CarouselItem 
+            key={index} 
+            className="md:basis-1/5 lg:basis-1/5"
+            onClick={() => handleViewDetail(slide.ID_OFFICIAL)}
+          >
             <div>
               <Card className="border-none bg-transparent shadow-none">
                 <CardContent
@@ -722,11 +704,11 @@ function LicenseDistribution({ data, config }) {
   );
 }
 
-function coachList() {
-  return (
-    <Card className="p-4">
-      <h3 className="font-semibold">coach List</h3>
-      <DataTableExample />
-    </Card>
-  );
-}
+// function coachList() {
+//   return (
+//     <Card className="p-4">
+//       <h3 className="font-semibold">coach List</h3>
+//       <DataTableExample />
+//     </Card>
+//   );
+// }
