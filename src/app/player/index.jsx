@@ -171,6 +171,8 @@ export default function Player() {
 
   const [playerProvince, setPlayerProvince] = useState([]);
 
+  const [chartDataExample, setChartDataExample] = useState([]);
+
   const columns = [
     {
       id: "select",
@@ -563,6 +565,24 @@ export default function Player() {
     }
   };
 
+  const updateChartData = () => {
+    const updatedChartData = totalPlayer
+      .filter((player) => player.label !== "Total Players") // Hanya ambil Male dan Female
+      .map((player) => {
+        const playerValue = typeof player.value === "string"
+          ? parseInt(player.value.replace(/\./g, ""), 10) // Jika string, konversi ke angka
+          : player.value; // Jika sudah angka, gunakan langsung
+  
+        return {
+          gender: player.label.toLowerCase().includes("male") ? "male" : "female",
+          player: playerValue,
+          fill: player.color === "blue" ? "var(--color-male)" : "var(--color-female)",
+        };
+      });
+  
+    setChartDataExample(updatedChartData);
+  };
+
   const getChartData = async () => {
     try {
       const player = await apiService.get(`/api/player/GetData`, headers);
@@ -610,6 +630,8 @@ export default function Player() {
             female: player.data.WANITA_ALL.TOTAL,
           },
         ]);
+
+        updateChartData();
       }
     } catch (error) {
       console.log(error);
@@ -827,7 +849,7 @@ export default function Player() {
 
         <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg">
           <div className="w-full justify-center">
-            <PieChartLabel title={"Overall Player Distribution by Gender"} />
+            <PieChartLabel title={"Overall Player Distribution by Gender"} chartData={chartDataExample} />
           </div>
         </div>
       </div>
