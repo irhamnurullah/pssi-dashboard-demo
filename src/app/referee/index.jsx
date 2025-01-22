@@ -452,8 +452,8 @@ export default function Referee() {
         </div>
 
         <div className="mt-5 grid grid-cols-6 bg-white rounded-lg border">
-          <div className="py-3 col-span-6 border-b border-slate-200 text-center px-4">
-            <h3 className="font-semibold">Top 10 Referee</h3>
+          <div className="py-3 col-span-6 border-b border-slate-200 text-left px-4">
+            <h3 className="font-semibold">Top 10 Referee Appointment</h3>
           </div>
 
           <div className="col-span-full border-r border-slate-200 flex flex-col justify-end">

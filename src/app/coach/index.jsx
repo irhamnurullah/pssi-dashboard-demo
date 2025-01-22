@@ -196,7 +196,7 @@ export default function Coach() {
                           </div>
                           <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
                             <div className="">Lisensi</div>
-                            <div className="font-normal">{detailCoachBiodata.LISENSI}</div>
+                            <div className="font-normal">{lisensi}</div>
                           </div>
                         </div>
 
@@ -597,7 +597,7 @@ function LicenseDistribution({ data, config, onClick }) {
       <div className="">
         <h3 className="font-semibold">License Distribution</h3>
         {/* <MultipleBarChart dataChart={data} config={config} onClick={onClick} /> */}
-        <BarChartHorizontalLabel dataChart={data}/>
+        <BarChartHorizontalLabel dataChart={data} onClick={onClick}/>
       </div>
       {/* <div className="flex-1">
         <h3 className="font-semibold">License Distribution - Female coachs by Province</h3>

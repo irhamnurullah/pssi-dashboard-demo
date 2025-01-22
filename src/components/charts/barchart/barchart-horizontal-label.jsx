@@ -24,7 +24,11 @@ const chartConfig = {
   },
 };
 
-export function BarChartHorizontalLabel({ dataChart }) {
+export function BarChartHorizontalLabel({ dataChart, onClick }) {
+
+  const handleClick = (category) => {
+    onClick(category)
+  }
   return (
     <Card className="border-none shadow-none">
       <CardContent className="p-0">
@@ -52,6 +56,7 @@ export function BarChartHorizontalLabel({ dataChart }) {
             <XAxis type="number" />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Bar
+              onClick={(data, index) => handleClick({ data, index, dataKey: 'male' })}
               name="Male"
               dataKey="male"
               layout="vertical"
@@ -69,7 +74,9 @@ export function BarChartHorizontalLabel({ dataChart }) {
             </Bar>
 
             <Bar
-                fill="#FF99CF"
+              onClick={(data, index) => handleClick({ data, index, dataKey: 'female' })}
+
+              fill="#FF99CF"
               name="Female"
               dataKey="female"
               layout="vertical"
