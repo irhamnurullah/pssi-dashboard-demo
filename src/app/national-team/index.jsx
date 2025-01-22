@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PieChartLabel } from "../../components/charts/piechart/piechart-label";
 import { HorizontalChart } from "../../components/charts/barchart/horizontalchart";
 import {
@@ -20,10 +20,49 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import NavBar from "../../components/navbar";
-
+import apiServices from '../../../utils/services'
 
 export default function NatioanalTeams() {
   const [activeCard, setActiveCard] = useState(1);
+  const [listCategory, setListCategory] = useState([])
+  const [listOfficial, setListOfficial] = useState([])
+
+  const getListCategory = async() => {
+    try {
+    const response = await apiServices.get('/api/timnas/GetCategory')
+    const result = response.data
+
+    const resultData = [...result.MAN, ...result.WOMEN]
+    setListCategory(resultData)
+  } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const getListRecordOfficial = async(kat_umur, jenis_kelamin) => {
+    const row_from = 0
+    const length = 10
+    try {
+      const response = await apiServices.get(`/api/timnas/GetListDataOfficial?row_from=${row_from}&length=${length}&kat_umur=${kat_umur}&jenis_kelamin=${jenis_kelamin}`)
+       const result = response.data
+       setListOfficial(result.data)
+       console.log('result official : ', result)
+    } catch (error) {
+      setListOfficial([])
+      console.error(error)
+    }
+  }
+
+
+  const handleClickCard = (dataActive) => {
+
+    setActiveCard(dataActive)
+    getListRecordOfficial(dataActive.KAT_UMUR, dataActive.CATEGORY)
+  }
+
+  useEffect(() => {
+    getListCategory()
+  },[])
 
   const dataHeader = [
     {
@@ -69,96 +108,96 @@ export default function NatioanalTeams() {
   ];
 
   const playersData = [
-    {
-      id: 1,
-      name: "Marselino Ferdinan",
-      position: "Midfielder",
-      club: "Persija Jakarta",
-      federation: "PSSI",
-      caps: 25,
-      goals: 35,
-    },
-    {
-      id: 2,
-      name: "Egy Maulana Vikri",
-      position: "Forward",
-      club: "Dewa United",
-      federation: "PSSI",
-      caps: 30,
-      goals: 20,
-    },
-    {
-      id: 3,
-      name: "Witan Sulaeman",
-      position: "Winger",
-      club: "PSM Makassar",
-      federation: "PSSI",
-      caps: 28,
-      goals: 18,
-    },
-    {
-      id: 4,
-      name: "Pratama Arhan",
-      position: "Defender",
-      club: "Tokyo Verdy",
-      federation: "PSSI",
-      caps: 22,
-      goals: 5,
-    },
-    {
-      id: 5,
-      name: "Asnawi Mangkualam",
-      position: "Defender",
-      club: "Jeonnam Dragons",
-      federation: "PSSI",
-      caps: 27,
-      goals: 8,
-    },
-    {
-      id: 6,
-      name: "Saddil Ramdani",
-      position: "Winger",
-      club: "Sabah FA",
-      federation: "PSSI",
-      caps: 26,
-      goals: 15,
-    },
-    {
-      id: 7,
-      name: "Evan Dimas",
-      position: "Midfielder",
-      club: "Bhayangkara FC",
-      federation: "PSSI",
-      caps: 40,
-      goals: 25,
-    },
-    {
-      id: 8,
-      name: "Rachmat Irianto",
-      position: "Defender",
-      club: "Persib Bandung",
-      federation: "PSSI",
-      caps: 24,
-      goals: 10,
-    },
-    {
-      id: 9,
-      name: "Hansamu Yama",
-      position: "Defender",
-      club: "Persebaya Surabaya",
-      federation: "PSSI",
-      caps: 35,
-      goals: 4,
-    },
-    {
-      id: 10,
-      name: "Ricky Kambuaya",
-      position: "Midfielder",
-      club: "Bali United",
-      federation: "PSSI",
-      caps: 32,
-      goals: 14,
-    },
+    // {
+    //   id: 1,
+    //   name: "Marselino Ferdinan",
+    //   position: "Midfielder",
+    //   club: "Persija Jakarta",
+    //   federation: "PSSI",
+    //   caps: 25,
+    //   goals: 35,
+    // },
+    // {
+    //   id: 2,
+    //   name: "Egy Maulana Vikri",
+    //   position: "Forward",
+    //   club: "Dewa United",
+    //   federation: "PSSI",
+    //   caps: 30,
+    //   goals: 20,
+    // },
+    // {
+    //   id: 3,
+    //   name: "Witan Sulaeman",
+    //   position: "Winger",
+    //   club: "PSM Makassar",
+    //   federation: "PSSI",
+    //   caps: 28,
+    //   goals: 18,
+    // },
+    // {
+    //   id: 4,
+    //   name: "Pratama Arhan",
+    //   position: "Defender",
+    //   club: "Tokyo Verdy",
+    //   federation: "PSSI",
+    //   caps: 22,
+    //   goals: 5,
+    // },
+    // {
+    //   id: 5,
+    //   name: "Asnawi Mangkualam",
+    //   position: "Defender",
+    //   club: "Jeonnam Dragons",
+    //   federation: "PSSI",
+    //   caps: 27,
+    //   goals: 8,
+    // },
+    // {
+    //   id: 6,
+    //   name: "Saddil Ramdani",
+    //   position: "Winger",
+    //   club: "Sabah FA",
+    //   federation: "PSSI",
+    //   caps: 26,
+    //   goals: 15,
+    // },
+    // {
+    //   id: 7,
+    //   name: "Evan Dimas",
+    //   position: "Midfielder",
+    //   club: "Bhayangkara FC",
+    //   federation: "PSSI",
+    //   caps: 40,
+    //   goals: 25,
+    // },
+    // {
+    //   id: 8,
+    //   name: "Rachmat Irianto",
+    //   position: "Defender",
+    //   club: "Persib Bandung",
+    //   federation: "PSSI",
+    //   caps: 24,
+    //   goals: 10,
+    // },
+    // {
+    //   id: 9,
+    //   name: "Hansamu Yama",
+    //   position: "Defender",
+    //   club: "Persebaya Surabaya",
+    //   federation: "PSSI",
+    //   caps: 35,
+    //   goals: 4,
+    // },
+    // {
+    //   id: 10,
+    //   name: "Ricky Kambuaya",
+    //   position: "Midfielder",
+    //   club: "Bali United",
+    //   federation: "PSSI",
+    //   caps: 32,
+    //   goals: 14,
+    // },
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -189,33 +228,34 @@ export default function NatioanalTeams() {
           {/* left side  */}
           <div className="mt-5 ">
             <div className="bg-white border px-2 py-2 rounded-lg">
-              {dataHeader?.map((item) => (
+             {
+              listCategory.map((item) => (
                 <div
-                  key={item.id}
-                  onClick={() => setActiveCard(item.id)}
+                  key={item.TITLE}
+                  onClick={() => handleClickCard(item)}
                   style={{ cursor: "pointer" }}
-                  className={`${
-                    activeCard === item.id ? "bg-[#28166F]" : ""
+                  className={`hover:bg-primary-pssi hover:text-white ${
+                    activeCard.TITLE === item.TITLE ? "bg-primary-pssi text-white" : ""
                   } rounded-md p-3  mb-1`}
                 >
                   
                     <span
-                      className={`${
-                        activeCard === item.id ? "text-white" : "text-black"
-                      } text-sm font-normal`}
+                      className={` text-sm font-normal`}
                     >
-                      {item.title}
+                      {item.TITLE}
                     </span>
                   
                 </div>
-              ))}
+              ))
+             }
+              
             </div>
           </div>
 
           {/* right side */}
           <div className="col-span-5">
             <div className=" mt-5 bg-white rounded-lg border ">
-              <div className="text-black font-bold border-b px-4 py-3">Senior Men Players</div>
+              <div className="text-black font-bold border-b px-4 py-3">{activeCard?.TITLE} Players</div>
               <div className="flex flex-wrap p-5">
                 <Table>
                   <TableHeader>
@@ -275,30 +315,22 @@ export default function NatioanalTeams() {
             </div>
 
             <div className=" mt-5 rounded-lg border bg-white ">
-              <div className="text-black font-bold border-b px-4 py-3">Senior Women Players</div>
+              <div className="text-black font-bold border-b px-4 py-3">{activeCard.TITLE} Official</div>
               <div className="p-5 flex flex-wrap">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[100px]">ID</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Position</TableHead>
-                      <TableHead>Clubs</TableHead>
-                      <TableHead>Federation</TableHead>
-                      <TableHead>Caps</TableHead>
-                      <TableHead>Goal</TableHead>
+                      
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {playersData?.map((player) => (
-                      <TableRow key={player.id}>
-                        <TableCell>{player.id}</TableCell>
-                        <TableCell>{player.name}</TableCell>
-                        <TableCell>{player.position}</TableCell>
-                        <TableCell>{player.club}</TableCell>
-                        <TableCell>{player.federation}</TableCell>
-                        <TableCell>{player.caps}</TableCell>
-                        <TableCell>{player.goals}</TableCell>
+                    {listOfficial?.map((official) => (
+                      <TableRow key={official.id}>
+                        <TableCell>{official.name}</TableCell>
+                        <TableCell>{official.position}</TableCell>
+                        
                       </TableRow>
                     ))}
                   </TableBody>

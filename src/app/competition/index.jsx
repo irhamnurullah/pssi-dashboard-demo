@@ -23,6 +23,7 @@ import {
 import MapsChart from '../../components/maps/mapsChart';
 import { mappingCompetition } from '../../helper/transformProvinceArray';
 import { LoaderCircleIcon } from 'lucide-react';
+import { DataTableCompetition } from '../../components/table/data-table-competition';
 
 export default function Competition() {
   const [competition, setCompetition] = useState([]);
@@ -33,6 +34,7 @@ export default function Competition() {
 
   const [refereesData, setRefereesData] = useState([]);
   const [refereesTotal, setRefereesTotal] = useState([]);
+  console.log(refereesTotal)
   const [totalPages, setTotalPages] = useState(0);
 
   const [activeSelect, setActiveSelect] = useState('');
@@ -49,6 +51,7 @@ export default function Competition() {
     try {
       const competition = await apiService.get(`/api/competition/GetData?id_divisi=${id_divisi}`, headers);
 
+      console.log('competition list', competition)
       if (competition.status === 200) {
         setRefereesData(competition.data);
         setRefereesTotal(competition.recordsTotal);
@@ -354,7 +357,7 @@ export default function Competition() {
 
         <div className="mt-5 bg-white p-5">
           <div className="text-black font-bold">Player List {activeLabelCard}</div>
-          <DataTable columns={columns} data={refereesData} searchBy={'NAMA_PROVINSI'} totalData={refereesTotal} placeholderText={'Filter Nama...'} />
+          <DataTableCompetition columns={columns} data={refereesData} searchBy={'NAMA_PROVINSI'} placeholderText={'Filter Nama...'} />
           {/* <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}

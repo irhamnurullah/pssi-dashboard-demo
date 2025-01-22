@@ -14,7 +14,7 @@ export const mappingReferee = (dataArray, dataKey) => {
   const mapArray = dataArray.map((item) => {
     const id = getIdmaps(item.ID_PROVINSI);
     // Tentukan total berdasarkan dataKey
-    const total = dataKey === 'male_referee' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
+    const total = dataKey === 'male' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
     return [id, total];
   });
 
@@ -25,7 +25,7 @@ export const mappingCoach = (dataArray, dataKey) => {
   const mapArray = dataArray.map((item) => {
     const id = getIdmaps(item.ID_PROVINSI);
     // Tentukan total berdasarkan dataKey
-    const total = dataKey === 'male_coaches' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
+    const total = dataKey === 'male' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
     return [id, total];
   });
 
@@ -36,7 +36,7 @@ export const mappingPlayer = (dataArray, dataKey) => {
   const mapArray = dataArray.map((item) => {
     const id = getIdmaps(item.ID_PROVINSI);
     // Tentukan total berdasarkan dataKey
-    const total = dataKey === 'male_player' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
+    const total = dataKey === 'male' ? item.TOTAL_PRIA : item.TOTAL_WANITA;
     return [id, total];
   });
 

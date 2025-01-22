@@ -19,12 +19,12 @@ import { mappingPlayer } from '../../helper/transformProvinceArray';
 
 const chartConfig = [
   {
-    dataKey: 'female_player',
+    dataKey: 'female',
     label: 'Female',
     color: '#FF99CF',
   },
   {
-    dataKey: 'male_player',
+    dataKey: 'male',
     label: 'Male',
     color: '#3067D3',
   },
@@ -72,11 +72,7 @@ export default function Player() {
       enableSorting: false,
       enableHiding: false,
     },
-    {
-      accessorKey: 'id_pemain',
-      header: 'ID Pemain',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('id_pemain')}</div>,
-    },
+    
     {
       accessorKey: 'nama_pemain',
       header: 'Nama Pemain',
@@ -299,7 +295,7 @@ export default function Player() {
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                             <div className="">Kewarganegaraan</div>
-                            <div className=" font-normal"> </div>
+                            <div className=" font-normal"> {detailPlayerBiodata.NAMA_NEGARA}</div>
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                             <div className="">Club</div>
@@ -331,7 +327,9 @@ export default function Player() {
                                         <TableCell className="text-[12px]">{detail.CLUB}</TableCell>
                                         <TableCell className="text-[12px]">{detail.STATUS}</TableCell>
                                         <TableCell className="text-[12px]">{detail.START_DATE}</TableCell>
-                                        <TableCell className="text-[12px]">{detail.END_DATE}</TableCell>
+                                        <TableCell className="text-[12px]">
+                                          <div dangerouslySetInnerHTML={{__html:detail.END_DATE}}/>
+                                        </TableCell>
                                       </TableRow>
                                     ))
                                   ) : (
@@ -470,8 +468,6 @@ export default function Player() {
         };
       });
 
-    console.log('🐙 ~ updateChartData ~ updatedChartData:', updatedChartData);
-
     setChartDataExample(updatedChartData);
     // console.log(updatedChartData);
   };
@@ -481,19 +477,19 @@ export default function Player() {
       const player = await apiService.get(`/api/player/GetData`, headers);
       const transformData = (data) => {
         const groupedData = {};
-
         // Iterasi menggunakan Object.entries
         Object.entries(data).forEach(([key, value]) => {
           const [gender, category] = key.split('_');
           if (!groupedData[category]) {
-            groupedData[category] = { category, female_player: 0, male_player: 0 };
+            groupedData[category] = { category, female: 0, male: 0 };
           }
           if (gender === 'PRIA') {
-            groupedData[category].male_player = value.TOTAL;
+            groupedData[category].male = value.TOTAL;
           } else if (gender === 'WANITA') {
-            groupedData[category].female_player = value.TOTAL;
+            groupedData[category].female = value.TOTAL;
           }
         });
+
 
         // Ubah hasil menjadi array
         return Object.values(groupedData);

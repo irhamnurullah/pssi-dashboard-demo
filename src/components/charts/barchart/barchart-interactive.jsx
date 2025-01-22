@@ -14,6 +14,8 @@ const chartConfig = {
 };
 
 export function BarChartInteractive({ chartData }) {
+
+  console.log(chartData)
   return (
     <div className="p-5">
       <CardContent>
@@ -29,6 +31,7 @@ export function BarChartInteractive({ chartData }) {
           >
             <CartesianGrid vertical={false} />
             <XAxis
+             className='uppercase'
               dataKey="NAMA_PETUGAS"
               tickLine={false}
               axisLine={false}
@@ -38,8 +41,8 @@ export function BarChartInteractive({ chartData }) {
               textAnchor="end" // Atur posisi label setelah
             />
             <YAxis />
-            <ChartTooltip content={<ChartTooltipContent className="w-[150px]" labelFormatter={(value) => `Petugas: ${value}`} />} />
-            <Bar barSize={30} dataKey="TOTAL_TUGAS" fill="var(--color-tugas)" />
+            <ChartTooltip content={<ChartTooltipContent className="w-[150px]" labelFormatter={(value) => value} />} />
+            <Bar barSize={30} dataKey="Total" fill="var(--color-tugas)" />
           </BarChart>
         </ChartContainer>
       </CardContent>

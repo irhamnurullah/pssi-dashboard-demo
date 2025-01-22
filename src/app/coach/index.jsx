@@ -16,15 +16,16 @@ import { DataTable } from '@/components/table/datatable';
 import { PaginationControls } from '../../components/table/pagination';
 import { X } from 'lucide-react';
 import { mappingCoach } from '../../helper/transformProvinceArray';
+import { BarChartHorizontalLabel } from '../../components/charts/barchart/barchart-horizontal-label';
 
 const chartConfig = [
   {
-    dataKey: 'female_coaches',
+    dataKey: 'female',
     label: 'Female',
     color: '#FF99CF',
   },
   {
-    dataKey: 'male_coaches',
+    dataKey: 'male',
     label: 'Male',
     color: '#3067D3',
   },
@@ -65,11 +66,6 @@ export default function Coach() {
       cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
       enableSorting: false,
       enableHiding: false,
-    },
-    {
-      accessorKey: 'id_official',
-      header: 'ID Petugas',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('id_official')}</div>,
     },
     {
       accessorKey: 'nama_official',
@@ -188,7 +184,7 @@ export default function Coach() {
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                             <div className="">Kewarganegaraan</div>
-                            <div className=" font-normal">{detailCoachBiodata.KEWARGANEGARAAN}</div>
+                            <div className=" font-normal">{detailCoachBiodata.NAMA_NEGARA}</div>
                           </div>
                           <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
                             <div className="">Jabatan</div>
@@ -227,7 +223,7 @@ export default function Coach() {
                                         <TableCell className="text-[12px]">{detail.CLUB}</TableCell>
                                         <TableCell className="text-[12px]">{detail.POSITION}</TableCell>
                                         <TableCell className="text-[12px]">{detail.START_DATE}</TableCell>
-                                        <TableCell className="text-[12px]">{detail.END_DATE}</TableCell>
+                                        <TableCell className="text-[12px]"><div dangerouslySetInnerHTML={{__html:detail.END_DATE}} /></TableCell>
                                       </TableRow>
                                     ))
                                   ) : (
@@ -355,8 +351,8 @@ export default function Coach() {
         const licenceFormatChart = coach.data.map((item) => ({
           id_license: item.ID_LICENSI,
           category: item.NAME,
-          female_coaches: item.TOTAL_WANITA,
-          male_coaches: item.TOTAL_PRIA,
+          female: item.TOTAL_WANITA,
+          male: item.TOTAL_PRIA,
         }));
 
         setChartLicenseDistribution(licenceFormatChart);
@@ -427,11 +423,11 @@ export default function Coach() {
           <CarouselSize data={dataSlide} handleViewDetail={handleViewDetail} />
         </div>
 
-        <div className="mt-4 grid grid-cols-6 gap-4 bg-white rounded-lg border">
-          <div className="col-span-2">
+        <div className="mt-4 grid grid-cols-12 gap-4 bg-white rounded-lg border">
+          <div className="col-span-5">
             <LicenseDistribution data={licenseChart} config={chartConfig} onClick={handleClickCoachesByLicense} />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-7">
             {activeCategory && (
               <center className="font-bold p-2 rounded-lg ml-4 text-center">
                 {activeCategory?.categoryLabel} : {activeCategory?.dataKey}
@@ -597,10 +593,11 @@ function CarouselSize({ data, handleViewDetail }) {
 
 function LicenseDistribution({ data, config, onClick }) {
   return (
-    <div className="px-4 py-3 ">
+    <div className="px-5 py-5 ">
       <div className="">
         <h3 className="font-semibold">License Distribution</h3>
-        <MultipleBarChart dataChart={data} config={config} onClick={onClick} />
+        {/* <MultipleBarChart dataChart={data} config={config} onClick={onClick} /> */}
+        <BarChartHorizontalLabel dataChart={data}/>
       </div>
       {/* <div className="flex-1">
         <h3 className="font-semibold">License Distribution - Female coachs by Province</h3>

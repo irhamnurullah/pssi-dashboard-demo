@@ -9,12 +9,15 @@ export function MultipleBarChart({ dataChart, config, onClick }) {
   };
 
   return (
-    <Card className="border-none shadow-none h-full">
+    <Card className="border-none shadow-none">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           {config?.map((item) => (
             <div key={item.dataKey} className="flex items-center space-x-2">
-              <div className="rounded-md size-5" style={{ backgroundColor: item.color }}></div>
+              <div
+                className="rounded-md size-5"
+                style={{ backgroundColor: item.color }}
+              ></div>
               <div className="text-sm">{item.label}</div>
             </div>
           ))}
@@ -22,22 +25,57 @@ export function MultipleBarChart({ dataChart, config, onClick }) {
       </CardHeader>
       <CardContent>
         <ChartContainer
+          style={{ height: '400px', width: '100%' }} // Tingkatkan tinggi container agar elemen memiliki ruang cukup
           config={Object.fromEntries(
-            config.map(({ dataKey, color }) => [dataKey, { label: dataKey.charAt(0).toUpperCase() + dataKey.slice(1), color }])
+            config.map(({ dataKey, color }) => [
+              dataKey,
+              {
+                label: dataKey.charAt(0).toUpperCase() + dataKey.slice(1),
+                color,
+              },
+            ])
           )}
         >
-          <BarChart accessibilityLayer data={dataChart} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+          <BarChart
+            className="h-full"
+            accessibilityLayer
+            data={dataChart}
+            margin={{
+              left: 12,
+              right: 0,
+              bottom:200, // Tingkatkan margin bawah agar teks tidak terpotong
+            }}
+          >
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="category" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 4)} />
-            <YAxis tickFormatter={(value) => `${value}`} />
-            <ChartTooltip cursor active content={<ChartTooltipContent indicator="line" />} />
+            <XAxis
+              textAnchor='start'
+              dataKey="category"
+              angle={45} // Rotasi label sumbu X agar tidak saling tumpang tindih
+              tickLine={false}
+              axisLine={false}
+              tickMargin={16} // Tambahkan margin antara label dan grafik
+              interval={0} // Pastikan semua label muncul
+              tickFormatter={(value) => value}
+            />
+            <YAxis
+              tick={{ fontSize: 12 }} // Atur ukuran font untuk label sumbu Y
+              tickFormatter={(value) => `${value}`}
+            />
+            <ChartTooltip
+              cursor
+              active
+              content={<ChartTooltipContent indicator="line" />}
+            />
             {config?.map((item) => (
               <Bar
+                barSize={30}
                 fill={item.color}
                 key={item.dataKey}
                 dataKey={item.dataKey}
                 radius={4}
-                onClick={(data, index) => handleCategoryClick({ data, index, dataKey: item.dataKey })}
+                onClick={(data, index) =>
+                  handleCategoryClick({ data, index, dataKey: item.dataKey })
+                }
               />
             ))}
           </BarChart>

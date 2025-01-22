@@ -18,19 +18,19 @@ import { BarChartInteractive } from '../../components/charts/barchart/barchart-i
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const dataSelect = [
-  { label: 'BRI LIGA 1 2024/2025', value: 4 },
-  { label: 'BRI LIGA 2 2024/2025', value: 1 },
-  { label: 'BRI LIGA 3 2024/2025', value: 32 },
+  { label: 'LIGA 1', value: 4 },
+  { label: 'LIGA 2', value: 1 },
+  { label: 'LIGA 3', value: 32 },
 ];
 
 const chartConfig = [
   {
-    dataKey: 'female_referee',
+    dataKey: 'female',
     label: 'Female',
     color: '#FF99CF',
   },
   {
-    dataKey: 'male_referee',
+    dataKey: 'male',
     label: 'Male',
     color: '#3067D3',
   },
@@ -92,8 +92,8 @@ export default function Referee() {
         const licenceFormatChart = referee.data.map((item) => ({
           id_license: item.ID_LICENSI,
           category: item.NAME,
-          female_referee: item.TOTAL_WANITA,
-          male_referee: item.TOTAL_PRIA,
+          female: item.TOTAL_WANITA,
+          male: item.TOTAL_PRIA,
         }));
 
         setChartLicenseDistribution(licenceFormatChart);
@@ -452,8 +452,8 @@ export default function Referee() {
         </div>
 
         <div className="mt-5 grid grid-cols-6 bg-white rounded-lg border">
-          <div className="py-3 col-span-6 border-b border-slate-200 px-4">
-            <h3 className="font-semibold">Penugasan Wasit</h3>
+          <div className="py-3 col-span-6 border-b border-slate-200 text-center px-4">
+            <h3 className="font-semibold">Top 10 Referee</h3>
           </div>
 
           <div className="col-span-full border-r border-slate-200 flex flex-col justify-end">
@@ -614,7 +614,12 @@ function RefereeActivity() {
     try {
       const response = await apiService.get(`/api/referee/GetGrafikPenugasanWasit?id_divisi=${id_divisi}`);
       const result = response.data;
-      const randomArray = result.sort(() => Math.random() - 0.5);
+      const changeTotal = result.map((item) => ({
+        ...item,
+        Total:item.TOTAL_TUGAS
+      }))
+      
+      const randomArray = changeTotal.sort(() => Math.random() - 0.5);
 
       setDistributionRefereeData(randomArray);
     } catch (error) {
