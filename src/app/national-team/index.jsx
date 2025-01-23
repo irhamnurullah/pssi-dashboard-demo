@@ -26,6 +26,7 @@ export default function NatioanalTeams() {
   const [activeCard, setActiveCard] = useState(1);
   const [listCategory, setListCategory] = useState([])
   const [listOfficial, setListOfficial] = useState([])
+  const [listPlayer, setListPlayer] = useState([])
 
   const getListCategory = async() => {
     try {
@@ -35,6 +36,22 @@ export default function NatioanalTeams() {
     const resultData = [...result.MAN, ...result.WOMEN]
     setListCategory(resultData)
   } catch (error) {
+      console.error(error)
+    }
+  }
+
+  
+
+  const getListRecordPlayer = async(kat_umur, jenis_kelamin) => {
+    const row_from = 0
+    const length = 10
+    try {
+      const response = await apiServices.get(`/api/timnas/GetListDataPlayer?row_from=${row_from}&length=${length}&kat_umur=${kat_umur}&jenis_kelamin=${jenis_kelamin}`)
+       const result = response.data
+       setListPlayer(result.data)
+       console.log('result player : ', result)
+    } catch (error) {
+      setListPlayer([])
       console.error(error)
     }
   }
@@ -58,6 +75,7 @@ export default function NatioanalTeams() {
 
     setActiveCard(dataActive)
     getListRecordOfficial(dataActive.KAT_UMUR, dataActive.CATEGORY)
+    getListRecordPlayer(dataActive.KAT_UMUR, dataActive.CATEGORY)
   }
 
   useEffect(() => {
@@ -212,6 +230,24 @@ export default function NatioanalTeams() {
     currentPage * itemsPerPage
   );
 
+  /**
+   {
+    "id_pemain": 1720103296,
+    "name": "ELIANO JOHANNES REIJNDERS",
+    "position": "Midfielder",
+    "club": "PEC ZWOLLE",
+    "ma": "Netherlands",
+    "contract_end_date": "1900-01-01",
+    "mop": 0,
+    "playing": 0,
+    "subtition": 0,
+    "yc": 0,
+    "syc": 0,
+    "rc": 0,
+    "goal": 0
+}
+   */
+
   return (
     <div>
       <div className="bg-[#212B5A] absolute h-[60vh] w-full z-10"></div>
@@ -260,25 +296,25 @@ export default function NatioanalTeams() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[100px]">ID</TableHead>
+                      {/* <TableHead className="w-[100px]">ID</TableHead> */}
                       <TableHead>Name</TableHead>
                       <TableHead>Position</TableHead>
                       <TableHead>Clubs</TableHead>
-                      <TableHead>Federation</TableHead>
+                      {/* <TableHead>Federation</TableHead> */}
                       <TableHead>Caps</TableHead>
                       <TableHead>Goal</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {playersData?.map((player) => (
-                      <TableRow key={player.id}>
-                        <TableCell>{player.id}</TableCell>
-                        <TableCell>{player.name}</TableCell>
+                    {listPlayer.map((player) => (
+                      <TableRow key={player.id_pemain}>
+                        {/* <TableCell>{player.id_pemain}</TableCell> */}
+                        <TableCell className="uppercase">{player.name}</TableCell>
                         <TableCell>{player.position}</TableCell>
                         <TableCell>{player.club}</TableCell>
-                        <TableCell>{player.federation}</TableCell>
-                        <TableCell>{player.caps}</TableCell>
-                        <TableCell>{player.goals}</TableCell>
+                        {/* <TableCell>{player.federation}</TableCell> */}
+                        <TableCell>{player.playing}</TableCell>
+                        <TableCell>{player.goal}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -328,7 +364,7 @@ export default function NatioanalTeams() {
                   <TableBody>
                     {listOfficial?.map((official) => (
                       <TableRow key={official.id}>
-                        <TableCell>{official.name}</TableCell>
+                        <TableCell className="uppercase">{official.name}</TableCell>
                         <TableCell>{official.position}</TableCell>
                         
                       </TableRow>
