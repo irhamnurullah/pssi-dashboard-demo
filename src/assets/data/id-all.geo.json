@@ -26,60 +26,6 @@
     "features": [
         {
             "type": "Feature",
-            "id": "ID.3700",
-            "properties": {
-                "hc-group": "admin1",
-                "hc-key": "id-3700",
-                "hc-a2": "NU",
-                "labelrank": "20",
-                "hasc": "-99",
-                "alt-name": null,
-                "woe-id": "-99",
-                "subregion": null,
-                "fips": null,
-                "postal-code": null,
-                "name": null,
-                "country": "Indonesia",
-                "type-en": null,
-                "region": null,
-                "longitude": "104.223",
-                "woe-name": null,
-                "latitude": "-1.04563",
-                "woe-label": null,
-                "type": null,
-                "hc-middle-x": 0.5,
-                "hc-middle-y": 0.5
-            },
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [
-                            8129,
-                            7927
-                        ],
-                        [
-                            8149,
-                            7905
-                        ],
-                        [
-                            8121,
-                            7915
-                        ],
-                        [
-                            8113,
-                            7930
-                        ],
-                        [
-                            8129,
-                            7927
-                        ]
-                    ]
-                ]
-            }
-        },
-        {
-            "type": "Feature",
             "id": "ID.AC",
             "properties": {
                 "hc-group": "admin1",
@@ -17113,6 +17059,347 @@
                         [
                             3500,
                             7864
+                        ]
+                    ]
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "ID.PG",
+            "properties": {
+                "hc-group": "admin1",
+                "hc-key": "id-pg",
+                "hc-a2": "PG",
+                "labelrank": "2",
+                "hasc": "ID.PG",
+                "alt-name": "Papua Pegunungan",
+                "woe-id": "28350157",
+                "subregion": null,
+                "fips": "ID39",
+                "postal-code": "PG",
+                "name": "Papua Pegunungan",
+                "country": "Indonesia",
+                "type-en": "Province",
+                "region": null,
+                "longitude": "138.825",
+                "woe-name": "Papua Pegunungan",
+                "latitude": "-4.32525",
+                "woe-label": "Mount Papua, ID, Indonesia",
+                "type": "Propinsi",
+                "hc-middle-x": 0.5,
+                "hc-middle-y": 0.5
+            },
+            "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            
+                            [
+                                8881,
+                                8406
+                            ],
+                            [
+                                8875,
+                                8437
+                            ],
+                            [
+                                8849,
+                                8452
+                            ],
+                            [
+                                8858,
+                                8477
+                            ],
+                            [
+                                8909,
+                                8498
+                            ],
+                            [
+                                8954,
+                                8528
+                            ],
+                            [
+                                9019,
+                                8559
+                            ],
+                            [
+                                9051,
+                                8560
+                            ],
+                            [
+                                9091,
+                                8530
+                            ],
+                            [
+                                9163,
+                                8508
+                            ],
+                            [
+                                9242,
+                                8491
+                            ],
+                            [
+                                9278,
+                                8459
+                            ],
+                            [
+                                9356,
+                                8439
+                            ],
+                            [
+                                9402,
+                                8412
+                            ],
+                            [
+                                9553,
+                                8354
+                            ],
+                            [
+                                9630,
+                                8368
+                            ],
+                            [
+                                9642,
+                                8349
+                            ],
+                            [
+                                9673,
+                                8336
+                            ],
+                            [
+                                9687,
+                                8351
+                            ],
+                            [
+                                9744,
+                                8342
+                            ],
+                            [
+                                9780,
+                                8328
+                            ],
+                            [
+                                9769,
+                                8300
+                            ],
+                            [
+                                9840,
+                                8304
+                            ],
+                            [
+                                9844,
+                                8136
+                            ],
+                            [
+                                9851,
+                                7686
+                            ],
+                            [
+                                9851,
+                                7342
+                            ],
+                            [
+                                9844,
+                                7305
+                            ],
+                            [
+                                9820,
+                                7272
+                            ],
+                            [
+                                9817,
+                                7248
+                            ],
+                            [
+                                9834,
+                                7207
+                            ],
+                            [
+                                9849,
+                                7198
+                            ],
+                            [
+                                9319,
+                                6851
+                            ],
+                            [
+                                9301,
+                                6890
+                            ],
+                            [
+                                9322,
+                                6904
+                            ],
+                            [
+                                9320,
+                                6944
+                            ],
+                            [
+                                9341,
+                                6958
+                            ],
+                            [
+                                9345,
+                                6986
+                            ],
+                            [
+                                9367,
+                                7035
+                            ],
+                            [
+                                9333,
+                                7049
+                            ],
+                            [
+                                9316,
+                                7086
+                            ]
+                        ]
+                    ]
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "ID.PT",
+            "properties": {
+                "hc-group": "admin1",
+                "hc-key": "id-pt",
+                "hc-a2": "PT",
+                "labelrank": "2",
+                "hasc": "ID.PT",
+                "alt-name": "Papua Tengah",
+                "woe-id": "28350157",
+                "subregion": null,
+                "fips": "ID39",
+                "postal-code": "PT",
+                "name": "Papua Tengah",
+                "country": "Indonesia",
+                "type-en": "Province",
+                "region": null,
+                "longitude": "138.825",
+                "woe-name": "Papua Tengah",
+                "latitude": "-4.32525",
+                "woe-label": "Center Papua, ID, Indonesia",
+                "type": "Propinsi",
+                "hc-middle-x": 0.5,
+                "hc-middle-y": 0.5
+            },
+            "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            [
+                                8407,
+                                7975
+                            ],
+                            [
+                                8157,
+                                8056
+                            ],
+                            [
+                                8155,
+                                8079
+                            ],
+                            [
+                                8173,
+                                8108
+                            ],
+                            [
+                                8202,
+                                8136
+                            ],
+                            [
+                                8200,
+                                8149
+                            ],
+                            [
+                                8254,
+                                8197
+                            ]
+                        ]
+                    ]
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "id": "ID.PBD",
+            "properties": {
+                "hc-group": "admin1",
+                "hc-key": "id-pbd",
+                "hc-a2": "PBD",
+                "labelrank": "2",
+                "hasc": "ID.PBD",
+                "alt-name": "Papua Barat Daya",
+                "woe-id": "28350157",
+                "subregion": null,
+                "fips": "ID39",
+                "postal-code": "PBD",
+                "name": "Papua Barat Daya",
+                "country": "Indonesia",
+                "type-en": "Province",
+                "region": null,
+                "longitude": "138.825",
+                "woe-name": "Papua Barat Daya",
+                "latitude": "-4.32525",
+                "woe-label": "Center Papua, ID, Indonesia",
+                "type": "Propinsi",
+                "hc-middle-x": 0.5,
+                "hc-middle-y": 0.5
+            },
+            "geometry": {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [
+                        [
+                            [
+                                7292,
+                                8543
+                            ],
+                            [
+                                7261,
+                                8603
+                            ],
+                            [
+                                7268,
+                                8611
+                            ],
+                            [
+                                7318,
+                                8630
+                            ],
+                            [
+                                7329,
+                                8622
+                            ],
+                            [
+                                7352,
+                                8625
+                            ],
+                            [
+                                7363,
+                                8612
+                            ],
+                            [
+                                7356,
+                                8551
+                            ],
+                            [
+                                7345,
+                                8521
+                            ],
+                            [
+                                7313,
+                                8524
+                            ],
+                            [
+                                7292,
+                                8543
+                            ]
                         ]
                     ]
                 ]

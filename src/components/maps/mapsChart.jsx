@@ -7,13 +7,6 @@ import idAllTopoJson from '../../assets/data/id-all.geo.json';
 
 const MapsChart = ({ dataMaps }) => {
   useEffect(() => {
-    // (async () => {
-    //   // const topology = await fetch(
-    //   //     'https://code.highcharts.com/mapdata/countries/id/id-all.topo.json'
-    //   // ).then(response => response.json());
-    // if (dataMaps && dataMaps.length > 0) {
-    // Highcharts.mapChart(Highcharts);
-    // Instantiate the map
     Highcharts.mapChart('container', {
       chart: {
         map: idAllTopoJson,
@@ -24,7 +17,7 @@ const MapsChart = ({ dataMaps }) => {
       },
 
       subtitle: {
-        // text: 'Source map: <a href="http://code.highcharts.com/mapdata/historical/countries/id-2011/id-all-2011.topo.json">Indonesia (2011)</a>'
+        
       },
 
       mapNavigation: {
@@ -34,35 +27,6 @@ const MapsChart = ({ dataMaps }) => {
         },
       },
 
-      /**
-       * Uncomment legend to show the legend
-       */
-      // legend: {
-      //   title: {
-      //     text: 'Players',
-      //     style: {
-      //       color:
-      //         // theme
-      //         (Highcharts.defaultOptions &&
-      //           Highcharts.defaultOptions.legend &&
-      //           Highcharts.defaultOptions.legend.title &&
-      //           Highcharts.defaultOptions.legend.title.style &&
-      //           Highcharts.defaultOptions.legend.title.style.color) ||
-      //         'black',
-      //     },
-      //   },
-      //   align: 'left',
-      //   verticalAlign: 'bottom',
-      //   floating: true,
-      //   layout: 'vertical',
-      //   valueDecimals: 0,
-      //   backgroundColor:
-      //     // theme
-      //     (Highcharts.defaultOptions && Highcharts.defaultOptions.legend && Highcharts.defaultOptions.legend.backgroundColor) ||
-      //     'rgba(255, 255, 255, 0.85)',
-      //   symbolRadius: 0,
-      //   symbolHeight: 14,
-      // },
       legend: false,
       colorAxis: {
         dataClasses: [
@@ -96,8 +60,6 @@ const MapsChart = ({ dataMaps }) => {
         ],
         minColor: '#DBEAFE',
         maxColor: '#1D4ED8',
-        // minColor: "#E0F2FE",
-        // maxColor: "#075985",
       },
       series: [
         {
@@ -112,8 +74,7 @@ const MapsChart = ({ dataMaps }) => {
           dataLabels: {
 
             enabled: true,
-            // useHTML: true,
-            // format: '{point.name} {point.value}'
+            allowOverlap: true, 
             formatter: function () {
               var formattedValue = Highcharts.numberFormat(this.point.value, 0, '.', ',');
 
@@ -124,15 +85,15 @@ const MapsChart = ({ dataMaps }) => {
               }
             },
             color: '#353b48',
+            style: {
+                fontSize: '10px', // Adjust for better visibility
+                textOutline: 'none' // Remove text outline for better readability
+            }
           },
         },
       ],
     });
-    // }
-    // })();
   }, [dataMaps]);
-
-  // console.log(dataMaps);
 
   return (
     <div>

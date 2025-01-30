@@ -69,14 +69,13 @@ export const getIdmaps = (provinsi) => {
     case 35:
       return 'id-ku';
     case 37:
-      return 'id-bi'; // PAPUA TENGAH
+      return 'id-pt'; // PAPUA TENGAH
     case 38:
       return 'id-bi'; // PAPUA SELATAN
     case 39:
-      return 'id-bi'; // PAPUA PEGUNUNGAN
+      return 'id-pg'; // PAPUA PEGUNUNGAN
     case 40:
-      return 'id-bi'; // PAPUA BARAT DAYA
-    default:
-      return 'Unknown Province';
+      return 'id-pbd'; // PAPUA BARAT DAYA
+    ;
   }
 };
