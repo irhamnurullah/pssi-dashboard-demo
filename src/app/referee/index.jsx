@@ -134,7 +134,7 @@ export default function Referee() {
     },
     {
       accessorKey: 'nama_petugas',
-      header: 'Nama',
+      header: 'Name',
       cell: ({ row }) => <div className="capitalize">{row.getValue('nama_petugas')}</div>,
     },
     {
@@ -144,7 +144,7 @@ export default function Referee() {
     },
     {
       accessorKey: 'tgl_lahir',
-      header: 'Tanggal Lahir',
+      header: 'Birth Date',
       cell: ({ row }) => <div className="capitalize">{row.getValue('tgl_lahir')}</div>,
     },
     {
@@ -154,7 +154,7 @@ export default function Referee() {
     },
     {
       accessorKey: 'lisensi',
-      header: 'License',
+      header: 'Licence',
       cell: ({ row }) => <div className="capitalize">{row.getValue('lisensi')}</div>,
     },
     {
@@ -349,7 +349,7 @@ export default function Referee() {
                           </div>
                         </div>
                         <div className="flex text-slate-200 py-1  justify-between pl-12 pr-4">
-                          <div className="">License</div>
+                          <div className="">Licence</div>
                           <div className=" font-normal">{detailReferee.NAMA_LAMPIRAN}</div>
                         </div>
                         <div className="flex text-slate-200 py-1  justify-between pl-12 pr-4">
@@ -483,7 +483,7 @@ export default function Referee() {
 
         <div className="mt-5 bg-white p-5">
           <div className="text-black font-bold">Referee List</div>
-          <DataTable columns={columns} data={refereesData} searchBy={'nama_petugas'} totalData={refereesTotal} placeholderText={'Filter Nama...'} />
+          <DataTable columns={columns} data={refereesData} searchBy={'nama_petugas'} totalData={refereesTotal} placeholderText={'Filter by Name...'} />
           <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}

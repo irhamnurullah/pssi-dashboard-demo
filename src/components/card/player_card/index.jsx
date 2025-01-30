@@ -64,7 +64,7 @@ const PlayerCard = ({ img, alt, country, playerName, namaTim }) => {
 
 
                             <div className="my-auto">
-                              <small className="text-xs text-neutral-400">Negara</small>
+                              <small className="text-xs text-neutral-400">Nationality</small>
                               <p className="text-xs text-neutral-700">
                                 {country}
                               </p>

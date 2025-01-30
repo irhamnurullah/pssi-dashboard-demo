@@ -75,7 +75,7 @@ export default function Player() {
     
     {
       accessorKey: 'nama_pemain',
-      header: 'Nama Pemain',
+      header: 'Player Name',
       cell: ({ row }) => <div className="capitalize">{row.getValue('nama_pemain')}</div>,
     },
     {
@@ -85,12 +85,12 @@ export default function Player() {
     },
     {
       accessorKey: 'tgl_lahir',
-      header: 'Tanggal Lahir',
+      header: 'Birth Date',
       cell: ({ row }) => <div className="capitalize">{row.getValue('tgl_lahir')}</div>,
     },
     {
       accessorKey: 'NAMATIM',
-      header: 'Nama TIM',
+      header: 'Club',
       cell: ({ row }) => <div className="capitalize">{row.getValue('NAMATIM')}</div>,
     },
     // {
@@ -286,15 +286,15 @@ export default function Player() {
                             </div>
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
-                            <div className="">Tanggal Lahir</div>
+                            <div className="">Birth Date</div>
                             <div className=" font-normal">{detailPlayerBiodata.TGL_LAHIR}</div>
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
-                            <div className="">Jenis Kelamin</div>
+                            <div className="">Gender</div>
                             <div className=" font-normal">{detailPlayerBiodata.JENIS_KELAMIN}</div>
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
-                            <div className="">Kewarganegaraan</div>
+                            <div className="">Nationality</div>
                             <div className=" font-normal"> {detailPlayerBiodata.NAMA_NEGARA}</div>
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
@@ -667,7 +667,7 @@ export default function Player() {
         </div>
 
         <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
-          <DataTable columns={columns} data={playerData} searchBy={'nama_pemain'} totalData={playerTotal} />
+          <DataTable columns={columns} data={playerData} searchBy={'nama_pemain'} totalData={playerTotal} placeholderText={'Filter by Player Name...'} />
 
           <PaginationControls
             currentPage={currentPage}

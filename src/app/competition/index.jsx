@@ -357,7 +357,7 @@ export default function Competition() {
 
         <div className="mt-5 bg-white p-5">
           <div className="text-black font-bold">Player List {activeLabelCard}</div>
-          <DataTableCompetition columns={columns} data={refereesData} searchBy={'NAMA_PROVINSI'} placeholderText={'Filter Nama...'} />
+          <DataTableCompetition columns={columns} data={refereesData} searchBy={'NAMA_PROVINSI'} placeholderText={'Filter by Province Name...'} />
           {/* <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}

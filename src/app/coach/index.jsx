@@ -69,32 +69,32 @@ export default function Coach() {
     },
     {
       accessorKey: 'nama_official',
-      header: 'Nama Official',
+      header: 'Official Name',
       cell: ({ row }) => <div className="capitalize">{row.getValue('nama_official')}</div>,
     },
     {
       accessorKey: 'jenis_kelamin',
-      header: 'Jenis Kelamin',
+      header: 'Gender',
       cell: ({ row }) => <div className="capitalize">{row.getValue('jenis_kelamin')}</div>,
     },
     {
       accessorKey: 'tgl_lahir',
-      header: 'Tanggal Lahir',
+      header: 'Birth Date',
       cell: ({ row }) => <div className="capitalize">{row.getValue('tgl_lahir')}</div>,
     },
     {
       accessorKey: 'lisensi',
-      header: 'License',
+      header: 'Licence',
       cell: ({ row }) => <div className="capitalize">{row.getValue('lisensi')}</div>,
     },
     {
       accessorKey: 'NAMATIM',
-      header: 'Nama Tim',
+      header: 'Club',
       cell: ({ row }) => <div className="capitalize">{row.getValue('NAMATIM')}</div>,
     },
     {
       accessorKey: 'NAMA_JABATAN',
-      header: 'Nama Jabatan',
+      header: 'Position',
       cell: ({ row }) => <div className="capitalize">{row.getValue('NAMA_JABATAN')}</div>,
     },
     {
@@ -179,15 +179,15 @@ export default function Coach() {
                             <div className=" font-normal">{detailCoachBiodata.TGL_LAHIR}</div>
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
-                            <div className="">Jenis Kelamin</div>
+                            <div className="">Gender</div>
                             <div className=" font-normal">{detailCoachBiodata.JENIS_KELAMIN}</div>
                           </div>
                           <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
-                            <div className="">Kewarganegaraan</div>
+                            <div className="">Nationality</div>
                             <div className=" font-normal">{detailCoachBiodata.NAMA_NEGARA}</div>
                           </div>
                           <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
-                            <div className="">Jabatan</div>
+                            <div className="">Position</div>
                             <div className="font-normal">{detailCoachBiodata.NAMA_JABATAN}</div>
                           </div>
                           <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
@@ -195,7 +195,7 @@ export default function Coach() {
                             <div className="font-normal">{detailCoachBiodata.NAMATIM}</div>
                           </div>
                           <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
-                            <div className="">Lisensi</div>
+                            <div className="">Licence</div>
                             <div className="font-normal">{lisensi}</div>
                           </div>
                         </div>
@@ -438,7 +438,7 @@ export default function Coach() {
         </div>
 
         <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
-          <DataTable columns={columns} data={coachData} searchBy={'nama_official'} totalData={coachTotal} placeholderText="Filter Nama Official..." />
+          <DataTable columns={columns} data={coachData} searchBy={'nama_official'} totalData={coachTotal} placeholderText="Filter by Official Name..." />
           <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}
@@ -498,7 +498,7 @@ function CarouselSize({ data, handleViewDetail }) {
                               />
                             </svg>
                             <div className="my-auto">
-                              <small className="text-xs text-neutral-400">Jabatan</small>
+                              <small className="text-xs text-neutral-400">Position</small>
                               <p className="text-xs text-neutral-700">{slide.NAMA_JABATAN}</p>
                             </div>
                           </div>
@@ -526,7 +526,7 @@ function CarouselSize({ data, handleViewDetail }) {
                             </svg>
 
                             <div className="my-auto">
-                              <small className="text-xs text-neutral-400">Negara</small>
+                              <small className="text-xs text-neutral-400">Nationality</small>
                               <p className="text-xs text-neutral-700">{slide.NAMA_NEGARA}</p>
                             </div>
                           </div>
