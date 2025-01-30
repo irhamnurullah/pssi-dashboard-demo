@@ -58,6 +58,9 @@ export default function Player() {
 
   const [chartDataExample, setChartDataExample] = useState([]);
 
+  const [isLoadingGet, setIsLoadingGet] = useState(false);
+  const [isLoadingChart, setIsLoadingChart] = useState(false);
+
   const columns = [
     {
       id: 'select',
@@ -442,6 +445,7 @@ export default function Player() {
   }, [totalPlayer]);
 
   const getListPlayer = async (page, rowsPerPage) => {
+    setIsLoadingGet(true);
     try {
       const player = await apiService.get(`/api/player/GetListData?row_from=${(page - 1) * rowsPerPage}&length=${rowsPerPage}`, headers);
 
@@ -450,12 +454,14 @@ export default function Player() {
         setPlayerTotal(player.data.recordsTotal);
         setTotalPages(Math.ceil(playerTotal / rowsPerPage));
       }
+      setIsLoadingGet(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const updateChartData = async () => {
+    setIsLoadingChart(true);
     const updatedChartData = totalPlayer
       .filter((player) => player.label !== 'Total Players')
       .map((player) => {
@@ -469,6 +475,7 @@ export default function Player() {
       });
 
     setChartDataExample(updatedChartData);
+    setIsLoadingChart(false);
     // console.log(updatedChartData);
   };
 
@@ -522,6 +529,7 @@ export default function Player() {
   };
 
   const getChartDataByProvince = async () => {
+    
     try {
       const player = await apiService.get(`/api/player/GetDataByProvinsi`, headers);
 
@@ -662,20 +670,28 @@ export default function Player() {
 
         <div className="flex flex-col p-4 gap-4 bg-white rounded-lg shadow-lg">
           <div className="w-full justify-center">
-            <PieChartLabel title={'Overall Player Distribution by Gender'} chartData={chartDataExample} />
+            {isLoadingChart ?  <div className="flex items-center justify-center h-full">
+              <LoaderCircleIcon className="animate-spin" />
+            </div> : <PieChartLabel title={'Overall Player Distribution by Gender'} chartData={chartDataExample} /> }
           </div>
         </div>
 
         <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
-          <DataTable columns={columns} data={playerData} searchBy={'nama_pemain'} totalData={playerTotal} placeholderText={'Filter by Player Name...'} />
-
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            onRowsPerPageChange={setRowsPerPage}
-            rowsPerPage={rowsPerPage}
-          />
+          {isLoadingGet ? <div className="flex items-center justify-center h-full">
+              <LoaderCircleIcon className="animate-spin" />
+            </div> : 
+            <>
+              <DataTable columns={columns} data={playerData} searchBy={'nama_pemain'} totalData={playerTotal} placeholderText={'Filter by Player Name...'} />
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                onRowsPerPageChange={setRowsPerPage}
+                rowsPerPage={rowsPerPage}
+              />
+            </>
+          }
+          
         </div>
       </div>
     </div>

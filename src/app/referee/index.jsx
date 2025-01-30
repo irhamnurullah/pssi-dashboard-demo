@@ -1,38 +1,60 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { MultipleBarChart } from '../../components/charts/barchart/multiple';
-import { DataTable } from '@/components/table/datatable';
-import MapsChart from '../../components/maps/mapsChart';
-import NavBar from '../../components/navbar';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { MultipleBarChart } from "../../components/charts/barchart/multiple";
+import { DataTable } from "@/components/table/datatable";
+import MapsChart from "../../components/maps/mapsChart";
+import NavBar from "../../components/navbar";
+import { Checkbox } from "@/components/ui/checkbox";
 
-import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Fragment, useEffect, useState } from 'react';
-import sessions from '../../../utils/sessions';
-import apiService from '../../../utils/services';
-import { PaginationControls } from '../../components/table/pagination';
-import { mapping, mappingReferee } from '../../helper/transformProvinceArray';
-import { BarChartInteractive } from '../../components/charts/barchart/barchart-interactive';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Fragment, useEffect, useState } from "react";
+import sessions from "../../../utils/sessions";
+import apiService from "../../../utils/services";
+import { PaginationControls } from "../../components/table/pagination";
+import { mapping, mappingReferee } from "../../helper/transformProvinceArray";
+import { BarChartInteractive } from "../../components/charts/barchart/barchart-interactive";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { LoaderCircleIcon } from "lucide-react";
 
 const dataSelect = [
-  { label: 'LIGA 1', value: 4 },
-  { label: 'LIGA 2', value: 1 },
-  { label: 'LIGA 3', value: 32 },
+  { label: "LIGA 1", value: 4 },
+  { label: "LIGA 2", value: 1 },
+  { label: "LIGA 3", value: 32 },
 ];
 
 const chartConfig = [
   {
-    dataKey: 'female',
-    label: 'Female',
-    color: '#FF99CF',
+    dataKey: "female",
+    label: "Female",
+    color: "#FF99CF",
   },
   {
-    dataKey: 'male',
-    label: 'Male',
-    color: '#3067D3',
+    dataKey: "male",
+    label: "Male",
+    color: "#3067D3",
   },
 ];
 
@@ -55,6 +77,9 @@ export default function Referee() {
 
   const [distributionRefereeData, setDistributionRefereeData] = useState([]);
 
+  const [isLoadingGet, setIsLoadingGet] = useState(false);
+  const [isLoadingMaps, setIsLoadingMaps] = useState(false);
+
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -66,19 +91,25 @@ export default function Referee() {
   }, [currentPage, rowsPerPage]);
 
   const getListReferee = async (page, rowsPerPage) => {
+    setIsLoadingGet(true);
     try {
-      const referee = await apiService.get(`/api/referee/GetListData?row_from=${(page - 1) * rowsPerPage}&length=${rowsPerPage}`, headers);
+      const referee = await apiService.get(
+        `/api/referee/GetListData?row_from=${(page - 1) * rowsPerPage
+        }&length=${rowsPerPage}`,
+        headers
+      );
 
       if (referee.status === 200) {
         const formattedData = referee.data.data.map((ref) => ({
           ...ref,
-          tgl_lahir: ref.tgl_lahir.split(' ')[0],
+          tgl_lahir: ref.tgl_lahir.split(" ")[0],
         }));
 
         setRefereesData(formattedData);
         setRefereesTotal(referee.data.recordsTotal);
         setTotalPages(Math.ceil(refereesTotal / rowsPerPage));
       }
+      setIsLoadingGet(false);
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +117,10 @@ export default function Referee() {
 
   const getChartData = async () => {
     try {
-      const referee = await apiService.get(`/api/referee/GetGrafikAll`, headers);
+      const referee = await apiService.get(
+        `/api/referee/GetGrafikAll`,
+        headers
+      );
 
       if (referee.status === 200 || referee.length > 0) {
         const licenceFormatChart = referee.data.map((item) => ({
@@ -107,7 +141,10 @@ export default function Referee() {
     setIsDialogOpen(true);
 
     try {
-      const detail = await apiService.get(`/api/referee/GetRecordByID?id_petugas=${id_petugas}`, headers);
+      const detail = await apiService.get(
+        `/api/referee/GetRecordByID?id_petugas=${id_petugas}`,
+        headers
+      );
 
       if (detail.status === 200) {
         setDetailReferee(detail.data.biodata);
@@ -120,88 +157,152 @@ export default function Referee() {
 
   const columns = [
     {
-      id: 'select',
+      id: "select",
       header: ({ table }) => (
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
       ),
-      cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />,
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
       enableSorting: false,
       enableHiding: false,
     },
     {
-      accessorKey: 'nama_petugas',
-      header: 'Name',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('nama_petugas')}</div>,
+      accessorKey: "nama_petugas",
+      header: "Name",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("nama_petugas")}</div>
+      ),
     },
     {
-      accessorKey: 'jenis_kelamin',
-      header: 'Gender',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('jenis_kelamin')}</div>,
+      accessorKey: "jenis_kelamin",
+      header: "Gender",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("jenis_kelamin")}</div>
+      ),
     },
     {
-      accessorKey: 'tgl_lahir',
-      header: 'Birth Date',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('tgl_lahir')}</div>,
+      accessorKey: "tgl_lahir",
+      header: "Birth Date",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("tgl_lahir")}</div>
+      ),
     },
     {
-      accessorKey: 'nama_divisi',
-      header: 'Division',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('nama_divisi')}</div>,
+      accessorKey: "nama_divisi",
+      header: "Division",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("nama_divisi")}</div>
+      ),
     },
     {
-      accessorKey: 'lisensi',
-      header: 'Licence',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('lisensi')}</div>,
+      accessorKey: "lisensi",
+      header: "Licence",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("lisensi")}</div>
+      ),
     },
     {
-      accessorKey: 'nama_propinsi',
-      header: 'Province',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('nama_propinsi')}</div>,
+      accessorKey: "nama_propinsi",
+      header: "Province",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("nama_propinsi")}</div>
+      ),
     },
     {
-      accessorKey: 'nama_kota',
-      header: 'City',
-      cell: ({ row }) => <div className="capitalize">{row.getValue('nama_kota')}</div>,
+      accessorKey: "nama_kota",
+      header: "City",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("nama_kota")}</div>
+      ),
     },
     {
-      id: 'actions',
+      id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
         return (
           <div>
-            <button onClick={() => handleViewDetail(row.original.id_petugas)} className="text-blue-400">
+            <button
+              onClick={() => handleViewDetail(row.original.id_petugas)}
+              className="text-blue-400"
+            >
               View Detail
             </button>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               {/* <DialogTrigger onClick={() => handleViewDetail(row.original.id_petugas)} className="text-blue-400">View Detail</DialogTrigger> */}
-              <DialogContent className="max-w-full  xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh] bg-[#7E0000]" openModal={isDialogOpen}>
+              <DialogContent
+                className="max-w-full  xl:max-w-4xl p-4 xl:p-5 overflow-y-auto h-[90vh] bg-[#7E0000]"
+                openModal={isDialogOpen}
+              >
                 <DialogHeader className="relative">
-                  <button className="fixed top-2 right-2 p-3  " onClick={() => setIsDialogOpen(false)}>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M2 21.8787L22 1.87891" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M2 1.87908L22 21.8789" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                  <button
+                    className="fixed top-2 right-2 p-3  "
+                    onClick={() => setIsDialogOpen(false)}
+                  >
+                    <svg
+                      width="17"
+                      height="17"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 21.8787L22 1.87891"
+                        stroke="white"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M2 1.87908L22 21.8789"
+                        stroke="white"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   </button>
 
                   <div className="grid grid-cols-7 pt-5">
                     <div className="col-span-2 pt-5">
-                      <img className="rounded-lg w-full" src={detailReferee.URL_FOTO} alt="avatar" />
+                      <img
+                        className="rounded-lg w-full"
+                        src={detailReferee.URL_FOTO}
+                        alt="avatar"
+                      />
                     </div>
                     <div className="col-span-5 pl-5 text-slate-100">
                       {/* name  */}
                       <div className=" font-bold  mt-3">
                         <p className="text-3xl">{detailReferee.NAMA_PETUGAS}</p>
-                        <span className="text-sm font-normal">{detailReferee.NAMA_LAMPIRAN + '-' + detailReferee.STAT_PETUGAS}</span>
+                        <span className="text-sm font-normal">
+                          {detailReferee.NAMA_LAMPIRAN +
+                            "-" +
+                            detailReferee.STAT_PETUGAS}
+                        </span>
                       </div>
 
                       <div className="grid grid-cols-3 mt-4 gap-2">
                         <div className="bg-slate-100 relative rounded-lg px-3 py-2">
                           <div className="w-7 absolute right-1  bottom-0">
-                            <svg width="100%" height="100%" viewBox="0 0 297 487" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg
+                              width="100%"
+                              height="100%"
+                              viewBox="0 0 297 487"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
                               <path
                                 d="M2.19611 99.3623L95.1961 291.862C102.153 306.263 109.732 338.167 124 347L285.196 271.362C299.996 264.562 297.363 251.195 294.196 245.362L182.196 10.8623C176.996 -0.337695 164.696 -2.63802 155.696 2.86231L10.1961 71.3623C-1.00389 77.3623 -1.80383 91.3623 2.19611 99.3623Z"
                                 fill="#FF0000"
@@ -212,13 +313,23 @@ export default function Referee() {
                               />
                             </svg>
                           </div>
-                          <div className="text-[#7E0000] font-bold">{detailReferee.TOTAL_RC}</div>
-                          <small className="text-xs text-slate-700  ">Red Card (RC)</small>
+                          <div className="text-[#7E0000] font-bold">
+                            {detailReferee.TOTAL_RC}
+                          </div>
+                          <small className="text-xs text-slate-700  ">
+                            Red Card (RC)
+                          </small>
                         </div>
 
                         <div className="bg-slate-100 rounded-lg px-3 py-2 relative">
                           <div className="w-7 absolute right-1  bottom-0">
-                            <svg width="100%" height="100%" viewBox="0 0 355 524" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg
+                              width="100%"
+                              height="100%"
+                              viewBox="0 0 355 524"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
                               <path
                                 d="M47.1645 98.2341L105.324 303.959C109.675 319.348 111.599 352.084 124.116 363.261L295.998 316.763C311.754 312.637 311.481 299.016 309.376 292.721L239.798 42.3353C236.622 30.4025 224.908 26.0012 215.09 29.8552L59.9051 72.0487C47.8334 76.0127 44.6145 89.6611 47.1645 98.2341Z"
                                 fill="#FFE137"
@@ -237,13 +348,23 @@ export default function Referee() {
                               />
                             </svg>
                           </div>
-                          <div className="text-[#7E0000] font-bold">{detailReferee.TOTAL_SYC}</div>
-                          <small className="text-xs text-slate-700  ">Second Yellow Card (SYC)</small>
+                          <div className="text-[#7E0000] font-bold">
+                            {detailReferee.TOTAL_SYC}
+                          </div>
+                          <small className="text-xs text-slate-700  ">
+                            Second Yellow Card (SYC)
+                          </small>
                         </div>
 
                         <div className="bg-slate-100 rounded-lg px-3 py-4 relative">
                           <div className="w-7 absolute right-1  bottom-0">
-                            <svg width="100%" height="100%" viewBox="0 0 301 489" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg
+                              width="100%"
+                              height="100%"
+                              viewBox="0 0 301 489"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
                               <path
                                 d="M4.19611 101.362L97.1961 293.862C104.153 308.263 111.732 340.167 126 349L287.196 273.362C301.996 266.562 299.363 253.195 296.196 247.362L184.196 12.8623C178.996 1.6623 166.696 -0.638021 157.696 4.86231L12.1961 73.3623C0.996111 79.3623 0.196165 93.3623 4.19611 101.362Z"
                                 fill="#FFE137"
@@ -256,8 +377,12 @@ export default function Referee() {
                               />
                             </svg>
                           </div>
-                          <div className="text-[#7E0000] font-bold">{detailReferee.TOTAL_YC}</div>
-                          <small className="text-xs text-slate-700  ">Yellow Card (YC)</small>
+                          <div className="text-[#7E0000] font-bold">
+                            {detailReferee.TOTAL_YC}
+                          </div>
+                          <small className="text-xs text-slate-700  ">
+                            Yellow Card (YC)
+                          </small>
                         </div>
                       </div>
 
@@ -266,7 +391,13 @@ export default function Referee() {
                         <div className="bg-[#A75353]  flex px-4 py-3 mb-3 items-center space-x-2">
                           <div className="text-slate-100 text-sm flex gap-2">
                             <div>
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
                                 <path
                                   d="M17 21H7C3 21 2 20 2 16V8C2 4 3 3 7 3H17C21 3 22 4 22 8V16C22 20 21 21 17 21Z"
                                   stroke="white"
@@ -274,9 +405,27 @@ export default function Referee() {
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
                                 />
-                                <path d="M14 8H19" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M15 12H19" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M17 16H19" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path
+                                  d="M14 8H19"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M15 12H19"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M17 16H19"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
                                 <path
                                   d="M8.49994 11.2899C9.49958 11.2899 10.3099 10.4796 10.3099 9.47992C10.3099 8.48029 9.49958 7.66992 8.49994 7.66992C7.50031 7.66992 6.68994 8.48029 6.68994 9.47992C6.68994 10.4796 7.50031 11.2899 8.49994 11.2899Z"
                                   stroke="white"
@@ -293,24 +442,34 @@ export default function Referee() {
                                 />
                               </svg>
                             </div>
-                            <span className="my-auto">Personal Information</span>
+                            <span className="my-auto">
+                              Personal Information
+                            </span>
                           </div>
                         </div>
                         <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                           <div className="">Birth Date</div>
-                          <div className=" font-normal">{detailReferee.TGL_LAHIR}</div>
+                          <div className=" font-normal">
+                            {detailReferee.TGL_LAHIR}
+                          </div>
                         </div>
                         <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                           <div className="">Gender</div>
-                          <div className=" font-normal">{detailReferee.JNS_KELAMIN}</div>
+                          <div className=" font-normal">
+                            {detailReferee.JNS_KELAMIN}
+                          </div>
                         </div>
                         <div className="flex py-1 text-slate-200 justify-between pl-12 pr-4">
                           <div className="">Province</div>
-                          <div className=" font-normal">{detailReferee.NAMA_PROPINSI}</div>
+                          <div className=" font-normal">
+                            {detailReferee.NAMA_PROPINSI}
+                          </div>
                         </div>
                         <div className="flex text-slate-200 py-1 justify-between pl-12 pr-4">
                           <div className="">City</div>
-                          <div className="font-normal">{detailReferee.NAMA_KOTA}</div>
+                          <div className="font-normal">
+                            {detailReferee.NAMA_KOTA}
+                          </div>
                         </div>
                       </div>
 
@@ -319,10 +478,31 @@ export default function Referee() {
                         <div className="bg-[#A75353]  flex px-4 py-3 mb-3 items-center space-x-2">
                           <div className="text-slate-100 text-sm flex gap-2">
                             <div>
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.87988 18.1501V16.0801" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-                                <path d="M12 18.15V14.01" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-                                <path d="M17.1201 18.1499V11.9299" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M6.87988 18.1501V16.0801"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                />
+                                <path
+                                  d="M12 18.15V14.01"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                />
+                                <path
+                                  d="M17.1201 18.1499V11.9299"
+                                  stroke="white"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                />
                                 <path
                                   d="M17.1199 5.8501L16.6599 6.3901C14.1099 9.3701 10.6899 11.4801 6.87988 12.4301"
                                   stroke="white"
@@ -350,45 +530,75 @@ export default function Referee() {
                         </div>
                         <div className="flex text-slate-200 py-1  justify-between pl-12 pr-4">
                           <div className="">Licence</div>
-                          <div className=" font-normal">{detailReferee.NAMA_LAMPIRAN}</div>
+                          <div className=" font-normal">
+                            {detailReferee.NAMA_LAMPIRAN}
+                          </div>
                         </div>
                         <div className="flex text-slate-200 py-1  justify-between pl-12 pr-4">
                           <div className="">Division</div>
-                          <div className=" font-normal">{detailReferee.NAMA_DIVISI}</div>
+                          <div className=" font-normal">
+                            {detailReferee.NAMA_DIVISI}
+                          </div>
                         </div>
                         <div className="flex text-slate-200 py-1  justify-between pl-12 pr-4">
                           <div className="">Status</div>
-                          <div className="font-normal">{detailReferee.STATUS}</div>
+                          <div className="font-normal">
+                            {detailReferee.STATUS}
+                          </div>
                         </div>
                       </div>
 
                       {/* recent matches  */}
-                      <div className="text-[#989899] mt-5 text-[12px] font-medium">Recent Matches</div>
+                      <div className="text-[#989899] mt-5 text-[12px] font-medium">
+                        Recent Matches
+                      </div>
                       <div className="flex space-x-4 ">
                         <div className="flex border border-[#A75353] flex-row">
                           <div className="w-full">
                             <Table className="">
                               <TableHeader className="text-white text-sm bg-white">
                                 <TableRow>
-                                  <TableHead className="text-[12px]">Competition</TableHead>
-                                  <TableHead className="text-[12px]">Match</TableHead>
-                                  <TableHead className="text-[12px]">Date</TableHead>
-                                  <TableHead className="text-[12px]">Status</TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Competition
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Match
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Date
+                                  </TableHead>
+                                  <TableHead className="text-[12px]">
+                                    Status
+                                  </TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody>
                                 {recentMatch.length > 0 ? (
                                   recentMatch.map((match, index) => (
                                     <TableRow key={index}>
-                                      <TableCell className="text-[12px]">{match.COMPETITION}</TableCell>
-                                      <TableCell className="text-[12px]">{match.MATCH}</TableCell>
-                                      <TableCell className="text-[12px]">{new Date(match.DATE).toLocaleDateString()}</TableCell>
-                                      <TableCell className="text-[12px]">{match.STATUS}</TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {match.COMPETITION}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {match.MATCH}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {new Date(
+                                          match.DATE
+                                        ).toLocaleDateString()}
+                                      </TableCell>
+                                      <TableCell className="text-[12px]">
+                                        {match.STATUS}
+                                      </TableCell>
                                     </TableRow>
                                   ))
                                 ) : (
                                   <TableRow>
-                                    <TableCell className="text-[12px]" colSpan={4} style={{ textAlign: 'center' }}>
+                                    <TableCell
+                                      className="text-[12px]"
+                                      colSpan={4}
+                                      style={{ textAlign: "center" }}
+                                    >
                                       Tidak ada data
                                     </TableCell>
                                   </TableRow>
@@ -411,7 +621,10 @@ export default function Referee() {
 
   const getCarouselData = async () => {
     try {
-      const refereeSlide = await apiService.get(`/api/referee/GetSlide`, headers);
+      const refereeSlide = await apiService.get(
+        `/api/referee/GetSlide`,
+        headers
+      );
 
       if (refereeSlide.status === 200 || refereeSlide.length > 0) {
         setDataSlide(refereeSlide.data);
@@ -422,16 +635,20 @@ export default function Referee() {
   };
 
   const handleClickChart = async (category) => {
+    setIsLoadingMaps(true);
     const { category: categoryLabel, id_license } = category.data.payload;
 
     setActiveCategory({ categoryLabel, dataKey: category.dataKey });
 
     try {
-      const response = await apiService.get(`/api/referee/GetGrafikByIDLicensi?id_licensi=${id_license}`);
+      const response = await apiService.get(
+        `/api/referee/GetGrafikByIDLicensi?id_licensi=${id_license}`
+      );
       const result = response.data;
       const mapArray = Object.keys(result).map((key) => result[key]);
       const mappingArray = mappingReferee(mapArray, category.dataKey);
       setDataMaps(mappingArray);
+      setIsLoadingMaps(false);
     } catch (error) {
       console.error(error);
     }
@@ -440,11 +657,16 @@ export default function Referee() {
   return (
     <div>
       <div className="bg-[#7E0000] absolute h-[60vh] w-full z-10"></div>
-      <NavBar bgColor="#FFFFFF" selectedTextColor="#7E0000" secondaryTextColor="#6C6C6C" />
+      <NavBar
+        bgColor="#FFFFFF"
+        selectedTextColor="#7E0000"
+        secondaryTextColor="#6C6C6C"
+      />
       <div className="container-pssi mx-4 z-20 relative">
         <h2 className="text-slate-200 text-4xl font-bold">Referees</h2>
         <p className="text-sm text-slate-300 mt-2">
-          An Indonesian referee enforces rules and ensures fairness in sports competitions, certified nationally or internationally.
+          An Indonesian referee enforces rules and ensures fairness in sports
+          competitions, certified nationally or internationally.
         </p>
 
         <div className="mt-4 py-5 px-3 mb-10">
@@ -468,7 +690,11 @@ export default function Referee() {
           </div>
 
           <div className="col-span-2 border-r border-slate-200 flex flex-col justify-end">
-            <LicenseDistribution data={licenseChart} config={chartConfig} onClick={handleClickChart} />
+            <LicenseDistribution
+              data={licenseChart}
+              config={chartConfig}
+              onClick={handleClickChart}
+            />
           </div>
           <div className="col-span-4 px-4 pb-4">
             {activeCategory && (
@@ -477,20 +703,34 @@ export default function Referee() {
               </center>
             )}
 
-            <MapsChart dataMaps={dataMaps} />
+            {isLoadingMaps ? <div className="flex items-center justify-center h-full mt-10"><LoaderCircleIcon className="animate-spin" /></div> : <MapsChart dataMaps={dataMaps} /> }
           </div>
         </div>
 
         <div className="mt-5 bg-white p-5">
           <div className="text-black font-bold">Referee List</div>
-          <DataTable columns={columns} data={refereesData} searchBy={'nama_petugas'} totalData={refereesTotal} placeholderText={'Filter by Name...'} />
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            onRowsPerPageChange={setRowsPerPage}
-            rowsPerPage={rowsPerPage}
-          />
+          {isLoadingGet ? (
+            <div className="flex items-center justify-center h-full">
+              <LoaderCircleIcon className="animate-spin" />
+            </div>
+          ) : (
+            <>
+              <DataTable
+                columns={columns}
+                data={refereesData}
+                searchBy={"nama_petugas"}
+                totalData={refereesTotal}
+                placeholderText={"Filter by Name..."}
+              />
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                onRowsPerPageChange={setRowsPerPage}
+                rowsPerPage={rowsPerPage}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -501,13 +741,17 @@ function CarouselSize({ data, handleViewDetail }) {
   return (
     <Carousel
       opts={{
-        align: 'start',
+        align: "start",
       }}
       className="w-full  mx-auto "
     >
       <CarouselContent>
         {data.map((slide, index) => (
-          <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/5" onClick={() => handleViewDetail(slide.ID_PETUGAS)}>
+          <CarouselItem
+            key={index}
+            className="md:basis-1/5 lg:basis-1/5"
+            onClick={() => handleViewDetail(slide.ID_PETUGAS)}
+          >
             <div>
               <Card className="border hover:border-2 hover:border-[#7E0000] rounded-lg cursor-pointer border-slate-200 bg-transparent shadow-none">
                 <CardContent className="p-0">
@@ -516,16 +760,28 @@ function CarouselSize({ data, handleViewDetail }) {
                     className="mx-auto rounded-t-lg object-cover w-full h-[30vh]"
                     src={slide.URL_FOTO}
                     alt="avatar"
-                    style={{ objectPosition: 'top' }}
+                    style={{ objectPosition: "top" }}
                   />
 
-                  <div className="p-2 rounded-b-lg hover:shadow-xl  bg-white " style={{ backgroundImage: `url('./pattern-white.svg')` }}>
+                  <div
+                    className="p-2 rounded-b-lg hover:shadow-xl  bg-white "
+                    style={{ backgroundImage: `url('./pattern-white.svg')` }}
+                  >
                     <div className="py-3 px-4  relative">
-                      <p className=" w-full text-md font-semibold">{slide.NAMA_PETUGAS}</p>
+                      <p className=" w-full text-md font-semibold">
+                        {slide.NAMA_PETUGAS}
+                      </p>
                       <div className="grid grid-cols-2 mt-2">
                         <div className="col-span-1">
                           <div className="flex gap-2">
-                            <svg className="mt-1" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg
+                              className="mt-1"
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
                               <path
                                 d="M10.49 2.23006L5.50003 4.11006C4.35003 4.54006 3.41003 5.90006 3.41003 7.12006V14.5501C3.41003 15.7301 4.19003 17.2801 5.14003 17.9901L9.44003 21.2001C10.85 22.2601 13.17 22.2601 14.58 21.2001L18.88 17.9901C19.83 17.2801 20.61 15.7301 20.61 14.5501V7.12006C20.61 5.89006 19.67 4.53006 18.52 4.10006L13.53 2.23006C12.68 1.92006 11.32 1.92006 10.49 2.23006Z"
                                 stroke="grey"
@@ -542,15 +798,26 @@ function CarouselSize({ data, handleViewDetail }) {
                               />
                             </svg>
                             <div className="my-auto">
-                              <small className="text-xs text-neutral-400">Division</small>
-                              <p className="text-xs text-neutral-700">{slide.NAMA_DIVISI}</p>
+                              <small className="text-xs text-neutral-400">
+                                Division
+                              </small>
+                              <p className="text-xs text-neutral-700">
+                                {slide.NAMA_DIVISI}
+                              </p>
                             </div>
                           </div>
                         </div>
 
                         <div className="col-span-1">
                           <div className="flex gap-2">
-                            <svg width="18" height="18" className="mt-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg
+                              width="18"
+                              height="18"
+                              className="mt-1"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
                               <path
                                 d="M8.38 12L10.79 14.42L15.62 9.57996"
                                 stroke="grey"
@@ -568,8 +835,12 @@ function CarouselSize({ data, handleViewDetail }) {
                             </svg>
 
                             <div className="my-auto">
-                              <small className="text-xs text-neutral-400">Status</small>
-                              <p className="text-xs text-neutral-700">{slide.STAT_PETUGAS}</p>
+                              <small className="text-xs text-neutral-400">
+                                Status
+                              </small>
+                              <p className="text-xs text-neutral-700">
+                                {slide.STAT_PETUGAS}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -612,18 +883,20 @@ function RefereeActivity() {
 
   const getDistributionReferee = async (id_divisi) => {
     try {
-      const response = await apiService.get(`/api/referee/GetGrafikPenugasanWasit?id_divisi=${id_divisi}`);
+      const response = await apiService.get(
+        `/api/referee/GetGrafikPenugasanWasit?id_divisi=${id_divisi}`
+      );
       const result = response.data;
       const changeTotal = result.map((item) => ({
         ...item,
-        Total:item.TOTAL_TUGAS
-      }))
-      
+        Total: item.TOTAL_TUGAS,
+      }));
+
       const randomArray = changeTotal.sort(() => Math.random() - 0.5);
 
       setDistributionRefereeData(randomArray);
     } catch (error) {
-      console.log('🐙 ~ getGrafikByProvince ~ error:', error);
+      console.log("🐙 ~ getGrafikByProvince ~ error:", error);
     }
   };
 
@@ -634,7 +907,10 @@ function RefereeActivity() {
   return (
     <Fragment>
       <div className="flex items-center justify-end pt-4 pr-10">
-        <Select onValueChange={handleChangeSelect} defaultValue={dataSelect[0]?.value}>
+        <Select
+          onValueChange={handleChangeSelect}
+          defaultValue={dataSelect[0]?.value}
+        >
           <SelectTrigger className="w-[200px]">
             <SelectValue placeholder="Select Liga" />
           </SelectTrigger>

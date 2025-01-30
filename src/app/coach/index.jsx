@@ -14,7 +14,7 @@ import sessions from '../../../utils/sessions';
 import apiService from '../../../utils/services';
 import { DataTable } from '@/components/table/datatable';
 import { PaginationControls } from '../../components/table/pagination';
-import { X } from 'lucide-react';
+import { LoaderCircleIcon, X } from 'lucide-react';
 import { mappingCoach } from '../../helper/transformProvinceArray';
 import { BarChartHorizontalLabel } from '../../components/charts/barchart/barchart-horizontal-label';
 
@@ -32,6 +32,7 @@ const chartConfig = [
 ];
 
 export default function Coach() {
+
   const tableData = [
     {
       id: 'COACH001',
@@ -319,6 +320,9 @@ export default function Coach() {
   const [dataMaps, setDataMaps] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
 
+  const [isLoadingGet, setIsLoadingGet] = useState(false);
+  const [isLoadingTable, setIsLoadingTable] = useState(false);
+
   const headers = {
     Authorization: `Bearer ${token}`,
   };
@@ -330,6 +334,7 @@ export default function Coach() {
   }, [currentPage, rowsPerPage]);
 
   const getListCoach = async (page, rowsPerPage) => {
+    setIsLoadingTable(true);
     try {
       const coach = await apiService.get(`/api/coach/GetListData?row_from=${(page - 1) * rowsPerPage}&length=${rowsPerPage}`, headers);
 
@@ -338,6 +343,7 @@ export default function Coach() {
         setCoachTotal(coach.data.recordsTotal);
         setTotalPages(Math.ceil(coachTotal / rowsPerPage));
       }
+      setIsLoadingTable(false);
     } catch (error) {
       console.log(error);
     }
@@ -393,6 +399,7 @@ export default function Coach() {
   };
 
   const handleClickCoachesByLicense = async (category) => {
+    setIsLoadingGet(true);
     const { category: categoryLabel, id_license } = category.data.payload;
 
     setActiveCategory({ categoryLabel, dataKey: category.dataKey });
@@ -403,6 +410,7 @@ export default function Coach() {
       const mapArray = Object.keys(result).map((key) => result[key]);
       const mappingArray = mappingCoach(mapArray, category.dataKey);
       setDataMaps(mappingArray);
+      setIsLoadingGet(false);
     } catch (error) {
       console.error(error);
     }
@@ -433,19 +441,29 @@ export default function Coach() {
                 {activeCategory?.categoryLabel} : {activeCategory?.dataKey}
               </center>
             )}
-            <MapsChart dataMaps={dataMaps} />
+
+            {isLoadingGet ? <div className="flex items-center justify-center h-full">
+              <LoaderCircleIcon className="animate-spin" />
+            </div> : <MapsChart dataMaps={dataMaps} />}
+            
           </div>
         </div>
 
         <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
-          <DataTable columns={columns} data={coachData} searchBy={'nama_official'} totalData={coachTotal} placeholderText="Filter by Official Name..." />
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            onRowsPerPageChange={setRowsPerPage}
-            rowsPerPage={rowsPerPage}
-          />
+          {isLoadingTable ? <div className="flex items-center justify-center h-full">
+              <LoaderCircleIcon className="animate-spin" />
+            </div> :
+            <>
+              <DataTable columns={columns} data={coachData} searchBy={'nama_official'} totalData={coachTotal} placeholderText="Filter by Official Name..." />
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                onRowsPerPageChange={setRowsPerPage}
+                rowsPerPage={rowsPerPage}
+              />
+            </>
+          }
         </div>
       </div>
     </div>

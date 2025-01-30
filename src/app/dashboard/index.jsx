@@ -7,6 +7,7 @@ import sessions from '../../../utils/sessions';
 import apiService from '../../../utils/services';
 import NavBar from '../../components/navbar';
 import { mapping } from '../../helper/transformProvinceArray';
+import { LoaderCircleIcon } from 'lucide-react';
 
 export default function DashboardPage() {
   const token = sessions.getSessionToken();
@@ -16,48 +17,58 @@ export default function DashboardPage() {
   const [coach, setcoach] = useState(0);
   const [referee, setreferee] = useState(0);
   const [dataMaps, setDataMaps] = useState([]);
+  const [isLoadingGet, setIsLoadingGet] = useState(false);
+  const [isLoadingCount, setIsLoadingCount] = useState(false);
+  const [refreshData, setRefreshData] = useState();
 
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
   const getCountPlayer = async () => {
+    setIsLoadingCount(true);
     try {
       const players = await apiService.get(`/api/player/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
 
       if (players.status === 200) {
         setplayer(players.data.recordsTotal.toLocaleString('id-ID'));
       }
+      setIsLoadingCount(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const getCountCoach = async () => {
+    setIsLoadingCount(true);
     try {
       const coach = await apiService.get(`/api/coach/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
 
       if (coach.status === 200) {
         setcoach(coach.data.recordsTotal.toLocaleString('id-ID'));
       }
+      setIsLoadingCount(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const getCountReferee = async () => {
+    setIsLoadingCount(true);
     try {
       const referee = await apiService.get(`/api/referee/GetListData?row_from=${rowFrom}&length=${rowLength}`, headers);
 
       if (referee.status === 200) {
         setreferee(referee.data.recordsTotal.toLocaleString('id-ID'));
       }
+      setIsLoadingCount(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const getProvincePlayer = async () => {
+    setIsLoadingGet(true);
     try {
       const response = await apiService.get(`/api/player/GetDataByProvinsi`, headers);
 
@@ -66,12 +77,14 @@ export default function DashboardPage() {
       const mappingArray = mapping(mapArray);
 
       setDataMaps(mappingArray);
+      setIsLoadingGet(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const getProvinceCoaches = async () => {
+    setIsLoadingGet(true);
     try {
       const response = await apiService.get(`/api/player/GetDataByProvinsi`, headers);
 
@@ -80,12 +93,14 @@ export default function DashboardPage() {
       const mappingArray = mapping(mapArray);
 
       setDataMaps(mappingArray);
+      setIsLoadingGet(false);
     } catch (error) {
       console.log(error);
     }
   };
 
   const getProvinceReferee = async () => {
+    setIsLoadingGet(true);
     try {
       const response = await apiService.get(`/api/player/GetDataByProvinsi`, headers);
 
@@ -94,6 +109,7 @@ export default function DashboardPage() {
       const mappingArray = mapping(mapArray);
 
       setDataMaps(mappingArray);
+      setIsLoadingGet(false);
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +122,7 @@ export default function DashboardPage() {
     if (activeCard === 'players') getProvincePlayer();
     if (activeCard === 'coaches') getProvinceCoaches();
     if (activeCard === 'referees') getProvinceReferee();
-  }, [rowFrom, rowLength]);
+  }, [rowFrom, rowLength, refreshData]);
 
   const [activeCard, setActiveCard] = useState('players');
 
@@ -121,14 +137,13 @@ export default function DashboardPage() {
             <div className="flex flex-row pt-3">
               <div
                 key={'players'}
-                onClick={() => setActiveCard('players')}
+                onClick={() => {setActiveCard('players'); setRefreshData()}}
                 style={{ cursor: 'pointer' }}
-                className={`${
-                  activeCard === 'players' ? 'bg-[#7E0000] text-white' : 'bg-slate-200 text-slate-700'
-                } rounded-lg shadow p-4 w-60 ml-3 relative`}
+                className={`${activeCard === 'players' ? 'bg-[#7E0000] text-white' : 'bg-slate-200 text-slate-700'
+                  } rounded-lg shadow p-4 w-60 ml-3 relative`}
               >
                 <small className="text-xs font-normal">Total Players.</small>
-                <div className=" text-xl font-bold">{player} </div>
+                <div className=" text-xl font-bold">{isLoadingCount ? <LoaderCircleIcon className="animate-spin" /> : player} </div>
                 {activeCard === 'players' ? (
                   <img src="./bg-logo-red.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
                 ) : (
@@ -138,14 +153,13 @@ export default function DashboardPage() {
 
               <div
                 key={'coaches'}
-                onClick={() => setActiveCard('coaches')}
+                onClick={() => {setActiveCard('coaches'); setRefreshData()}}
                 style={{ cursor: 'pointer' }}
-                className={`${
-                  activeCard === 'coaches' ? 'bg-[#7E0000] text-white' : 'bg-slate-200 text-slate-700'
-                } rounded-lg shadow p-4 w-60 ml-3 relative`}
+                className={`${activeCard === 'coaches' ? 'bg-[#7E0000] text-white' : 'bg-slate-200 text-slate-700'
+                  } rounded-lg shadow p-4 w-60 ml-3 relative`}
               >
                 <small className="text-xs font-normal">Total Coaches</small>
-                <div className=" text-xl font-bold">{coach} </div>
+                <div className=" text-xl font-bold">{isLoadingCount ? <LoaderCircleIcon className="animate-spin" /> : coach} </div>
 
                 {activeCard === 'coaches' ? (
                   <img src="./bg-logo-red.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
@@ -156,14 +170,13 @@ export default function DashboardPage() {
 
               <div
                 key={'referees'}
-                onClick={() => setActiveCard('referees')}
+                onClick={() => {setActiveCard('referees'); setRefreshData()}}
                 style={{ cursor: 'pointer' }}
-                className={`${
-                  activeCard === 'referees' ? 'bg-[#7E0000] text-white' : 'bg-slate-200 text-slate-700'
-                } rounded-lg shadow p-4 w-60 ml-3 relative`}
+                className={`${activeCard === 'referees' ? 'bg-[#7E0000] text-white' : 'bg-slate-200 text-slate-700'
+                  } rounded-lg shadow p-4 w-60 ml-3 relative`}
               >
                 <small className="text-xs font-normal">Total Referees</small>
-                <div className=" text-xl font-bold">{referee} </div>
+                <div className=" text-xl font-bold">{isLoadingCount ? <LoaderCircleIcon className="animate-spin" /> : referee} </div>
 
                 {activeCard === 'referees' ? (
                   <img src="./bg-logo-red.svg" className="w-20 h-20 absolute bottom-[-15px] right-[-5px]" />
@@ -172,7 +185,13 @@ export default function DashboardPage() {
                 )}
               </div>
             </div>
-            <MapsChart dataMaps={dataMaps} />
+            {isLoadingGet ? (
+              <div className="flex items-center justify-center h-full mt-10">
+                <LoaderCircleIcon className="animate-spin" />
+              </div>
+            ) : (
+              <MapsChart dataMaps={dataMaps} />
+            )}
           </div>
         </div>
 

@@ -20,67 +20,74 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import NavBar from "../../components/navbar";
-import apiServices from '../../../utils/services'
+import apiServices from "../../../utils/services";
+import { LoaderCircleIcon } from "lucide-react";
 
 export default function NatioanalTeams() {
   const [activeCard, setActiveCard] = useState(1);
-  const [listCategory, setListCategory] = useState([])
-  const [listOfficial, setListOfficial] = useState([])
-  const [listPlayer, setListPlayer] = useState([])
+  const [listCategory, setListCategory] = useState([]);
+  const [listOfficial, setListOfficial] = useState([]);
+  const [listPlayer, setListPlayer] = useState([]);
+  const [isLoadingGet, setIsLoadingGet] = useState(false);
+  const [isLoadingGetOfficial, setIsLoadingGetOfficial] = useState(false);
 
-  const getListCategory = async() => {
+  const getListCategory = async () => {
     try {
-    const response = await apiServices.get('/api/timnas/GetCategory')
-    const result = response.data
+      const response = await apiServices.get("/api/timnas/GetCategory");
+      const result = response.data;
 
-    const resultData = [...result.MAN, ...result.WOMEN]
-    setListCategory(resultData)
-  } catch (error) {
-      console.error(error)
-    }
-  }
-
-  
-
-  const getListRecordPlayer = async(kat_umur, jenis_kelamin) => {
-    const row_from = 0
-    const length = 10
-    try {
-      const response = await apiServices.get(`/api/timnas/GetListDataPlayer?row_from=${row_from}&length=${length}&kat_umur=${kat_umur}&jenis_kelamin=${jenis_kelamin}`)
-       const result = response.data
-       setListPlayer(result.data)
-       console.log('result player : ', result)
+      const resultData = [...result.MAN, ...result.WOMEN];
+      setListCategory(resultData);
     } catch (error) {
-      setListPlayer([])
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
-  const getListRecordOfficial = async(kat_umur, jenis_kelamin) => {
-    const row_from = 0
-    const length = 10
+  const getListRecordPlayer = async (kat_umur, jenis_kelamin) => {
+    setIsLoadingGet(true);
+    const row_from = 0;
+    const length = 10;
     try {
-      const response = await apiServices.get(`/api/timnas/GetListDataOfficial?row_from=${row_from}&length=${length}&kat_umur=${kat_umur}&jenis_kelamin=${jenis_kelamin}`)
-       const result = response.data
-       setListOfficial(result.data)
-       console.log('result official : ', result)
+      const response = await apiServices.get(
+        `/api/timnas/GetListDataPlayer?row_from=${row_from}&length=${length}&kat_umur=${kat_umur}&jenis_kelamin=${jenis_kelamin}`
+      );
+      const result = response.data;
+      setListPlayer(result.data);
+      setIsLoadingGet(false);
     } catch (error) {
-      setListOfficial([])
-      console.error(error)
+      setIsLoadingGet(false);
+      setListPlayer([]);
+      console.error(error);
     }
-  }
+  };
 
+  const getListRecordOfficial = async (kat_umur, jenis_kelamin) => {
+    setIsLoadingGetOfficial(true);
+    const row_from = 0;
+    const length = 10;
+    try {
+      const response = await apiServices.get(
+        `/api/timnas/GetListDataOfficial?row_from=${row_from}&length=${length}&kat_umur=${kat_umur}&jenis_kelamin=${jenis_kelamin}`
+      );
+      const result = response.data;
+      setListOfficial(result.data);
+      setIsLoadingGetOfficial(false);
+    } catch (error) {
+      setIsLoadingGetOfficial(false);
+      setListOfficial([]);
+      console.error(error);
+    }
+  };
 
   const handleClickCard = (dataActive) => {
-
-    setActiveCard(dataActive)
-    getListRecordOfficial(dataActive.KAT_UMUR, dataActive.CATEGORY)
-    getListRecordPlayer(dataActive.KAT_UMUR, dataActive.CATEGORY)
-  }
+    setActiveCard(dataActive);
+    getListRecordOfficial(dataActive.KAT_UMUR, dataActive.CATEGORY);
+    getListRecordPlayer(dataActive.KAT_UMUR, dataActive.CATEGORY);
+  };
 
   useEffect(() => {
-    getListCategory()
-  },[])
+    getListCategory();
+  }, []);
 
   const dataHeader = [
     {
@@ -251,7 +258,11 @@ export default function NatioanalTeams() {
   return (
     <div>
       <div className="bg-[#212B5A] absolute h-[60vh] w-full z-10"></div>
-      <NavBar  bgColor="#FFFFFF" selectedTextColor="#212B5A" secondaryTextColor="#C6C6C6" />
+      <NavBar
+        bgColor="#FFFFFF"
+        selectedTextColor="#212B5A"
+        secondaryTextColor="#C6C6C6"
+      />
       <div className="container-pssi mx-4 z-20 relative">
         <h2 className="text-slate-100 text-3xl font-bold">National Team</h2>
         <p className="text-sm text-slate-100 mt-2">
@@ -264,34 +275,28 @@ export default function NatioanalTeams() {
           {/* left side  */}
           <div className="mt-5 ">
             <div className="bg-white border px-2 py-2 rounded-lg">
-             {
-              listCategory.map((item) => (
+              {listCategory.map((item) => (
                 <div
                   key={item.TITLE}
                   onClick={() => handleClickCard(item)}
                   style={{ cursor: "pointer" }}
-                  className={`hover:bg-primary-pssi hover:text-white ${
-                    activeCard.TITLE === item.TITLE ? "bg-primary-pssi text-white" : ""
-                  } rounded-md p-3  mb-1`}
+                  className={`hover:bg-primary-pssi hover:text-white ${activeCard.TITLE === item.TITLE
+                      ? "bg-primary-pssi text-white"
+                      : ""
+                    } rounded-md p-3  mb-1`}
                 >
-                  
-                    <span
-                      className={` text-sm font-normal`}
-                    >
-                      {item.TITLE}
-                    </span>
-                  
+                  <span className={` text-sm font-normal`}>{item.TITLE}</span>
                 </div>
-              ))
-             }
-              
+              ))}
             </div>
           </div>
 
           {/* right side */}
           <div className="col-span-5">
             <div className=" mt-5 bg-white rounded-lg border ">
-              <div className="text-black font-bold border-b px-4 py-3">{activeCard?.TITLE} Players</div>
+              <div className="text-black font-bold border-b px-4 py-3">
+                {activeCard?.TITLE} Players
+              </div>
               <div className="flex flex-wrap p-5">
                 <Table>
                   <TableHeader>
@@ -305,19 +310,33 @@ export default function NatioanalTeams() {
                       <TableHead>Goal</TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody>
-                    {listPlayer.map((player) => (
-                      <TableRow key={player.id_pemain}>
-                        {/* <TableCell>{player.id_pemain}</TableCell> */}
-                        <TableCell className="uppercase">{player.name}</TableCell>
-                        <TableCell>{player.position}</TableCell>
-                        <TableCell>{player.club}</TableCell>
-                        {/* <TableCell>{player.federation}</TableCell> */}
-                        <TableCell>{player.playing}</TableCell>
-                        <TableCell>{player.goal}</TableCell>
+                  {isLoadingGet ? (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell colSpan={5}>
+                            <div className="flex items-center justify-center h-full">
+                              <LoaderCircleIcon className="animate-spin" />
+                            </div>
+                        </TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
+                    </TableBody>
+                  ) : (
+                    <TableBody>
+                      {listPlayer.map((player) => (
+                        <TableRow key={player.id_pemain}>
+                          {/* <TableCell>{player.id_pemain}</TableCell> */}
+                          <TableCell className="uppercase">
+                            {player.name}
+                          </TableCell>
+                          <TableCell>{player.position}</TableCell>
+                          <TableCell>{player.club}</TableCell>
+                          {/* <TableCell>{player.federation}</TableCell> */}
+                          <TableCell>{player.playing}</TableCell>
+                          <TableCell>{player.goal}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  )}
                 </Table>
               </div>
               {/* <div className="flex flex-col">
@@ -351,25 +370,38 @@ export default function NatioanalTeams() {
             </div>
 
             <div className=" mt-5 rounded-lg border bg-white ">
-              <div className="text-black font-bold border-b px-4 py-3">{activeCard.TITLE} Official</div>
+              <div className="text-black font-bold border-b px-4 py-3">
+                {activeCard.TITLE} Official
+              </div>
               <div className="p-5 flex flex-wrap">
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Name</TableHead>
                       <TableHead>Position</TableHead>
-                      
                     </TableRow>
                   </TableHeader>
+                  {isLoadingGetOfficial ? (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell colSpan={2}>
+                            <div className="flex items-center justify-center h-full">
+                              <LoaderCircleIcon className="animate-spin" />
+                            </div>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  ) : (
                   <TableBody>
                     {listOfficial?.map((official) => (
                       <TableRow key={official.id}>
-                        <TableCell className="uppercase">{official.name}</TableCell>
+                        <TableCell className="uppercase">
+                          {official.name}
+                        </TableCell>
                         <TableCell>{official.position}</TableCell>
-                        
                       </TableRow>
                     ))}
-                  </TableBody>
+                  </TableBody>)}
                 </Table>
               </div>
               {/* <div className="flex flex-col">
@@ -411,12 +443,6 @@ export default function NatioanalTeams() {
             <HorizontalChart title={"Player Caps"} />
           </div>
         </div> */}
-
-        
-
-          
-
-
       </div>
     </div>
   );
