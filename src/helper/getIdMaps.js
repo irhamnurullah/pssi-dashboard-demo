@@ -57,7 +57,7 @@ export const getIdmaps = (provinsi) => {
     case 28:
       return 'id-sl';
     case 29:
-      return 'id-sw';
+      return 'id-su';
     case 30:
       return 'id-ib';
     case 31:
