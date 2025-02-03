@@ -41,9 +41,11 @@ export default function Competition() {
   const [dataMaps, setDataMaps] = useState([]);
 
   const [isLoadingGetCompetition, setIsLoadingGetCompetition] = useState(false);
+  const [isLoadingCard, setIsLoadingCard] = useState(false);
 
   useEffect(() => {
     getListCompetition(dataHeader[0].id);
+    getCounting(dataHeader[0].id);
   }, []);
 
   const getListCompetition = async (id_divisi) => {
@@ -131,6 +133,11 @@ export default function Competition() {
 
   const [activeCard, setActiveCard] = useState(dataHeader[0].id);
   const [activeLabelCard, setActiveLabelCard] = useState(dataHeader[0].title);
+  const [countingData, setCountingData] = useState({
+    TOTAL_KLUB: 0,
+    TOTAL_PEMAIN: 0,
+    TOTAL_OFFICIAL: 0
+  })
 
   const columns = [
     {
@@ -192,6 +199,26 @@ export default function Competition() {
       cell: ({ row }) => <div className="capitalize">{row.getValue('TOTAL_YC')}</div>,
     },
   ];
+
+  const getCounting = async (id_divisi) => {
+    setIsLoadingCard(true);
+    try {
+      const counting = await apiService.get(`/api/competition/GetTotal?id_divisi=${id_divisi}`, headers);
+
+      if (counting.status === 200) {
+        setCountingData({
+          TOTAL_KLUB: counting.data.TOTAL_KLUB,
+          TOTAL_PEMAIN: counting.data.TOTAL_PEMAIN,
+          TOTAL_OFFICIAL: counting.data.TOTAL_OFFICIAL
+        });
+      }
+      setIsLoadingCard(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoadingCard(false);
+    }
+  }
 
   return (
     <div>
@@ -262,6 +289,7 @@ export default function Competition() {
                     setActiveCard(item.id);
                     setActiveLabelCard(item.title);
                     getListCompetition(item.id);
+                    getCounting(item.id);
                   }}
                   style={{ cursor: 'pointer' }}
                   className={`${activeCard === item.id ? 'bg-[#7E0000] text-white' : 'bg-slate-100'} rounded-lg  p-3 w-full relative`}
@@ -274,11 +302,11 @@ export default function Competition() {
                       <div className="z-20 relative">
                         <div className="flex text-xs justify-between">
                           <span className="">Total Club</span>
-                          <span className=" font-medium ">{item.totalClubs}</span>
+                          <span className=" font-medium ">{isLoadingCard ? <LoaderCircleIcon className="animate-spin w-3" /> : countingData.TOTAL_KLUB}</span>
                         </div>
                         <div className="flex text-xs  justify-between">
                           <span className=" ">Total Players</span>
-                          <span className="font-medium ">{item.totalPlayers}</span>
+                          <span className="font-medium ">{isLoadingCard ? <LoaderCircleIcon className="animate-spin w-3" /> : countingData.TOTAL_PEMAIN}</span>
                         </div>
                       </div>
 

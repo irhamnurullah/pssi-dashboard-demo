@@ -16,6 +16,7 @@ import { LoaderCircleIcon, X } from 'lucide-react';
 import { MultipleBarChart } from '../../components/charts/barchart/multiple';
 import MapsChart from '../../components/maps/mapsChart';
 import { mappingPlayer } from '../../helper/transformProvinceArray';
+import { Input } from "@/components/ui/input";
 
 const chartConfig = [
   {
@@ -60,6 +61,7 @@ export default function Player() {
 
   const [isLoadingGet, setIsLoadingGet] = useState(false);
   const [isLoadingChart, setIsLoadingChart] = useState(false);
+  const [nameSearch, setNameSearch] = useState("");
 
   const columns = [
     {
@@ -431,11 +433,11 @@ export default function Player() {
   };
 
   useEffect(() => {
-    getListPlayer(currentPage, rowsPerPage);
+    getListPlayer(currentPage, rowsPerPage, nameSearch);
     getChartData();
     getChartDataByProvince();
     getCarouselData();
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, nameSearch]);
 
   /* Total Player Pie Chart */
   useEffect(() => {
@@ -444,10 +446,20 @@ export default function Player() {
     }
   }, [totalPlayer]);
 
-  const getListPlayer = async (page, rowsPerPage) => {
+  const handleSearch = (event) => {
+    setNameSearch(event.target.value);
+  }
+
+  const getListPlayer = async (page, rowsPerPage, nameSearch) => {
     setIsLoadingGet(true);
     try {
-      const player = await apiService.get(`/api/player/GetListData?row_from=${(page - 1) * rowsPerPage}&length=${rowsPerPage}`, headers);
+      let url = `/api/player/GetListData?row_from=${
+        (page - 1) * rowsPerPage
+      }&length=${rowsPerPage}`;
+      if (nameSearch !== "") {
+        url += `&s_name=${nameSearch}`;
+      }
+      const player = await apiService.get(url, headers);
 
       if (player.status === 200) {
         setplayerData(player.data.data);
@@ -457,6 +469,9 @@ export default function Player() {
       setIsLoadingGet(false);
     } catch (error) {
       console.log(error);
+      setIsLoadingGet(false);
+      setplayerData([]);
+      setPlayerTotal(0);
     }
   };
 
@@ -677,20 +692,21 @@ export default function Player() {
         </div>
 
         <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
-          {isLoadingGet ? <div className="flex items-center justify-center h-full">
+          {/* {isLoadingGet ? <div className="flex items-center justify-center h-full">
               <LoaderCircleIcon className="animate-spin" />
-            </div> : 
+            </div> :  */}
             <>
-              <DataTable columns={columns} data={playerData} searchBy={'nama_pemain'} totalData={playerTotal} placeholderText={'Filter by Player Name...'} />
-              <PaginationControls
+              <Input placeholder={"Filter by Name..."} className="max-w-sm"  value={nameSearch} onChange={(e) => handleSearch(e)} />
+              <DataTable columns={columns} data={playerData} searchBy={'nama_pemain'} totalData={playerTotal} placeholderText={'Filter by Player Name...'} isLoading={isLoadingGet} />
+              {playerTotal > 10 && <PaginationControls
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
                 onRowsPerPageChange={setRowsPerPage}
                 rowsPerPage={rowsPerPage}
-              />
+              />}
             </>
-          }
+          {/* } */}
           
         </div>
       </div>

@@ -17,6 +17,7 @@ import { PaginationControls } from '../../components/table/pagination';
 import { LoaderCircleIcon, X } from 'lucide-react';
 import { mappingCoach } from '../../helper/transformProvinceArray';
 import { BarChartHorizontalLabel } from '../../components/charts/barchart/barchart-horizontal-label';
+import { Input } from "@/components/ui/input";
 
 const chartConfig = [
   {
@@ -322,21 +323,33 @@ export default function Coach() {
 
   const [isLoadingGet, setIsLoadingGet] = useState(false);
   const [isLoadingTable, setIsLoadingTable] = useState(false);
+  const [nameSearch, setNameSearch] = useState("");
 
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
   useEffect(() => {
-    getListCoach(currentPage, rowsPerPage);
+    getListCoach(currentPage, rowsPerPage, nameSearch);
     getChartData();
     getCarouselData();
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, nameSearch]);
 
-  const getListCoach = async (page, rowsPerPage) => {
+  const handleSearch = (event) => {
+    setNameSearch(event.target.value);
+  }
+
+  const getListCoach = async (page, rowsPerPage, nameSearch) => {
     setIsLoadingTable(true);
     try {
-      const coach = await apiService.get(`/api/coach/GetListData?row_from=${(page - 1) * rowsPerPage}&length=${rowsPerPage}`, headers);
+      let url = `/api/coach/GetListData?row_from=${
+        (page - 1) * rowsPerPage
+      }&length=${rowsPerPage}`;
+      if (nameSearch !== "") {
+        url += `&s_name=${nameSearch}`;
+      }
+
+      const coach = await apiService.get(url, headers);
 
       if (coach.status === 200) {
         setCoachData(coach.data.data);
@@ -346,6 +359,9 @@ export default function Coach() {
       setIsLoadingTable(false);
     } catch (error) {
       console.log(error);
+      setIsLoadingTable(false);
+      setCoachData([]);
+      setCoachTotal(0);
     }
   };
 
@@ -450,20 +466,21 @@ export default function Coach() {
         </div>
 
         <div className="p-4 mt-5 gap-4 bg-white border rounded-lg">
-          {isLoadingTable ? <div className="flex items-center justify-center h-full">
+          {/* {isLoadingTable ? <div className="flex items-center justify-center h-full">
               <LoaderCircleIcon className="animate-spin" />
-            </div> :
+            </div> : */}
             <>
-              <DataTable columns={columns} data={coachData} searchBy={'nama_official'} totalData={coachTotal} placeholderText="Filter by Official Name..." />
-              <PaginationControls
+              <Input placeholder={"Filter by Name..."} className="max-w-sm"  value={nameSearch} onChange={(e) => handleSearch(e)} />
+              <DataTable columns={columns} data={coachData} searchBy={'nama_official'} totalData={coachTotal} placeholderText="Filter by Official Name..." isLoading={isLoadingTable} />
+              {coachTotal > 10 && <PaginationControls
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
                 onRowsPerPageChange={setRowsPerPage}
                 rowsPerPage={rowsPerPage}
-              />
+              />}
             </>
-          }
+          {/* } */}
         </div>
       </div>
     </div>

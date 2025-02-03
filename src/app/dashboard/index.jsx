@@ -195,7 +195,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="flex px-4 space-x-5 mt-4">
+        {/* <div className="flex px-4 space-x-5 mt-4">
           <div className="bg-white rounded-lg shadow p-6 w-1/2">
             <div className="flex items-center space-x-2 mb-4">
               <img src={topProvince} alt="Top Provinces Icon" className="w-5 h-5" />
@@ -250,7 +250,7 @@ export default function DashboardPage() {
               <span className="text-gray-900 font-medium">45</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

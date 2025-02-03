@@ -38,6 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LoaderCircleIcon } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const dataSelect = [
   { label: "LIGA 1", value: 4 },
@@ -79,25 +80,34 @@ export default function Referee() {
 
   const [isLoadingGet, setIsLoadingGet] = useState(false);
   const [isLoadingMaps, setIsLoadingMaps] = useState(false);
+  const [nameSearch, setNameSearch] = useState("");
 
   const headers = {
     Authorization: `Bearer ${token}`,
   };
 
   useEffect(() => {
-    getListReferee(currentPage, rowsPerPage);
+    getListReferee(currentPage, rowsPerPage, nameSearch);
     getChartData();
     getCarouselData();
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, nameSearch]);
 
-  const getListReferee = async (page, rowsPerPage) => {
+  const handleSearch = (event) => {
+    setNameSearch(event.target.value);
+  }
+
+  const getListReferee = async (page, rowsPerPage, nameSearch) => {
     setIsLoadingGet(true);
+
     try {
-      const referee = await apiService.get(
-        `/api/referee/GetListData?row_from=${(page - 1) * rowsPerPage
-        }&length=${rowsPerPage}`,
-        headers
-      );
+      let url = `/api/referee/GetListData?row_from=${
+        (page - 1) * rowsPerPage
+      }&length=${rowsPerPage}`;
+      if (nameSearch !== "") {
+        url += `&s_name=${nameSearch}`;
+      }
+
+      const referee = await apiService.get(url, headers);
 
       if (referee.status === 200) {
         const formattedData = referee.data.data.map((ref) => ({
@@ -111,7 +121,9 @@ export default function Referee() {
       }
       setIsLoadingGet(false);
     } catch (error) {
-      console.log(error);
+      setIsLoadingGet(false);
+      setRefereesData([]);
+      setRefereesTotal(0);
     }
   };
 
@@ -703,34 +715,42 @@ export default function Referee() {
               </center>
             )}
 
-            {isLoadingMaps ? <div className="flex items-center justify-center h-full mt-10"><LoaderCircleIcon className="animate-spin" /></div> : <MapsChart dataMaps={dataMaps} /> }
+            {isLoadingMaps ? (
+              <div className="flex items-center justify-center h-full mt-10">
+                <LoaderCircleIcon className="animate-spin" />
+              </div>
+            ) : (
+              <MapsChart dataMaps={dataMaps} />
+            )}
           </div>
         </div>
 
         <div className="mt-5 bg-white p-5">
           <div className="text-black font-bold">Referee List</div>
-          {isLoadingGet ? (
+          {/* {isLoadingGet ? (
             <div className="flex items-center justify-center h-full">
               <LoaderCircleIcon className="animate-spin" />
             </div>
-          ) : (
+          ) : ( */}
             <>
+              <Input placeholder={"Filter by Name..."} className="max-w-sm"  value={nameSearch} onChange={(e) => handleSearch(e)} />
               <DataTable
                 columns={columns}
                 data={refereesData}
                 searchBy={"nama_petugas"}
                 totalData={refereesTotal}
                 placeholderText={"Filter by Name..."}
+                isLoading={isLoadingGet}
               />
-              <PaginationControls
+              {refereesTotal > 10 && <PaginationControls
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
                 onRowsPerPageChange={setRowsPerPage}
                 rowsPerPage={rowsPerPage}
-              />
+              />}
             </>
-          )}
+          {/* )} */}
         </div>
       </div>
     </div>
